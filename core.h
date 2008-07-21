@@ -6,6 +6,8 @@
  *   (at your option) any later version.                                   *
  *   Copyright 2008 David Parunakian                                       *
  ***************************************************************************/
+#ifndef CORE_H
+#define CORE_H
 #include <QtCore/QObject>
 #define OPERATOR
 
@@ -216,3 +218,4 @@ lit.txt
 </section>
 </lit>
 */
+#endif

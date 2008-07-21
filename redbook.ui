@@ -1,6 +1,6 @@
 <ui version="4.0" >
- <class>MainWindow</class>
- <widget class="QMainWindow" name="MainWindow" >
+ <class>mainWindow</class>
+ <widget class="QMainWindow" name="mainWindow" >
   <property name="geometry" >
    <rect>
     <x>0</x>
@@ -10,7 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string>MainWindow</string>
+   <string>Красная книга Российской Федерации</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
    <property name="geometry" >
@@ -18,12 +18,12 @@
      <x>0</x>
      <y>30</y>
      <width>1024</width>
-     <height>644</height>
+     <height>667</height>
     </rect>
    </property>
    <layout class="QGridLayout" >
     <item row="0" column="0" >
-     <widget class="QStackedWidget" name="stackedWidget" >
+     <widget class="Stack" name="stackedWidget" >
       <property name="autoFillBackground" >
        <bool>false</bool>
       </property>
@@ -31,7 +31,7 @@
        <string notr="true" >background-color: rgb(0, 0, 0);</string>
       </property>
       <property name="currentIndex" >
-       <number>3</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="page" >
        <property name="geometry" >
@@ -39,7 +39,7 @@
          <x>0</x>
          <y>0</y>
          <width>1006</width>
-         <height>626</height>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QGridLayout" >
@@ -57,7 +57,7 @@
              <string/>
             </property>
             <property name="pixmap" >
-             <pixmap resource="redbook.qrc" >:/newPrefix/images/logo.png</pixmap>
+             <pixmap resource="redbook.qrc" >:/logo.png</pixmap>
             </property>
            </widget>
           </item>
@@ -120,9 +120,18 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item>
-            <widget class="QListView" name="indexList" >
+            <widget class="QListWidget" name="indexList" >
+             <property name="minimumSize" >
+              <size>
+               <width>400</width>
+               <height>250</height>
+              </size>
+             </property>
              <property name="styleSheet" >
-              <string notr="true" >background-color:#ffffff</string>
+              <string notr="true" >background-color:#ffffff;
+font: 11pt "Sans Serif";
+text-decoration: underline;
+color: #0000ff;</string>
              </property>
             </widget>
            </item>
@@ -163,7 +172,7 @@ p, li { white-space: pre-wrap; }
          <x>0</x>
          <y>0</y>
          <width>1006</width>
-         <height>626</height>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" >
@@ -196,10 +205,14 @@ p, li { white-space: pre-wrap; }
            <item>
             <widget class="QTextBrowser" name="docViewer" >
              <property name="styleSheet" >
-              <string notr="true" >background-color: rgb(255, 255, 255);</string>
+              <string notr="true" >background-color: rgb(255, 255, 255);
+font: 12pt "Sans Serif";</string>
              </property>
              <property name="locale" >
               <locale country="RussianFederation" language="Russian" />
+             </property>
+             <property name="openLinks" >
+              <bool>false</bool>
              </property>
             </widget>
            </item>
@@ -214,7 +227,7 @@ p, li { white-space: pre-wrap; }
          <x>0</x>
          <y>0</y>
          <width>1006</width>
-         <height>626</height>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" >
@@ -356,7 +369,7 @@ p, li { white-space: pre-wrap; }
              <item>
               <layout class="QVBoxLayout" >
                <item>
-                <widget class="QLabel" name="systemLabel" >
+                <widget class="QLabel" name="taxoLabel" >
                  <property name="text" >
                   <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
@@ -448,7 +461,7 @@ p, li { white-space: pre-wrap; }
          <x>0</x>
          <y>0</y>
          <width>1006</width>
-         <height>626</height>
+         <height>649</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" >
@@ -662,7 +675,7 @@ p, li { white-space: pre-wrap; }
     </item>
    </layout>
   </widget>
-  <widget class="QMenuBar" name="menubar" >
+  <widget class="QMenuBar" name="menuBar" >
    <property name="geometry" >
     <rect>
      <x>0</x>
@@ -671,18 +684,22 @@ p, li { white-space: pre-wrap; }
      <height>30</height>
     </rect>
    </property>
-  </widget>
-  <widget class="QStatusBar" name="statusbar" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>674</y>
-     <width>1024</width>
-     <height>23</height>
-    </rect>
-   </property>
+   <widget class="QMenu" name="indexMenu" >
+    <property name="title" >
+     <string>Содержание</string>
+    </property>
+   </widget>
+   <addaction name="indexMenu" />
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Stack</class>
+   <extends>QStackedWidget</extends>
+   <header>stack.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="redbook.qrc" />
  </resources>
