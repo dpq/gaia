@@ -1,0 +1,681 @@
+<ui version="4.0" >
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1024</width>
+    <height>746</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>27</y>
+     <width>1024</width>
+     <height>695</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" >
+    <item row="0" column="0" >
+     <widget class="QStackedWidget" name="stackedWidget" >
+      <property name="autoFillBackground" >
+       <bool>false</bool>
+      </property>
+      <property name="styleSheet" >
+       <string notr="true" >background-color: rgb(0, 0, 0);</string>
+      </property>
+      <property name="currentIndex" >
+       <number>3</number>
+      </property>
+      <widget class="QWidget" name="page" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>792</width>
+         <height>399</height>
+        </rect>
+       </property>
+       <layout class="QGridLayout" >
+        <item row="0" column="0" colspan="3" >
+         <layout class="QHBoxLayout" >
+          <item>
+           <widget class="QLabel" name="logoLabel" >
+            <property name="text" >
+             <string/>
+            </property>
+            <property name="pixmap" >
+             <pixmap resource="redbook.qrc" >:/newPrefix/images/logo.png</pixmap>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="ministryLabel" >
+            <property name="text" >
+             <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-weight:600; color:#ffffff;">МИНИСТЕРСТВО ПРИРОДНЫХ РЕСУРСОВ РОССИЙСКОЙ ФЕДЕРАЦИИ. РОССИЙСКАЯ АКАДЕМИЯ НАУК&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="1" >
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>20</width>
+            <height>111</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="2" column="0" >
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item rowspan="2" row="2" column="1" >
+         <widget class="QWidget" native="1" name="widget" >
+          <property name="styleSheet" >
+           <string notr="true" >background-color:#ff0000</string>
+          </property>
+          <layout class="QVBoxLayout" >
+           <item>
+            <widget class="QLabel" name="indexLabel" >
+             <property name="styleSheet" >
+              <string notr="true" >background-color: rgb(255, 0, 0);</string>
+             </property>
+             <property name="text" >
+              <string>СОДЕРЖАНИЕ:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QListView" name="indexList" >
+             <property name="styleSheet" >
+              <string notr="true" >background-color:#ffffff</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="3" column="2" >
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>151</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="4" column="1" >
+         <spacer>
+          <property name="orientation" >
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0" >
+           <size>
+            <width>20</width>
+            <height>120</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_3" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>792</width>
+         <height>399</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" >
+        <item>
+         <widget class="QWidget" native="1" name="widget_2" >
+          <property name="styleSheet" >
+           <string notr="true" >background-color: #0080c0;</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout" >
+           <item>
+            <widget class="QLabel" name="label" >
+             <property name="styleSheet" >
+              <string notr="true" >font: 75 14pt "Sans Serif";</string>
+             </property>
+             <property name="text" >
+              <string>TextLabel</string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="comboBox" >
+             <property name="styleSheet" >
+              <string notr="true" >background-color: rgb(255, 255, 255);</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QTextBrowser" name="docViewer" >
+             <property name="styleSheet" >
+              <string notr="true" >background-color: rgb(255, 255, 255);</string>
+             </property>
+             <property name="locale" >
+              <locale country="RussianFederation" language="Russian" />
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_2" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1016</width>
+         <height>687</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" >
+        <item>
+         <widget class="QWidget" native="1" name="widget_3" >
+          <property name="styleSheet" >
+           <string notr="true" >background-color: rgb(170, 0, 0);</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout_3" >
+           <item>
+            <widget class="QLabel" name="label_4" >
+             <property name="text" >
+              <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:16pt; font-weight:600; font-style:italic; color:#ff0000;">Виды, занесенные в Красную Книгу Российской Федерации&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+             </property>
+             <property name="alignment" >
+              <set>Qt::AlignCenter</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout" >
+             <item>
+              <layout class="QVBoxLayout" name="_4" >
+               <item>
+                <widget class="QGroupBox" name="groupBox" >
+                 <property name="sizePolicy" >
+                  <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="title" >
+                  <string>Разделы</string>
+                 </property>
+                 <layout class="QVBoxLayout" name="_3" >
+                  <item>
+                   <widget class="QRadioButton" name="radioc0" >
+                    <property name="styleSheet" >
+                     <string notr="true" >color: rgb(255, 255, 0);
+</string>
+                    </property>
+                    <property name="text" >
+                     <string>Млекопитающие</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="radioc1" >
+                    <property name="styleSheet" >
+                     <string notr="true" >color: rgb(255, 255, 0);</string>
+                    </property>
+                    <property name="text" >
+                     <string>Птицы</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="radioc2" >
+                    <property name="styleSheet" >
+                     <string notr="true" >color: rgb(255, 255, 0);</string>
+                    </property>
+                    <property name="text" >
+                     <string>Земноводные и пресмыкающиеся</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="radioc3" >
+                    <property name="styleSheet" >
+                     <string notr="true" >color: rgb(255, 255, 0);</string>
+                    </property>
+                    <property name="text" >
+                     <string>Круглоротые и рыбы</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="radioc4" >
+                    <property name="styleSheet" >
+                     <string notr="true" >color: rgb(255, 255, 0);</string>
+                    </property>
+                    <property name="text" >
+                     <string>Членистоногие</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="radioc5" >
+                    <property name="styleSheet" >
+                     <string notr="true" >color: rgb(255, 255, 0);</string>
+                    </property>
+                    <property name="text" >
+                     <string>Моллюски</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="radioc6" >
+                    <property name="styleSheet" >
+                     <string notr="true" >color: rgb(255, 255, 0);</string>
+                    </property>
+                    <property name="text" >
+                     <string>Мшанки и плеченогие</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <widget class="QRadioButton" name="radioc7" >
+                    <property name="styleSheet" >
+                     <string notr="true" >color: rgb(255, 255, 0);</string>
+                    </property>
+                    <property name="text" >
+                     <string>Кольчатые черви</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item>
+                   <spacer>
+                    <property name="orientation" >
+                     <enum>Qt::Vertical</enum>
+                    </property>
+                    <property name="sizeHint" stdset="0" >
+                     <size>
+                      <width>20</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                   </spacer>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="verticalLayout_2" >
+               <item>
+                <widget class="QLabel" name="label_2" >
+                 <property name="text" >
+                  <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-weight:600; color:#ffff00;">Систематический список видов:&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QTreeWidget" name="treeWidget" >
+                 <property name="sizePolicy" >
+                  <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                   <horstretch>1</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet" >
+                  <string notr="true" >background-color: rgb(255, 255, 255);</string>
+                 </property>
+                 <property name="headerHidden" >
+                  <bool>true</bool>
+                 </property>
+                 <column>
+                  <property name="text" >
+                   <string>1</string>
+                  </property>
+                 </column>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QVBoxLayout" name="_5" >
+               <item>
+                <layout class="QHBoxLayout" name="_6" >
+                 <item>
+                  <widget class="QLabel" name="label_3" >
+                   <property name="text" >
+                    <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+&lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
+p, li { white-space: pre-wrap; }
+&lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-weight:600; color:#ffff00;">Алфавитный указатель:&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="latButton" >
+                   <property name="styleSheet" >
+                    <string notr="true" >color: rgb(255, 255, 0);</string>
+                   </property>
+                   <property name="text" >
+                    <string>Лат</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QPushButton" name="rusButton" >
+                   <property name="styleSheet" >
+                    <string notr="true" >color: rgb(255, 255, 0);</string>
+                   </property>
+                   <property name="text" >
+                    <string>Рус</string>
+                   </property>
+                  </widget>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QListWidget" name="listWidget_3" >
+                 <property name="styleSheet" >
+                  <string notr="true" >background-color: rgb(255, 255, 255);</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="page_4" >
+       <property name="geometry" >
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>1016</width>
+         <height>687</height>
+        </rect>
+       </property>
+       <layout class="QVBoxLayout" >
+        <item>
+         <layout class="QGridLayout" >
+          <item row="0" column="0" >
+           <widget class="QWidget" native="1" name="widget_4" >
+            <property name="styleSheet" >
+             <string notr="true" >background-color: rgb(255, 248, 250);</string>
+            </property>
+            <layout class="QVBoxLayout" name="verticalLayout_4" >
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_4" >
+               <item>
+                <layout class="QGridLayout" name="gridLayout" >
+                 <item row="0" column="0" colspan="2" >
+                  <widget class="QLabel" name="label_5" >
+                   <property name="sizePolicy" >
+                    <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
+                     <horstretch>1</horstretch>
+                     <verstretch>0</verstretch>
+                    </sizepolicy>
+                   </property>
+                   <property name="styleSheet" >
+                    <string notr="true" >font: 75 16pt "Sans Serif";</string>
+                   </property>
+                   <property name="text" >
+                    <string>ОБЫКНОВЕННЫЙ ТЮЛЕНЬ</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="1" column="0" colspan="2" >
+                  <spacer name="verticalSpacer" >
+                   <property name="orientation" >
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0" >
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item row="2" column="0" >
+                  <widget class="QLabel" name="label_6" >
+                   <property name="styleSheet" >
+                    <string notr="true" >font: 12pt "Sans Serif";</string>
+                   </property>
+                   <property name="text" >
+                    <string>TextLabel</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item row="2" column="1" >
+                  <layout class="QHBoxLayout" name="horizontalLayout_2" >
+                   <item>
+                    <widget class="QPushButton" name="pushButton" >
+                     <property name="sizePolicy" >
+                      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text" >
+                      <string>&lt;</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="pushButton_2" >
+                     <property name="sizePolicy" >
+                      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text" >
+                      <string>></string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="horizontalSpacer" >
+                     <property name="orientation" >
+                      <enum>Qt::Horizontal</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0" >
+                      <size>
+                       <width>40</width>
+                       <height>20</height>
+                      </size>
+                     </property>
+                    </spacer>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QListWidget" name="listWidget" >
+                 <property name="sizePolicy" >
+                  <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet" >
+                  <string notr="true" >background-color: rgb(255, 255, 255);</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_3" >
+               <item>
+                <layout class="QVBoxLayout" name="verticalLayout_6" >
+                 <item>
+                  <spacer name="verticalSpacer_2" >
+                   <property name="orientation" >
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0" >
+                    <size>
+                     <width>20</width>
+                     <height>40</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
+                 <item>
+                  <layout class="QVBoxLayout" name="verticalLayout_5" >
+                   <item>
+                    <widget class="QLabel" name="label_7" >
+                     <property name="sizePolicy" >
+                      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize" >
+                      <size>
+                       <width>300</width>
+                       <height>200</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize" >
+                      <size>
+                       <width>300</width>
+                       <height>200</height>
+                      </size>
+                     </property>
+                     <property name="text" >
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QLabel" name="label_8" >
+                     <property name="sizePolicy" >
+                      <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="minimumSize" >
+                      <size>
+                       <width>300</width>
+                       <height>200</height>
+                      </size>
+                     </property>
+                     <property name="maximumSize" >
+                      <size>
+                       <width>300</width>
+                       <height>200</height>
+                      </size>
+                     </property>
+                     <property name="text" >
+                      <string>TextLabel</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </item>
+                </layout>
+               </item>
+               <item>
+                <widget class="QTextBrowser" name="textBrowser" >
+                 <property name="sizePolicy" >
+                  <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="styleSheet" >
+                  <string notr="true" >background-color: rgb(255, 255, 255);</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1024</width>
+     <height>27</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar" >
+   <property name="geometry" >
+    <rect>
+     <x>0</x>
+     <y>722</y>
+     <width>1024</width>
+     <height>24</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources>
+  <include location="redbook.qrc" />
+ </resources>
+ <connections/>
+</ui>

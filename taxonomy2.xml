@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<bio version="1.0" url="/home/rumith/redbookspecies" >
+ <family lat="Felicia" rus="Кошачьи" id="1" >
+  <genus lat="Belolicia" rus="Широкомордые" id="2" >
+   <species lat="Felixus Vasilius" rus="Кот Вася" id="3" />
+  </genus>
+  <genus lat="Hyperborean" rus="Русские" id="4" >
+   <species lat="Cheshirius" rus="Чеширский" id="5" />
+  </genus>
+  <genus lat="Moxnatii" rus="Пушистые" id="7" />
+ </family>
+</bio>

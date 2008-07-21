@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='utf-8'?>
+<geo version="1.0" url="/home/rumith/redbookzones" >
+ <zone id="1" name="Российская Педерация" >
+  <zone id="2" name="Kamchatkan region" >
+   <chapter file="002.html" name="Overview" />
+  </zone>
+  <zone id="3" name="Bashkortostan" />
+  <zone id="4" name="Uralskaya Oblast" />
+  <zone id="5" name="Borovickaya Oblast" >
+   <chapter name="Help us" file="002" />
+   <chapter name="Kuku" file="003" />
+   <chapter name="Overview" file="001" />
+  </zone>
+ </zone>
+</geo>
