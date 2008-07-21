@@ -1,0 +1,23 @@
+To whoever reads this: the author of these lines David Parunakian aka Rumith is in no way responsible
+for the abomination that is the GUI of this software product!
+It has been designed and enforced by the V.Prisyajnyuk, who probably damned his immortal soul in process.
+
+Code to be developed and supported:
+config[.h|.cpp]
+core[.h|.cpp]
+
+Config is responsible for loading configuration files formatted not unlike Microsoft INI files.
+Core contains GaiaCore, the basis for developing a full-scale biological data mining and analysis system.
+
+
+Files hacked together during a couple of hours so the above-mentioned GUI works:
+main.cpp
+uiloader[.h|.cpp]
+stack[.h|.cpp]
+
+I will of course accept bug reports for these, too - just don't expect a superb quality from them.
+
+
+Sincerely yours,
+
+Jaffar Pharun Rumith
