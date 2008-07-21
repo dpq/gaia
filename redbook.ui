@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>1024</width>
-    <height>746</height>
+    <height>697</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -16,9 +16,9 @@
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>27</y>
+     <y>30</y>
      <width>1024</width>
-     <height>695</height>
+     <height>644</height>
     </rect>
    </property>
    <layout class="QGridLayout" >
@@ -38,8 +38,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>792</width>
-         <height>399</height>
+         <width>1006</width>
+         <height>626</height>
         </rect>
        </property>
        <layout class="QGridLayout" >
@@ -47,6 +47,12 @@
          <layout class="QHBoxLayout" >
           <item>
            <widget class="QLabel" name="logoLabel" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="text" >
              <string/>
             </property>
@@ -63,6 +69,9 @@
 p, li { white-space: pre-wrap; }
 &lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">
 &lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-weight:600; color:#ffffff;">МИНИСТЕРСТВО ПРИРОДНЫХ РЕСУРСОВ РОССИЙСКОЙ ФЕДЕРАЦИИ. РОССИЙСКАЯ АКАДЕМИЯ НАУК&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+            </property>
+            <property name="alignment" >
+             <set>Qt::AlignCenter</set>
             </property>
            </widget>
           </item>
@@ -95,7 +104,7 @@ p, li { white-space: pre-wrap; }
          </spacer>
         </item>
         <item rowspan="2" row="2" column="1" >
-         <widget class="QWidget" native="1" name="widget" >
+         <widget class="QWidget" native="1" name="indexFrame" >
           <property name="styleSheet" >
            <string notr="true" >background-color:#ff0000</string>
           </property>
@@ -153,19 +162,19 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>792</width>
-         <height>399</height>
+         <width>1006</width>
+         <height>626</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" >
         <item>
-         <widget class="QWidget" native="1" name="widget_2" >
+         <widget class="QWidget" native="1" name="docFrame" >
           <property name="styleSheet" >
            <string notr="true" >background-color: #0080c0;</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout" >
+          <layout class="QVBoxLayout" >
            <item>
-            <widget class="QLabel" name="label" >
+            <widget class="QLabel" name="docTitle" >
              <property name="styleSheet" >
               <string notr="true" >font: 75 14pt "Sans Serif";</string>
              </property>
@@ -178,7 +187,7 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="comboBox" >
+            <widget class="QComboBox" name="chapterCombo" >
              <property name="styleSheet" >
               <string notr="true" >background-color: rgb(255, 255, 255);</string>
              </property>
@@ -204,8 +213,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1016</width>
-         <height>687</height>
+         <width>1006</width>
+         <height>626</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" >
@@ -214,9 +223,9 @@ p, li { white-space: pre-wrap; }
           <property name="styleSheet" >
            <string notr="true" >background-color: rgb(170, 0, 0);</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3" >
+          <layout class="QVBoxLayout" >
            <item>
-            <widget class="QLabel" name="label_4" >
+            <widget class="QLabel" name="headerLabel" >
              <property name="text" >
               <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
@@ -230,11 +239,11 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout" >
+            <layout class="QHBoxLayout" >
              <item>
-              <layout class="QVBoxLayout" name="_4" >
+              <layout class="QVBoxLayout" >
                <item>
-                <widget class="QGroupBox" name="groupBox" >
+                <widget class="QGroupBox" name="chapterBox" >
                  <property name="sizePolicy" >
                   <sizepolicy vsizetype="Preferred" hsizetype="Fixed" >
                    <horstretch>0</horstretch>
@@ -244,7 +253,7 @@ p, li { white-space: pre-wrap; }
                  <property name="title" >
                   <string>Разделы</string>
                  </property>
-                 <layout class="QVBoxLayout" name="_3" >
+                 <layout class="QVBoxLayout" >
                   <item>
                    <widget class="QRadioButton" name="radioc0" >
                     <property name="styleSheet" >
@@ -345,9 +354,9 @@ p, li { white-space: pre-wrap; }
               </layout>
              </item>
              <item>
-              <layout class="QVBoxLayout" name="verticalLayout_2" >
+              <layout class="QVBoxLayout" >
                <item>
-                <widget class="QLabel" name="label_2" >
+                <widget class="QLabel" name="systemLabel" >
                  <property name="text" >
                   <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
@@ -358,7 +367,7 @@ p, li { white-space: pre-wrap; }
                 </widget>
                </item>
                <item>
-                <widget class="QTreeWidget" name="treeWidget" >
+                <widget class="QTreeWidget" name="sysTree" >
                  <property name="sizePolicy" >
                   <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
                    <horstretch>1</horstretch>
@@ -381,11 +390,11 @@ p, li { white-space: pre-wrap; }
               </layout>
              </item>
              <item>
-              <layout class="QVBoxLayout" name="_5" >
+              <layout class="QVBoxLayout" >
                <item>
-                <layout class="QHBoxLayout" name="_6" >
+                <layout class="QHBoxLayout" >
                  <item>
-                  <widget class="QLabel" name="label_3" >
+                  <widget class="QLabel" name="alphaLabel" >
                    <property name="text" >
                     <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
@@ -418,7 +427,7 @@ p, li { white-space: pre-wrap; }
                 </layout>
                </item>
                <item>
-                <widget class="QListWidget" name="listWidget_3" >
+                <widget class="QListWidget" name="alphaList" >
                  <property name="styleSheet" >
                   <string notr="true" >background-color: rgb(255, 255, 255);</string>
                  </property>
@@ -438,8 +447,8 @@ p, li { white-space: pre-wrap; }
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1016</width>
-         <height>687</height>
+         <width>1006</width>
+         <height>626</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" >
@@ -450,13 +459,13 @@ p, li { white-space: pre-wrap; }
             <property name="styleSheet" >
              <string notr="true" >background-color: rgb(255, 248, 250);</string>
             </property>
-            <layout class="QVBoxLayout" name="verticalLayout_4" >
+            <layout class="QVBoxLayout" >
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_4" >
+              <layout class="QHBoxLayout" >
                <item>
-                <layout class="QGridLayout" name="gridLayout" >
+                <layout class="QGridLayout" >
                  <item row="0" column="0" colspan="2" >
-                  <widget class="QLabel" name="label_5" >
+                  <widget class="QLabel" name="speciesLabel" >
                    <property name="sizePolicy" >
                     <sizepolicy vsizetype="Preferred" hsizetype="Expanding" >
                      <horstretch>1</horstretch>
@@ -472,7 +481,7 @@ p, li { white-space: pre-wrap; }
                   </widget>
                  </item>
                  <item row="1" column="0" colspan="2" >
-                  <spacer name="verticalSpacer" >
+                  <spacer>
                    <property name="orientation" >
                     <enum>Qt::Vertical</enum>
                    </property>
@@ -485,7 +494,7 @@ p, li { white-space: pre-wrap; }
                   </spacer>
                  </item>
                  <item row="2" column="0" >
-                  <widget class="QLabel" name="label_6" >
+                  <widget class="QLabel" name="commentLabel" >
                    <property name="styleSheet" >
                     <string notr="true" >font: 12pt "Sans Serif";</string>
                    </property>
@@ -495,9 +504,9 @@ p, li { white-space: pre-wrap; }
                   </widget>
                  </item>
                  <item row="2" column="1" >
-                  <layout class="QHBoxLayout" name="horizontalLayout_2" >
+                  <layout class="QHBoxLayout" >
                    <item>
-                    <widget class="QPushButton" name="pushButton" >
+                    <widget class="QPushButton" name="prevButton" >
                      <property name="sizePolicy" >
                       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
                        <horstretch>0</horstretch>
@@ -510,7 +519,7 @@ p, li { white-space: pre-wrap; }
                     </widget>
                    </item>
                    <item>
-                    <widget class="QPushButton" name="pushButton_2" >
+                    <widget class="QPushButton" name="nextButton" >
                      <property name="sizePolicy" >
                       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
                        <horstretch>0</horstretch>
@@ -523,7 +532,7 @@ p, li { white-space: pre-wrap; }
                     </widget>
                    </item>
                    <item>
-                    <spacer name="horizontalSpacer" >
+                    <spacer>
                      <property name="orientation" >
                       <enum>Qt::Horizontal</enum>
                      </property>
@@ -540,7 +549,7 @@ p, li { white-space: pre-wrap; }
                 </layout>
                </item>
                <item>
-                <widget class="QListWidget" name="listWidget" >
+                <widget class="QListWidget" name="sectionList" >
                  <property name="sizePolicy" >
                   <sizepolicy vsizetype="Expanding" hsizetype="Preferred" >
                    <horstretch>0</horstretch>
@@ -555,11 +564,11 @@ p, li { white-space: pre-wrap; }
               </layout>
              </item>
              <item>
-              <layout class="QHBoxLayout" name="horizontalLayout_3" >
+              <layout class="QHBoxLayout" >
                <item>
-                <layout class="QVBoxLayout" name="verticalLayout_6" >
+                <layout class="QVBoxLayout" >
                  <item>
-                  <spacer name="verticalSpacer_2" >
+                  <spacer>
                    <property name="orientation" >
                     <enum>Qt::Vertical</enum>
                    </property>
@@ -572,9 +581,9 @@ p, li { white-space: pre-wrap; }
                   </spacer>
                  </item>
                  <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_5" >
+                  <layout class="QVBoxLayout" >
                    <item>
-                    <widget class="QLabel" name="label_7" >
+                    <widget class="QLabel" name="photoLabel" >
                      <property name="sizePolicy" >
                       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
                        <horstretch>0</horstretch>
@@ -599,7 +608,7 @@ p, li { white-space: pre-wrap; }
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="label_8" >
+                    <widget class="QLabel" name="arealLabel" >
                      <property name="sizePolicy" >
                       <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
                        <horstretch>0</horstretch>
@@ -628,7 +637,7 @@ p, li { white-space: pre-wrap; }
                 </layout>
                </item>
                <item>
-                <widget class="QTextBrowser" name="textBrowser" >
+                <widget class="QTextBrowser" name="articleBrowser" >
                  <property name="sizePolicy" >
                   <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
                    <horstretch>0</horstretch>
@@ -659,7 +668,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1024</width>
-     <height>27</height>
+     <height>30</height>
     </rect>
    </property>
   </widget>
@@ -667,9 +676,9 @@ p, li { white-space: pre-wrap; }
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>722</y>
+     <y>674</y>
      <width>1024</width>
-     <height>24</height>
+     <height>23</height>
     </rect>
    </property>
   </widget>
