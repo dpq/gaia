@@ -15,6 +15,8 @@
 #include <QtCore/QPoint>
 #include "config.h"
 
+#include <QtDebug>
+
 QrbConfig::QrbConfig(const QString &path) {
 	c_values = new QHash<QPoint, QVariant>();
 	c_sections = new QList<QString>();
@@ -40,10 +42,15 @@ QList<QString> QrbConfig::parameters(const QString &section) const {
 		return QList<QString>();
 	}
 	int sectionIndex = c_sections->indexOf(section);
-	QList<QString> res;
+	QList<int> indices;
 	foreach (QPoint p, c_values->keys()) {
 		if (p.x() == sectionIndex)
-			res.append(c_parameters->at(p.y()));
+			indices.append(p.y());
+	}
+	qSort(indices);
+	QList<QString> res;
+	foreach (int i, indices) {
+		res.append(c_parameters->at(i));
 	}
 	return res;
 }
@@ -78,6 +85,8 @@ void QrbConfig::setValue(const QString &section, const QString &parameter, const
 		c_parameters->append(parameter);
 
 	c_values->insert(QPoint(c_sections->indexOf(section), c_parameters->indexOf(parameter)), value);
+	if (section == "Chapters")
+		qDebug() << parameter << value;
 }
 
 void QrbConfig::error(QrbConfig::Error *code, int *line) {
