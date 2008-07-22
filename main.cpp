@@ -8,7 +8,8 @@
  ***************************************************************************/
 #include <QtGui/QApplication>
 #include <QtCore/QFile>
-#include <QtGui/QWidget>
+#include <QtGui/QSplashScreen>
+#include <QtGui/QBitmap>
 #include <QtGui/QMenu>
 #include <QtGui/QListWidget>
 #include <QtGui/QListWidgetItem>
@@ -23,7 +24,9 @@
 #include "config.h"
 
 int main(int argc, char **argv) {
+	/* TODO splash screen */
 	QApplication app(argc, argv);
+	QApplication::setWindowIcon(QIcon(":/icon.png"));
 
 	GaiaCore *core = new GaiaCore();
 	
@@ -35,6 +38,19 @@ int main(int argc, char **argv) {
 
 	QrbConfig *config = new QrbConfig(":/redbook.conf");
 
+	QPixmap pic(":/splash.png");
+	QSplashScreen splash(pic);
+
+	// Enable splash screen transparency
+	if (!pic.mask().isNull()) {
+		QImage img(":/images/splash.png");
+		if (img.hasAlphaChannel())
+			splash.setMask(QBitmap::fromImage(img.createAlphaMask()));
+		else
+			splash.setMask(QBitmap::fromImage(img.createHeuristicMask()));
+	}
+
+	splash.show();
 
 	//QLabel *ministryLabel = redBook->findChild<QLabel*>("ministryLabel");
 	//QLabel *indexLabel = redBook->findChild<QLabel*>("indexLabel");
@@ -46,12 +62,6 @@ int main(int argc, char **argv) {
 	for (QList<QLabel*>::iterator i = widgets->begin(); i != widgets->end(); i++) {
 		(*i)->setText(config->value("Labels", (*i)->objectName()).toString());
 	}*/
-
-	/*QLabel * = redBook->findChild<QLabel*>("");
-	QLabel * = redBook->findChild<QLabel*>("");
-	QLabel * = redBook->findChild<QLabel*>("");
-	QLabel * = redBook->findChild<QLabel*>("");
-	QLabel * = redBook->findChild<QLabel*>("");*/
 	
 	QList<QString> params = config->parameters("Index");
 	QMenu *indexMenu = redBook->findChild<QMenu*>("indexMenu");
@@ -79,10 +89,12 @@ int main(int argc, char **argv) {
 	}
 	QObject::connect(indexList, SIGNAL(itemClicked(QListWidgetItem*)), stack, SLOT(viewDocument(QListWidgetItem*)));
 	QObject::connect(chapterCombo, SIGNAL(currentIndexChanged(const QString &)), stack, SLOT(viewChapter(const QString &)));
-
+	
 	stack->setCurrentIndex(0);
 	redBook->show();
-
-
+	
+	sleep(2);
+	splash.finish(redBook);
+	
 	return app.exec();
 }
