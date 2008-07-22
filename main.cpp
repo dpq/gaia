@@ -24,7 +24,6 @@
 #include "config.h"
 
 int main(int argc, char **argv) {
-	/* TODO splash screen */
 	QApplication app(argc, argv);
 	QApplication::setWindowIcon(QIcon(":/icon.png"));
 
