@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<geo version="1.0" url="/home/rumith/redbookzones">
-<zone id="1" name="Российская Педерация">
-	<zone id="2" name="Kamchatkan region">
-		<chapter file="002.html" name="Overview" />
-	</zone>
-	<zone id="3" name="基本方針に賛同していただける" />
-</zone>
-</geo>
