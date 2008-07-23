@@ -5,5 +5,7 @@
     <file>splash.png</file>
     <file>redbook.ui</file>
     <file>redbook.conf</file>
+    <file>zones.xml</file>
+    <file>species.xml</file>
   </qresource>
 </RCC>

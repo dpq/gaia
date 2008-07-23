@@ -185,7 +185,7 @@ Taxonomy
 
 The XML structure repeats Linnean taxonometry (Species, Genus, Family, Order, Class, Phylum, Kingdom, Domain), but may start at any level, rather than always start at Domain. URL points to a directory where image files for entries are located. The basename of the picture file (without the suffix) must be equal to the ID of the entry it corresponds to.
 
-pictures/
+species/
 5.png 168.jpg 169.jpg
 */
 

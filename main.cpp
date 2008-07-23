@@ -40,15 +40,6 @@ int main(int argc, char **argv) {
 	QPixmap pic(":/splash.png");
 	QSplashScreen splash(pic);
 
-	// Enable splash screen transparency
-	/*if (!pic.mask().isNull()) {
-		QImage img(":/images/splash.png");
-		if (img.hasAlphaChannel())
-			splash.setMask(QBitmap::fromImage(img.createAlphaMask()));
-		else
-			splash.setMask(QBitmap::fromImage(img.createHeuristicMask()));
-	}*/
-
 	splash.show();
 
 	//QLabel *ministryLabel = redBook->findChild<QLabel*>("ministryLabel");

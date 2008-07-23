@@ -41,12 +41,12 @@ void Stack::viewDocument(QListWidgetItem *item) {
 	/* Main screen */
 	if (id == "p5") {
 		currentDir = "";
-
+		this->setCurrentIndex(2);
 	}
 	/* Edit screen */
 	else if (id == "p9") {
 		currentDir = "";
-
+		/* TODO */
 	}
 	/* Appendix */
 	else if (id == "p7") {
