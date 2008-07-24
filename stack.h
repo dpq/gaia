@@ -32,9 +32,12 @@ public slots:
 	void treeItemSelected(QTreeWidgetItem *item);
 	void listItemSelected(QListWidgetItem *item);
 	void setArticle(QListWidgetItem *item);
+	void nextSpecies();
+	void prevSpecies();
+	void changeFocus(QWidget *old, QWidget *now);
 
 private:
-	QString currentDir, alphaMode, chapterId, articleId;
+	QString currentDir, alphaMode, chapterId, articleId, indexMode;
 	void refreshArticle();
 	int speciesId;
 	GaiaCore *core;

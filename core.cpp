@@ -348,14 +348,15 @@ QList<int> GaiaCore::speciesStatus(int speciesId, int zoneId) const {
 	QList<int> res;
 	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
 		return QList<int>();
-	QString statusPath = QString("%1/%2/%3/status.txt").arg(zoneUrl()).arg(zoneId).arg(speciesId);
+	/*QString statusPath = QString("%1/%2/%3/status.txt").arg(zoneUrl()).arg(zoneId).arg(speciesId);
 	if (!QFile::exists(statusPath))
 		return QList<int>();
 	QFile file(statusPath);
 	if (!file.open(QIODevice::ReadOnly))
 		return QList<int>();
 	QString str = file.readAll();
-	file.close();
+	file.close();*/
+	QString str = taxonomyEntry(speciesId).attribute("status");
 	QList<QString> splitted = str.split(",");
 	foreach(QString status, splitted) {
 		res.append(status.toInt());
@@ -363,7 +364,6 @@ QList<int> GaiaCore::speciesStatus(int speciesId, int zoneId) const {
 	return res;
 }
 
-#include <QtDebug>
 QString GaiaCore::speciesChapter(int speciesId, int zoneId, const QString &chapterName) const {
 	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
 		return QString();

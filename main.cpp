@@ -51,6 +51,7 @@ int main(int argc, char **argv) {
 	indexList->setCursor(Qt::PointingHandCursor);
 	indexList->setSelectionMode(QAbstractItemView::NoSelection);
 	QMenu *indexMenu = redBook->findChild<QMenu*>("indexMenu");
+	indexList->clear();
 	for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 		QString section = config->value("Index", *param).toString();
 		QAction *action = indexMenu->addAction(section);
@@ -81,8 +82,13 @@ int main(int argc, char **argv) {
 	QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), stack, SLOT(treeItemSelected(QTreeWidgetItem *)));
 	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemDoubleClicked(QListWidgetItem*)), stack, SLOT(listItemSelected(QListWidgetItem *)));
 
+	QObject::connect(redBook->findChild<QPushButton*>("prevButton"), SIGNAL(clicked()), stack, SLOT(prevSpecies()));
+	QObject::connect(redBook->findChild<QPushButton*>("nextButton"), SIGNAL(clicked()), stack, SLOT(nextSpecies()));
+
+	QObject::connect(&app, SIGNAL(focusChanged(QWidget*, QWidget*)), stack, SLOT(changeFocus(QWidget*, QWidget*)));
+
 	redBook->show();
-	sleep(2);
+	sleep(3);
 	splash.finish(redBook);
 	
 	return app.exec();
