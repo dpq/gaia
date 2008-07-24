@@ -19,6 +19,7 @@
 #include <QtGui/QTextBrowser>
 #include <QtGui/QStackedWidget>
 #include <QtGui/QPushButton>
+#include <QtGui/QRadioButton>
 
 #include "uiloader.h"
 #include "config.h"
@@ -71,6 +72,24 @@ int main(int argc, char **argv) {
 	QPushButton *rusButton = redBook->findChild<QPushButton*>("rusButton");
 	QObject::connect(latButton, SIGNAL(clicked()), stack, SLOT(viewLatAlpha()));
 	QObject::connect(rusButton, SIGNAL(clicked()), stack, SLOT(viewRusAlpha()));
+	
+	QRadioButton *radioc0 = redBook->findChild<QRadioButton*>("radioc0");
+	QRadioButton *radioc1 = redBook->findChild<QRadioButton*>("radioc1");
+	QRadioButton *radioc2 = redBook->findChild<QRadioButton*>("radioc2");
+	QRadioButton *radioc3 = redBook->findChild<QRadioButton*>("radioc3");
+	QRadioButton *radioc4 = redBook->findChild<QRadioButton*>("radioc4");
+	QRadioButton *radioc5 = redBook->findChild<QRadioButton*>("radioc5");
+	QRadioButton *radioc6 = redBook->findChild<QRadioButton*>("radioc6");
+	QRadioButton *radioc7 = redBook->findChild<QRadioButton*>("radioc7");
+	QObject::connect(radioc0, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(radioc1, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(radioc2, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(radioc3, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(radioc4, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(radioc5, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(radioc6, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(radioc7, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+
 	
 	stack->setCurrentIndex(0);
 	redBook->show();

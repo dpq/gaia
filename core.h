@@ -66,10 +66,12 @@ public slots:
 
 public:
 	QDomElement taxonomyDocumentElement();
-	QList<QDomElement> taxonomyElementsByTagName(const QString &tagName);
+	QList<QDomElement> taxonomyElementsByTagName(const QString &tagName, const QDomElement &parent = QDomElement());
+	QDomElement taxonomyElementById(const QString &id);
 
 	QDomElement zoneDocumentElement();
-	QList<QDomElement> zoneElementsByTagName(const QString &tagName);
+	QList<QDomElement> zoneElementsByTagName(const QString &tagName, const QDomElement &parent = QDomElement());
+	QDomElement zoneElementById(const QString &id);
 /*============*/
 
 public:
@@ -158,6 +160,7 @@ private:
 	QDomDocument zoneDoc, taxonomyDoc;
 	int maxZoneId, maxTaxonomyId;
 	QHash<int, QDomElement> *zoneHash, *taxonomyHash;
+	QDomElement elementById(const QDomElement &element, const QString &id);
 	QList<QDomElement> allElements(const QDomElement &element, const QString &tagName = "");
 	void deleteDirectory(const QString &path);
 	static const QString taxonomyLevels[];

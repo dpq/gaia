@@ -32,16 +32,24 @@ QDomElement GaiaCore::taxonomyDocumentElement() {
 	return taxonomyDoc.documentElement();
 }
 
-QList<QDomElement> GaiaCore::taxonomyElementsByTagName(const QString &tagName) {
-	return allElements(taxonomyDoc.documentElement(), tagName);
+QList<QDomElement> GaiaCore::taxonomyElementsByTagName(const QString &tagName, const QDomElement &parent) {
+	return allElements((parent == QDomElement() ? taxonomyDoc.documentElement() : parent), tagName);
+}
+
+QDomElement GaiaCore::taxonomyElementById(const QString &id) {
+	return elementById(taxonomyDoc.documentElement(), id);
 }
 
 QDomElement GaiaCore::zoneDocumentElement() {
 	return zoneDoc.documentElement();
 }
 
-QList<QDomElement> GaiaCore::zoneElementsByTagName(const QString &tagName) {
-	return allElements(zoneDoc.documentElement(), tagName);
+QList<QDomElement> GaiaCore::zoneElementsByTagName(const QString &tagName, const QDomElement &parent) {
+	return allElements((parent == QDomElement() ? zoneDoc.documentElement() : parent), tagName);
+}
+
+QDomElement GaiaCore::zoneElementById(const QString &id) {
+	return elementById(zoneDoc.documentElement(), id);
 }
 
 void GaiaCore::deleteDirectory(const QString &path) {
@@ -427,6 +435,14 @@ void GaiaCore::setSpeciesStatus(int speciesId, int zoneId, const QList<int> &sta
 }
 
 #endif
+
+QDomElement GaiaCore::elementById(const QDomElement &element, const QString &id) {
+	QList<QDomElement> res = allElements(element);
+	for (QList<QDomElement>::iterator i = res.begin(); i != res.end(); i++)
+		if ((*i).attribute("id") == id)
+			return *i;
+	return QDomElement();
+}
 
 QList<QDomElement> GaiaCore::allElements(const QDomElement &element, const QString &tagName) {
 	QList<QDomElement> res = QList<QDomElement>();

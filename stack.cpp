@@ -29,16 +29,31 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	QList<int> indices;
 	indices.clear();
 	indices.append(1);
-	chapterMap->insert("radioc0", indices);
-/*	chapterMap->insert("radioc1", );
-	chapterMap->insert("radioc2", );
-	chapterMap->insert("radioc3", );
-	chapterMap->insert("radioc4", );
-	chapterMap->insert("radioc5", );
-	chapterMap->insert("radioc6", );
-	chapterMap->insert("radioc7", );
-*/
-
+	chapterMap->insert("radioc0", QList<int>(indices));
+	indices.clear();
+	indices.append(84);
+	chapterMap->insert("radioc1", QList<int>(indices));
+	indices.clear();
+	indices.append(225);
+	indices.append(236);
+	chapterMap->insert("radioc2", QList<int>(indices));
+	indices.clear();
+	indices.append(261);
+	indices.append(266);
+	chapterMap->insert("radioc3", QList<int>(indices));
+	indices.clear();
+	indices.append(322);
+	chapterMap->insert("radioc4", QList<int>(indices));
+	indices.clear();
+	indices.append(430);
+	chapterMap->insert("radioc5", QList<int>(indices));
+	indices.clear();
+	indices.append(502);
+	indices.append(506);
+	chapterMap->insert("radioc6", QList<int>(indices));
+	indices.clear();
+	indices.append(482);
+	chapterMap->insert("radioc7", QList<int>(indices));
 }
 
 Stack::~Stack() {
@@ -129,25 +144,48 @@ void Stack::viewChapter(const QString &chapter) {
 void Stack::viewLatAlpha() {
 	QListWidget *alphaList = this->findChild<QListWidget*>("alphaList");
 	alphaList->clear();
-	QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species");
-	for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
-		QListWidgetItem *latItem = new QListWidgetItem();
-		latItem->setText((*i).attribute("lat"));
-		latItem->setToolTip((*i).attribute("rus"));
-		alphaList->addItem(latItem);
+
+	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
+		QDomElement root = core->taxonomyElementById(QString::number(chapterMap->value(chapterId)[i]));
+		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", root);
+		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
+			QListWidgetItem *latItem = new QListWidgetItem();
+			latItem->setText((*i).attribute("lat"));
+			latItem->setToolTip((*i).attribute("rus"));
+			alphaList->addItem(latItem);
+		}
 	}
+
+	alphaMode = "lat";
 	alphaList->sortItems();
 }
 
 void Stack::viewRusAlpha() {
 	QListWidget *alphaList = this->findChild<QListWidget*>("alphaList");
 	alphaList->clear();
-	QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species");
-	for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
-		QListWidgetItem *rusItem = new QListWidgetItem();
-		rusItem->setText((*i).attribute("rus"));
-		rusItem->setToolTip((*i).attribute("lat"));
-		alphaList->addItem(rusItem);
+
+	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
+		QDomElement root = core->taxonomyElementById(QString::number(chapterMap->value(chapterId)[i]));		
+		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", root);
+		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
+			QListWidgetItem *rusItem = new QListWidgetItem();
+			rusItem->setText((*i).attribute("rus"));
+			rusItem->setToolTip((*i).attribute("lat"));
+			alphaList->addItem(rusItem);
+		}
 	}
+
+	alphaMode = "rus";
 	alphaList->sortItems();
+}
+
+void Stack::setTaxoChapter(bool isChecked) {
+	if (!isChecked)
+		return;
+	chapterId = qobject_cast<QRadioButton*>(sender())->objectName();
+	if (alphaMode == "rus")
+		viewRusAlpha();
+	else
+		viewLatAlpha();
+	//updateTaxoTree();
 }

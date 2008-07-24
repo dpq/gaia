@@ -24,9 +24,10 @@ public slots:
 	void viewChapter(const QString &chapter);
 	void viewLatAlpha();
 	void viewRusAlpha();
+	void setTaxoChapter(bool isChecked);
 
 private:
-	QString currentDir;
+	QString currentDir, alphaMode, chapterId;
 	GaiaCore *core;
 	QList<QListWidgetItem*> *latAlphas;
 	QList<QListWidgetItem*> *rusAlphas;
