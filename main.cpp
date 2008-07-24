@@ -13,6 +13,8 @@
 #include <QtGui/QMenu>
 #include <QtGui/QListWidget>
 #include <QtGui/QListWidgetItem>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QTreeWidgetItem>
 #include <QtGui/QCursor>
 #include <QtGui/QLabel>
 #include <QtGui/QComboBox>
@@ -42,58 +44,42 @@ int main(int argc, char **argv) {
 	splash.show();
 	
 	QList<QString> params = config->parameters("Index");
-	QMenu *indexMenu = redBook->findChild<QMenu*>("indexMenu");
+	QStackedWidget *stack = redBook->findChild<QStackedWidget*>("stackedWidget");
+	stack->setCurrentIndex(0);
 
 	QListWidget *indexList = redBook->findChild<QListWidget*>("indexList");
 	indexList->setCursor(Qt::PointingHandCursor);
 	indexList->setSelectionMode(QAbstractItemView::NoSelection);
-
-	QStackedWidget *stack = redBook->findChild<QStackedWidget*>("stackedWidget");
-	QLabel *docTitle = redBook->findChild<QLabel*>("docTitle");
-
-	if (indexMenu == 0 || indexList == 0)
-		exit(1);
+	QMenu *indexMenu = redBook->findChild<QMenu*>("indexMenu");
 	for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 		QString section = config->value("Index", *param).toString();
 		QAction *action = indexMenu->addAction(section);
 		action->setData(*param);
 		QObject::connect(action, SIGNAL(triggered()), stack, SLOT(viewDocument()));
-		
 		QListWidgetItem *item = new QListWidgetItem(section);
 		item->setData(Qt::UserRole, *param);
 		indexList->addItem(item);
 	}
 	QObject::connect(indexList, SIGNAL(itemClicked(QListWidgetItem*)), stack, SLOT(viewDocument(QListWidgetItem*)));
 
-	QComboBox *chapterCombo = redBook->findChild<QComboBox*>("chapterCombo");
-	QObject::connect(chapterCombo, SIGNAL(currentIndexChanged(const QString &)), stack, SLOT(viewChapter(const QString &)));
+	QObject::connect(redBook->findChild<QComboBox*>("chapterCombo"), SIGNAL(currentIndexChanged(const QString &)), stack, SLOT(viewChapter(const QString &)));
 
-	QPushButton *latButton = redBook->findChild<QPushButton*>("latButton");
-	QPushButton *rusButton = redBook->findChild<QPushButton*>("rusButton");
-	QObject::connect(latButton, SIGNAL(clicked()), stack, SLOT(viewLatAlpha()));
-	QObject::connect(rusButton, SIGNAL(clicked()), stack, SLOT(viewRusAlpha()));
+	QObject::connect(redBook->findChild<QPushButton*>("latButton"), SIGNAL(clicked()), stack, SLOT(viewLatAlpha()));
+	QObject::connect(redBook->findChild<QPushButton*>("rusButton"), SIGNAL(clicked()), stack, SLOT(viewRusAlpha()));
 	
-	QRadioButton *radioc0 = redBook->findChild<QRadioButton*>("radioc0");
-	QRadioButton *radioc1 = redBook->findChild<QRadioButton*>("radioc1");
-	QRadioButton *radioc2 = redBook->findChild<QRadioButton*>("radioc2");
-	QRadioButton *radioc3 = redBook->findChild<QRadioButton*>("radioc3");
-	QRadioButton *radioc4 = redBook->findChild<QRadioButton*>("radioc4");
-	QRadioButton *radioc5 = redBook->findChild<QRadioButton*>("radioc5");
-	QRadioButton *radioc6 = redBook->findChild<QRadioButton*>("radioc6");
-	QRadioButton *radioc7 = redBook->findChild<QRadioButton*>("radioc7");
-	QObject::connect(radioc0, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
-	QObject::connect(radioc1, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
-	QObject::connect(radioc2, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
-	QObject::connect(radioc3, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
-	QObject::connect(radioc4, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
-	QObject::connect(radioc5, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
-	QObject::connect(radioc6, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
-	QObject::connect(radioc7, SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc0"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc1"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc2"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc3"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc4"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc5"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc6"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc7"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
 
-	
-	stack->setCurrentIndex(0);
+	QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), stack, SLOT(treeItemSelected(QTreeWidgetItem *)));
+	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemDoubleClicked(QListWidgetItem *)), stack, SLOT(listItemSelected(QListWidgetItem *)));
+
 	redBook->show();
-	
 	sleep(2);
 	splash.finish(redBook);
 	

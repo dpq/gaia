@@ -380,7 +380,7 @@ p, li { white-space: pre-wrap; }
                 </widget>
                </item>
                <item>
-                <widget class="QTreeWidget" name="sysTree" >
+                <widget class="QTreeWidget" name="taxoTree" >
                  <property name="sizePolicy" >
                   <sizepolicy vsizetype="Expanding" hsizetype="Expanding" >
                    <horstretch>1</horstretch>

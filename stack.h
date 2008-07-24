@@ -10,6 +10,8 @@
 #define STACK_H
 #include <QtGui/QStackedWidget>
 class QListWidgetItem;
+class QTreeWidgetItem;
+class QDomElement;
 class GaiaCore;
 
 class Stack : public QStackedWidget {
@@ -24,7 +26,10 @@ public slots:
 	void viewChapter(const QString &chapter);
 	void viewLatAlpha();
 	void viewRusAlpha();
+	void updateTaxoTree();
 	void setTaxoChapter(bool isChecked);
+	void treeItemSelected(QTreeWidgetItem *item);
+	void listItemSelected(QListWidgetItem *item);
 
 private:
 	QString currentDir, alphaMode, chapterId;
@@ -32,7 +37,7 @@ private:
 	QList<QListWidgetItem*> *latAlphas;
 	QList<QListWidgetItem*> *rusAlphas;
 	QMap<QString, QList<int> > *chapterMap;
+	void insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root);
 };
-
 
 #endif

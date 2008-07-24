@@ -10,11 +10,13 @@
 #include <QtGui/QTextBrowser>
 #include <QtDebug>
 #include <QtGui/QListWidgetItem>
+#include <QtGui/QTreeWidget>
 #include <QtGui/QAction>
 #include <QtGui/QLabel>
 #include <QtGui/QComboBox>
 #include <QtGui/QApplication>
 #include <QtGui/QRadioButton>
+#include <QtCore/QStringList>
 #include "config.h"
 #include "core.h"
 
@@ -151,7 +153,10 @@ void Stack::viewLatAlpha() {
 		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
 			QListWidgetItem *latItem = new QListWidgetItem();
 			latItem->setText((*i).attribute("lat"));
-			latItem->setToolTip((*i).attribute("rus"));
+			QString comment = (*i).attribute("comment");
+			if (comment != QString())
+				comment = " [" + comment + "]";
+			latItem->setToolTip((*i).attribute("rus") + comment);
 			alphaList->addItem(latItem);
 		}
 	}
@@ -165,11 +170,14 @@ void Stack::viewRusAlpha() {
 	alphaList->clear();
 
 	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
-		QDomElement root = core->taxonomyElementById(QString::number(chapterMap->value(chapterId)[i]));		
+		QDomElement root = core->taxonomyElementById(QString::number(chapterMap->value(chapterId)[i]));
 		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", root);
 		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
 			QListWidgetItem *rusItem = new QListWidgetItem();
-			rusItem->setText((*i).attribute("rus"));
+			QString comment = (*i).attribute("comment");
+			if (comment != QString())
+				comment = " [" + comment + "]";
+			rusItem->setText((*i).attribute("rus") + comment);
 			rusItem->setToolTip((*i).attribute("lat"));
 			alphaList->addItem(rusItem);
 		}
@@ -187,5 +195,43 @@ void Stack::setTaxoChapter(bool isChecked) {
 		viewRusAlpha();
 	else
 		viewLatAlpha();
-	//updateTaxoTree();
+	updateTaxoTree();
 }
+
+void Stack::updateTaxoTree() {
+	QTreeWidget *taxoTree = this->findChild<QTreeWidget*>("taxoTree");
+	taxoTree->clear();
+	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
+		QDomElement root = core->taxonomyElementById(QString::number(chapterMap->value(chapterId)[i]));
+		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(root.attribute("rus") + " - " + root.attribute("lat")), 0);
+		insertTaxoPart(item, root);
+		item->setToolTip(0, root.attribute("rus") + " - " + root.attribute("lat"));
+		taxoTree->addTopLevelItem(item);
+	}
+	taxoTree->expandAll();
+}
+
+void Stack::insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root) {
+	for (int i = 0; i < root.childNodes().size(); i++) {
+		QDomElement element = root.childNodes().at(i).toElement();
+		QString comment = element.attribute("comment");
+		if (comment != QString())
+			comment = " [" + comment + "]";
+		QString appendum = "";
+		if (element.tagName() == "species")
+			appendum = " (" + element.attribute("author") + ", " + element.attribute("year") + ") (" + element.attribute("status") + ")";
+		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum), 0);
+		insertTaxoPart(item, element);
+		item->setToolTip(0, element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum);
+		parent->addChild(item);
+	}
+}
+
+void Stack::treeItemSelected(QTreeWidgetItem *item) {
+
+}
+
+void Stack::listItemSelected(QListWidgetItem *item) {
+
+}
+
