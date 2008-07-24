@@ -28,6 +28,22 @@ GaiaCore::~GaiaCore() {
 	delete taxonomyHash;
 }
 
+QDomElement GaiaCore::taxonomyDocumentElement() {
+	return taxonomyDoc.documentElement();
+}
+
+QList<QDomElement> GaiaCore::taxonomyElementsByTagName(const QString &tagName) {
+	return allElements(taxonomyDoc.documentElement(), tagName);
+}
+
+QDomElement GaiaCore::zoneDocumentElement() {
+	return zoneDoc.documentElement();
+}
+
+QList<QDomElement> GaiaCore::zoneElementsByTagName(const QString &tagName) {
+	return allElements(zoneDoc.documentElement(), tagName);
+}
+
 void GaiaCore::deleteDirectory(const QString &path) {
 	QDir dir(path);
 	QList<QString> entries = dir.entryList(QDir::Files);
@@ -164,15 +180,6 @@ void GaiaCore::setChapterLayout(int zoneId, const QMap<QString, QString> &layout
 #endif
 
 const QString GaiaCore::taxonomyLevels[] = { "species", "genus", "family", "order", "class", "phylum", "kingdom", "domain" };
-
-QList<QDomElement> GaiaCore::allElements(const QDomElement &element) {
-	QList<QDomElement> res = QList<QDomElement>();
-	res.append(element);
-	for (int i = 0; i < element.childNodes().size(); i++) {
-		res << allElements(element.childNodes().at(i).toElement());
-	}
-	return res;
-}
 
 void GaiaCore::openTaxonomyFile(const QString &path) {
 	taxonomyDoc = QDomDocument("taxonomyDocument");
@@ -420,6 +427,16 @@ void GaiaCore::setSpeciesStatus(int speciesId, int zoneId, const QList<int> &sta
 }
 
 #endif
+
+QList<QDomElement> GaiaCore::allElements(const QDomElement &element, const QString &tagName) {
+	QList<QDomElement> res = QList<QDomElement>();
+	if (tagName == "" || element.tagName() == tagName)
+		res.append(element);
+	for (int i = 0; i < element.childNodes().size(); i++) {
+		res << allElements(element.childNodes().at(i).toElement(), tagName);
+	}
+	return res;
+}
 
 //void GaiaCore::printInfo(int speciesId, int zoneId) const {
 	/*QPrinter printer;

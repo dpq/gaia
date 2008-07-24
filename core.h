@@ -62,6 +62,16 @@ public slots:
 	void saveTaxonomyFile(const QString &path);
 #endif
 
+/*HACK*/
+
+public:
+	QDomElement taxonomyDocumentElement();
+	QList<QDomElement> taxonomyElementsByTagName(const QString &tagName);
+
+	QDomElement zoneDocumentElement();
+	QList<QDomElement> zoneElementsByTagName(const QString &tagName);
+/*============*/
+
 public:
 	QString taxonomyUrl() const;
 #ifdef OPERATOR
@@ -148,7 +158,7 @@ private:
 	QDomDocument zoneDoc, taxonomyDoc;
 	int maxZoneId, maxTaxonomyId;
 	QHash<int, QDomElement> *zoneHash, *taxonomyHash;
-	QList<QDomElement> allElements(const QDomElement &element);
+	QList<QDomElement> allElements(const QDomElement &element, const QString &tagName = "");
 	void deleteDirectory(const QString &path);
 	static const QString taxonomyLevels[];
 //	void printAux(QPainter &painter, QPrinter &printer);

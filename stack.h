@@ -10,19 +10,27 @@
 #define STACK_H
 #include <QtGui/QStackedWidget>
 class QListWidgetItem;
+class GaiaCore;
 
 class Stack : public QStackedWidget {
 Q_OBJECT
 
 public:
 	Stack(QWidget *parent = 0);
+	~Stack();
 
 public slots:
 	void viewDocument(QListWidgetItem *item = 0);
 	void viewChapter(const QString &chapter);
+	void viewLatAlpha();
+	void viewRusAlpha();
 
 private:
 	QString currentDir;
+	GaiaCore *core;
+	QList<QListWidgetItem*> *latAlphas;
+	QList<QListWidgetItem*> *rusAlphas;
+	QMap<QString, QList<int> > *chapterMap;
 };
 
 

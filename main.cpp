@@ -18,17 +18,15 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QTextBrowser>
 #include <QtGui/QStackedWidget>
+#include <QtGui/QPushButton>
 
 #include "uiloader.h"
-#include "core.h"
 #include "config.h"
 
 int main(int argc, char **argv) {
 	QApplication app(argc, argv);
 	QApplication::setWindowIcon(QIcon(":/icon.png"));
 
-	GaiaCore *core = new GaiaCore();
-	
 	UiLoader loader;
 	QFile file(":/redbook.ui");
 	file.open(QFile::ReadOnly);
@@ -41,17 +39,6 @@ int main(int argc, char **argv) {
 	QSplashScreen splash(pic);
 
 	splash.show();
-
-	//QLabel *ministryLabel = redBook->findChild<QLabel*>("ministryLabel");
-	//QLabel *indexLabel = redBook->findChild<QLabel*>("indexLabel");
-
-/*	QList<QLabel*> *widgets = new QList<QLabel*>();
-	widgets->append(redBook->findChild<QLabel*>("ministryLabel"));
-	widgets->append(redBook->findChild<QLabel*>("indexLabel"));
-
-	for (QList<QLabel*>::iterator i = widgets->begin(); i != widgets->end(); i++) {
-		(*i)->setText(config->value("Labels", (*i)->objectName()).toString());
-	}*/
 	
 	QList<QString> params = config->parameters("Index");
 	QMenu *indexMenu = redBook->findChild<QMenu*>("indexMenu");
@@ -62,8 +49,6 @@ int main(int argc, char **argv) {
 
 	QStackedWidget *stack = redBook->findChild<QStackedWidget*>("stackedWidget");
 	QLabel *docTitle = redBook->findChild<QLabel*>("docTitle");
-	QComboBox *chapterCombo = redBook->findChild<QComboBox*>("chapterCombo");
-	QTextBrowser *docViewer = redBook->findChild<QTextBrowser*>("docViewer");
 
 	if (indexMenu == 0 || indexList == 0)
 		exit(1);
@@ -78,7 +63,14 @@ int main(int argc, char **argv) {
 		indexList->addItem(item);
 	}
 	QObject::connect(indexList, SIGNAL(itemClicked(QListWidgetItem*)), stack, SLOT(viewDocument(QListWidgetItem*)));
+
+	QComboBox *chapterCombo = redBook->findChild<QComboBox*>("chapterCombo");
 	QObject::connect(chapterCombo, SIGNAL(currentIndexChanged(const QString &)), stack, SLOT(viewChapter(const QString &)));
+
+	QPushButton *latButton = redBook->findChild<QPushButton*>("latButton");
+	QPushButton *rusButton = redBook->findChild<QPushButton*>("rusButton");
+	QObject::connect(latButton, SIGNAL(clicked()), stack, SLOT(viewLatAlpha()));
+	QObject::connect(rusButton, SIGNAL(clicked()), stack, SLOT(viewRusAlpha()));
 	
 	stack->setCurrentIndex(0);
 	redBook->show();

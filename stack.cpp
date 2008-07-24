@@ -14,10 +14,39 @@
 #include <QtGui/QLabel>
 #include <QtGui/QComboBox>
 #include <QtGui/QApplication>
+#include <QtGui/QRadioButton>
 #include "config.h"
+#include "core.h"
 
 Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	currentDir = "";
+	core = new GaiaCore();
+	latAlphas = new QList<QListWidgetItem*>();
+	rusAlphas = new QList<QListWidgetItem*>();
+	core->openTaxonomyFile(":/species.xml");
+	core->openZoneFile(":/zones.xml");
+	chapterMap = new QMap<QString, QList<int> >();
+	QList<int> indices;
+	indices.clear();
+	indices.append(1);
+	chapterMap->insert("radioc0", indices);
+/*	chapterMap->insert("radioc1", );
+	chapterMap->insert("radioc2", );
+	chapterMap->insert("radioc3", );
+	chapterMap->insert("radioc4", );
+	chapterMap->insert("radioc5", );
+	chapterMap->insert("radioc6", );
+	chapterMap->insert("radioc7", );
+*/
+
+}
+
+Stack::~Stack() {
+	delete core;
+	qDeleteAll(*latAlphas);
+	qDeleteAll(*rusAlphas);
+	delete latAlphas;
+	delete rusAlphas;
 }
 
 void Stack::viewDocument(QListWidgetItem *item) {
@@ -37,10 +66,13 @@ void Stack::viewDocument(QListWidgetItem *item) {
 	QTextBrowser *docViewer = this->findChild<QTextBrowser*>("docViewer");
 	QLabel *docTitle = this->findChild<QLabel*>("docTitle");
 	QComboBox *chapterCombo = this->findChild<QComboBox*>("chapterCombo");
+	QRadioButton *radioc0 = this->findChild<QRadioButton*>("radioc0");
 
 	/* Main screen */
 	if (id == "p5") {
 		currentDir = "";
+		radioc0->setChecked(true);
+		viewRusAlpha();
 		this->setCurrentIndex(2);
 	}
 	/* Edit screen */
@@ -89,8 +121,33 @@ void Stack::viewChapter(const QString &chapter) {
 	if (chapter == "")
 		return;
 	QTextBrowser *docViewer = this->findChild<QTextBrowser*>("docViewer");
-	QLabel *docTitle = this->findChild<QLabel*>("docTitle");
 	QComboBox *chapterCombo = qobject_cast<QComboBox*>(sender());
 	QString file = chapterCombo->itemData(chapterCombo->currentIndex()).toString();
 	docViewer->setSource(qApp->applicationDirPath() + "/doc/" + currentDir + "/" + file + ".html");
+}
+
+void Stack::viewLatAlpha() {
+	QListWidget *alphaList = this->findChild<QListWidget*>("alphaList");
+	alphaList->clear();
+	QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species");
+	for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
+		QListWidgetItem *latItem = new QListWidgetItem();
+		latItem->setText((*i).attribute("lat"));
+		latItem->setToolTip((*i).attribute("rus"));
+		alphaList->addItem(latItem);
+	}
+	alphaList->sortItems();
+}
+
+void Stack::viewRusAlpha() {
+	QListWidget *alphaList = this->findChild<QListWidget*>("alphaList");
+	alphaList->clear();
+	QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species");
+	for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
+		QListWidgetItem *rusItem = new QListWidgetItem();
+		rusItem->setText((*i).attribute("rus"));
+		rusItem->setToolTip((*i).attribute("lat"));
+		alphaList->addItem(rusItem);
+	}
+	alphaList->sortItems();
 }
