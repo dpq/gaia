@@ -13,6 +13,7 @@ class QListWidgetItem;
 class QTreeWidgetItem;
 class QDomElement;
 class GaiaCore;
+class QrbConfig;
 
 class Stack : public QStackedWidget {
 Q_OBJECT
@@ -30,13 +31,18 @@ public slots:
 	void setTaxoChapter(bool isChecked);
 	void treeItemSelected(QTreeWidgetItem *item);
 	void listItemSelected(QListWidgetItem *item);
+	void setArticle(QListWidgetItem *item);
 
 private:
-	QString currentDir, alphaMode, chapterId;
+	QString currentDir, alphaMode, chapterId, articleId;
+	void refreshArticle();
+	int speciesId;
 	GaiaCore *core;
+	QrbConfig *config;
 	QList<QListWidgetItem*> *latAlphas;
 	QList<QListWidgetItem*> *rusAlphas;
 	QMap<QString, QList<int> > *chapterMap;
+	QMap<QString, QString> *chapterLayout;
 	void insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root);
 };
 

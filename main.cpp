@@ -76,8 +76,10 @@ int main(int argc, char **argv) {
 	QObject::connect(redBook->findChild<QRadioButton*>("radioc6"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
 	QObject::connect(redBook->findChild<QRadioButton*>("radioc7"), SIGNAL(toggled(bool)), stack, SLOT(setTaxoChapter(bool)));
 
+	QObject::connect(redBook->findChild<QListWidget*>("sectionList"), SIGNAL(itemClicked(QListWidgetItem*)), stack, SLOT(setArticle(QListWidgetItem*)));
+
 	QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), stack, SLOT(treeItemSelected(QTreeWidgetItem *)));
-	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemDoubleClicked(QListWidgetItem *)), stack, SLOT(listItemSelected(QListWidgetItem *)));
+	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemDoubleClicked(QListWidgetItem*)), stack, SLOT(listItemSelected(QListWidgetItem *)));
 
 	redBook->show();
 	sleep(2);

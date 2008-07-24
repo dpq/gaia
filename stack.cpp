@@ -19,14 +19,15 @@
 #include <QtCore/QStringList>
 #include "config.h"
 #include "core.h"
+#define DEFAULT_ZONE 1
 
 Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	currentDir = "";
 	core = new GaiaCore();
+	config = new QrbConfig(":/redbook.conf");
 	latAlphas = new QList<QListWidgetItem*>();
 	rusAlphas = new QList<QListWidgetItem*>();
 	core->openTaxonomyFile(":/species.xml");
-	core->openZoneFile(":/zones.xml");
 	chapterMap = new QMap<QString, QList<int> >();
 	QList<int> indices;
 	indices.clear();
@@ -56,18 +57,22 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	indices.clear();
 	indices.append(482);
 	chapterMap->insert("radioc7", QList<int>(indices));
+	core->openZoneFile(":/zones.xml");
+	chapterLayout = new QMap<QString, QString>(core->chapterLayout(DEFAULT_ZONE));
 }
 
 Stack::~Stack() {
 	delete core;
+	delete config;
 	qDeleteAll(*latAlphas);
 	qDeleteAll(*rusAlphas);
 	delete latAlphas;
 	delete rusAlphas;
+	delete chapterMap;
+	delete chapterLayout;
 }
 
 void Stack::viewDocument(QListWidgetItem *item) {
-	QrbConfig *config = new QrbConfig(":/redbook.conf");
 	QString id = "", text = "";
 	/* Index menu */
 	if (item == 0) {
@@ -80,10 +85,10 @@ void Stack::viewDocument(QListWidgetItem *item) {
 		id = item->data(Qt::UserRole).toString();
 	}
 
-	QTextBrowser *docViewer = this->findChild<QTextBrowser*>("docViewer");
-	QLabel *docTitle = this->findChild<QLabel*>("docTitle");
-	QComboBox *chapterCombo = this->findChild<QComboBox*>("chapterCombo");
-	QRadioButton *radioc0 = this->findChild<QRadioButton*>("radioc0");
+	QTextBrowser *docViewer = findChild<QTextBrowser*>("docViewer");
+	QLabel *docTitle = findChild<QLabel*>("docTitle");
+	QComboBox *chapterCombo = findChild<QComboBox*>("chapterCombo");
+	QRadioButton *radioc0 = findChild<QRadioButton*>("radioc0");
 
 	/* Main screen */
 	if (id == "p5") {
@@ -130,25 +135,24 @@ void Stack::viewDocument(QListWidgetItem *item) {
 		chapterCombo->hide();
 		this->setCurrentIndex(1);
 	}
-	delete config;
 }
 
 
 void Stack::viewChapter(const QString &chapter) {
 	if (chapter == "")
 		return;
-	QTextBrowser *docViewer = this->findChild<QTextBrowser*>("docViewer");
+	QTextBrowser *docViewer = findChild<QTextBrowser*>("docViewer");
 	QComboBox *chapterCombo = qobject_cast<QComboBox*>(sender());
 	QString file = chapterCombo->itemData(chapterCombo->currentIndex()).toString();
 	docViewer->setSource(qApp->applicationDirPath() + "/doc/" + currentDir + "/" + file + ".html");
 }
 
 void Stack::viewLatAlpha() {
-	QListWidget *alphaList = this->findChild<QListWidget*>("alphaList");
+	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
 	alphaList->clear();
 
 	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
-		QDomElement root = core->taxonomyElementById(QString::number(chapterMap->value(chapterId)[i]));
+		QDomElement root = core->taxonomyEntry(chapterMap->value(chapterId)[i]);
 		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", root);
 		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
 			QListWidgetItem *latItem = new QListWidgetItem();
@@ -157,6 +161,7 @@ void Stack::viewLatAlpha() {
 			if (comment != QString())
 				comment = " [" + comment + "]";
 			latItem->setToolTip((*i).attribute("rus") + comment);
+			latItem->setData(Qt::UserRole, (*i).attribute("id"));
 			alphaList->addItem(latItem);
 		}
 	}
@@ -166,11 +171,11 @@ void Stack::viewLatAlpha() {
 }
 
 void Stack::viewRusAlpha() {
-	QListWidget *alphaList = this->findChild<QListWidget*>("alphaList");
+	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
 	alphaList->clear();
 
 	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
-		QDomElement root = core->taxonomyElementById(QString::number(chapterMap->value(chapterId)[i]));
+		QDomElement root = core->taxonomyEntry(chapterMap->value(chapterId)[i]);
 		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", root);
 		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
 			QListWidgetItem *rusItem = new QListWidgetItem();
@@ -179,6 +184,7 @@ void Stack::viewRusAlpha() {
 				comment = " [" + comment + "]";
 			rusItem->setText((*i).attribute("rus") + comment);
 			rusItem->setToolTip((*i).attribute("lat"));
+			rusItem->setData(Qt::UserRole, (*i).attribute("id"));
 			alphaList->addItem(rusItem);
 		}
 	}
@@ -199,13 +205,14 @@ void Stack::setTaxoChapter(bool isChecked) {
 }
 
 void Stack::updateTaxoTree() {
-	QTreeWidget *taxoTree = this->findChild<QTreeWidget*>("taxoTree");
+	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
 	taxoTree->clear();
 	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
-		QDomElement root = core->taxonomyElementById(QString::number(chapterMap->value(chapterId)[i]));
+		QDomElement root = core->taxonomyEntry(chapterMap->value(chapterId)[i]);
 		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(root.attribute("rus") + " - " + root.attribute("lat")), 0);
 		insertTaxoPart(item, root);
 		item->setToolTip(0, root.attribute("rus") + " - " + root.attribute("lat"));
+		item->setData(0, Qt::UserRole, root.attribute("id"));
 		taxoTree->addTopLevelItem(item);
 	}
 	taxoTree->expandAll();
@@ -223,15 +230,57 @@ void Stack::insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root) {
 		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum), 0);
 		insertTaxoPart(item, element);
 		item->setToolTip(0, element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum);
+		item->setData(0, Qt::UserRole, element.attribute("id"));
 		parent->addChild(item);
 	}
 }
 
 void Stack::treeItemSelected(QTreeWidgetItem *item) {
-
+	speciesId = item->data(0, Qt::UserRole).toInt();
+	articleId = "a7";
+	findChild<QLabel*>("photoLabel")->setPixmap(core->entryPicture(speciesId));
+	findChild<QLabel*>("arealLabel")->setPixmap(core->speciesAreal(speciesId, DEFAULT_ZONE));
+	findChild<QLabel*>("speciesLabel")->setText(core->speciesChapter(speciesId, DEFAULT_ZONE, "ax"));
+	findChild<QLabel*>("commentLabel")->setText(core->entryAuthor(speciesId) + ", " + core->entryYear(speciesId));
+	refreshArticle();
+	QList<QString> parameters = config->parameters("ArticleType");
+	for (QList<QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
+		QListWidgetItem *item = new QListWidgetItem(config->value("ArticleType", *i).toString());
+		item->setData(Qt::UserRole, *i);
+		findChild<QListWidget*>("sectionList")->addItem(item);
+	}
+	this->setCurrentIndex(3);
 }
 
 void Stack::listItemSelected(QListWidgetItem *item) {
-
+	speciesId = item->data(Qt::UserRole).toInt();
+	articleId = "a7";
+	findChild<QLabel*>("photoLabel")->setPixmap(core->entryPicture(speciesId));
+	findChild<QLabel*>("arealLabel")->setPixmap(core->speciesAreal(speciesId, DEFAULT_ZONE));
+	findChild<QLabel*>("speciesLabel")->setText(core->speciesChapter(speciesId, DEFAULT_ZONE, "ax"));
+	findChild<QLabel*>("commentLabel")->setText(core->entryAuthor(speciesId) + ", " + core->entryYear(speciesId));
+	refreshArticle();
+	QList<QString> parameters = config->parameters("ArticleType");
+	for (QList<QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
+		QListWidgetItem *item = new QListWidgetItem(config->value("ArticleType", *i).toString());
+		item->setData(Qt::UserRole, *i);
+		findChild<QListWidget*>("sectionList")->addItem(item);
+	}
+	this->setCurrentIndex(3);
 }
 
+void Stack::refreshArticle() {
+	QString all = "";
+	if (articleId == "a7") {
+		for (int i = 0; i < 7; i++)
+			all += core->speciesChapter(speciesId, DEFAULT_ZONE, "a" + QString::number(i)) + "\n\n";
+		findChild<QTextBrowser*>("articleBrowser")->setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\"><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" /></head><body align=\"justify\"><div style=\"white-space: pre-wrap\">" + all + "</div></body><html>");
+	}
+	else
+		findChild<QTextBrowser*>("articleBrowser")->setText(core->speciesChapter(speciesId, DEFAULT_ZONE, articleId));
+}
+
+void Stack::setArticle(QListWidgetItem *item) {
+	articleId = item->data(Qt::UserRole).toString();
+	refreshArticle();
+}

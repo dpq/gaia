@@ -35,10 +35,10 @@ QDomElement GaiaCore::taxonomyDocumentElement() {
 QList<QDomElement> GaiaCore::taxonomyElementsByTagName(const QString &tagName, const QDomElement &parent) {
 	return allElements((parent == QDomElement() ? taxonomyDoc.documentElement() : parent), tagName);
 }
-
+/*
 QDomElement GaiaCore::taxonomyElementById(const QString &id) {
 	return elementById(taxonomyDoc.documentElement(), id);
-}
+}*/
 
 QDomElement GaiaCore::zoneDocumentElement() {
 	return zoneDoc.documentElement();
@@ -48,9 +48,11 @@ QList<QDomElement> GaiaCore::zoneElementsByTagName(const QString &tagName, const
 	return allElements((parent == QDomElement() ? zoneDoc.documentElement() : parent), tagName);
 }
 
+/*
 QDomElement GaiaCore::zoneElementById(const QString &id) {
 	return elementById(zoneDoc.documentElement(), id);
 }
+*/
 
 void GaiaCore::deleteDirectory(const QString &path) {
 	QDir dir(path);
@@ -284,6 +286,19 @@ QPixmap GaiaCore::entryPicture(int entryId) const {
 	return QPixmap(QString("%1/%2.png").arg(taxonomyUrl()).arg(entryId));
 }
 
+QString GaiaCore::entryAuthor(int entryId) const {
+	if (taxonomyEntry(entryId) == QDomElement())
+		return QString();
+	return taxonomyEntry(entryId).attribute("author");
+}
+
+QString GaiaCore::entryYear(int entryId) const {
+	if (taxonomyEntry(entryId) == QDomElement())
+		return QString();
+	return taxonomyEntry(entryId).attribute("year");
+}
+
+
 #ifdef OPERATOR
 void GaiaCore::setEntryLatName(int entryId, const QString &name) {
 	if (taxonomyEntry(entryId) == QDomElement())
@@ -348,13 +363,14 @@ QList<int> GaiaCore::speciesStatus(int speciesId, int zoneId) const {
 	return res;
 }
 
+#include <QtDebug>
 QString GaiaCore::speciesChapter(int speciesId, int zoneId, const QString &chapterName) const {
 	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
 		return QString();
-	QFile file(QString("%1/%2/%3/%4.html").arg(zoneUrl()).arg(zoneId).arg(speciesId).arg(chapterLayout(zoneId).value(chapterName)));
+	QFile file(QString("%1/%2/%3/%4").arg(zoneUrl()).arg(zoneId).arg(speciesId).arg(chapterLayout(zoneId).value(chapterName)));
 	if (!file.open(QIODevice::ReadOnly))
 		return QString();
-	QString res = file.readAll();
+	QString res = QString::fromUtf8(file.readAll());
 	file.close();
 	return res;
 }

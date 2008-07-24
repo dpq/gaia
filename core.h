@@ -67,11 +67,11 @@ public slots:
 public:
 	QDomElement taxonomyDocumentElement();
 	QList<QDomElement> taxonomyElementsByTagName(const QString &tagName, const QDomElement &parent = QDomElement());
-	QDomElement taxonomyElementById(const QString &id);
+//	QDomElement taxonomyElementById(const QString &id);
 
 	QDomElement zoneDocumentElement();
 	QList<QDomElement> zoneElementsByTagName(const QString &tagName, const QDomElement &parent = QDomElement());
-	QDomElement zoneElementById(const QString &id);
+//	QDomElement zoneElementById(const QString &id);
 /*============*/
 
 public:
@@ -94,6 +94,9 @@ public:
 	QString entryLatName(int entryId) const;
 	QString entryRusName(int entryId) const;
 	QPixmap entryPicture(int entryId) const;
+	QString entryAuthor(int entryId) const;
+	QString entryYear(int entryId) const;
+
 
 #ifdef OPERATOR
 public slots:
