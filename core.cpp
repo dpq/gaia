@@ -298,7 +298,6 @@ QString GaiaCore::entryYear(int entryId) const {
 	return taxonomyEntry(entryId).attribute("year");
 }
 
-
 #ifdef OPERATOR
 void GaiaCore::setEntryLatName(int entryId, const QString &name) {
 	if (taxonomyEntry(entryId) == QDomElement())

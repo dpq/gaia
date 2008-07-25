@@ -34,12 +34,25 @@ public slots:
 	void setArticle(QListWidgetItem *item);
 	void nextSpecies();
 	void prevSpecies();
+	void printSpecies();
 	void changeFocus(QWidget *old, QWidget *now);
+	void largerFont();
+	void smallerFont();
+	//void up();
+	void showHelp();
+
+	void edit();
+	void saveEdit();
+	void cancelEdit();
 
 private:
+	QString pageColor(int cat);
+	QString commentColor(int cat);
+	QString labelColor(int cat);
 	QString currentDir, alphaMode, chapterId, articleId, indexMode;
 	void refreshArticle();
 	int speciesId;
+	bool editMode;
 	GaiaCore *core;
 	QrbConfig *config;
 	QList<QListWidgetItem*> *latAlphas;

@@ -2,12 +2,12 @@
 <geo version="1.0" url="zones">
 	<zone id="1" name="Russian Federation">
 		<chapter file="000.txt" name="ax" />
-		<chapter file="001.txt" name="a0" />
-		<chapter file="002.txt" name="a1" />
-		<chapter file="003.txt" name="a2" />
-		<chapter file="004.txt" name="a3" />
-		<chapter file="005.txt" name="a4" />
-		<chapter file="006.txt" name="a5" />
-		<chapter file="007.txt" name="a6" />
+		<chapter file="001.txt" name="a1" />
+		<chapter file="002.txt" name="a2" />
+		<chapter file="003.txt" name="a3" />
+		<chapter file="004.txt" name="a4" />
+		<chapter file="005.txt" name="a5" />
+		<chapter file="006.txt" name="a6" />
+		<chapter file="007.txt" name="a7" />
 	</zone>
 </geo>

@@ -31,15 +31,15 @@
        <string notr="true" >background-color: rgb(0, 0, 0);</string>
       </property>
       <property name="currentIndex" >
-       <number>3</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="page" >
        <property name="geometry" >
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1006</width>
-         <height>649</height>
+         <width>1004</width>
+         <height>656</height>
         </rect>
        </property>
        <layout class="QGridLayout" >
@@ -171,8 +171,8 @@ color: #0000ff;</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1006</width>
-         <height>649</height>
+         <width>1004</width>
+         <height>656</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" >
@@ -206,7 +206,8 @@ color: #0000ff;</string>
             <widget class="QTextBrowser" name="docViewer" >
              <property name="styleSheet" >
               <string notr="true" >background-color: rgb(255, 255, 255);
-font: 12pt "Sans Serif";</string>
+color: rgb(0, 0, 0);
+font: 10pt "Sans Serif";</string>
              </property>
              <property name="locale" >
               <locale country="RussianFederation" language="Russian" />
@@ -226,8 +227,8 @@ font: 12pt "Sans Serif";</string>
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>1006</width>
-         <height>649</height>
+         <width>1004</width>
+         <height>656</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" >
@@ -348,21 +349,21 @@ p, li { white-space: pre-wrap; }
                     </property>
                    </widget>
                   </item>
-                  <item>
-                   <spacer>
-                    <property name="orientation" >
-                     <enum>Qt::Vertical</enum>
-                    </property>
-                    <property name="sizeHint" stdset="0" >
-                     <size>
-                      <width>20</width>
-                      <height>40</height>
-                     </size>
-                    </property>
-                   </spacer>
-                  </item>
                  </layout>
                 </widget>
+               </item>
+               <item>
+                <spacer>
+                 <property name="orientation" >
+                  <enum>Qt::Vertical</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0" >
+                  <size>
+                   <width>20</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                </spacer>
                </item>
               </layout>
              </item>
@@ -468,7 +469,7 @@ p, li { white-space: pre-wrap; }
         <item>
          <layout class="QGridLayout" >
           <item row="0" column="0" >
-           <widget class="QWidget" native="1" name="widget_4" >
+           <widget class="QWidget" native="1" name="colorPage" >
             <property name="styleSheet" >
              <string notr="true" >background-color: rgb(255, 248, 250);</string>
             </property>
@@ -567,6 +568,10 @@ p, li { white-space: pre-wrap; }
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="styleSheet" >
+                        <string notr="true" >background-color: rgb(225, 225, 225);
+color: #000000;</string>
+                       </property>
                        <property name="text" >
                         <string>&lt;</string>
                        </property>
@@ -580,8 +585,23 @@ p, li { white-space: pre-wrap; }
                          <verstretch>0</verstretch>
                         </sizepolicy>
                        </property>
+                       <property name="styleSheet" >
+                        <string notr="true" >background-color: rgb(225, 225, 225);
+color: #000000;</string>
+                       </property>
                        <property name="text" >
                         <string>></string>
+                       </property>
+                      </widget>
+                     </item>
+                     <item>
+                      <widget class="QPushButton" name="printButton" >
+                       <property name="styleSheet" >
+                        <string notr="true" >background-color: rgb(225, 225, 225);
+color: #000000;</string>
+                       </property>
+                       <property name="text" >
+                        <string>Печать</string>
                        </property>
                       </widget>
                      </item>
@@ -600,7 +620,8 @@ p, li { white-space: pre-wrap; }
                   </sizepolicy>
                  </property>
                  <property name="styleSheet" >
-                  <string notr="true" >background-color: rgb(255, 255, 255);</string>
+                  <string notr="true" >background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);</string>
                  </property>
                 </widget>
                </item>
@@ -688,7 +709,9 @@ p, li { white-space: pre-wrap; }
                   </sizepolicy>
                  </property>
                  <property name="styleSheet" >
-                  <string notr="true" >background-color: rgb(255, 255, 255);</string>
+                  <string notr="true" >background-color: rgb(255, 255, 255);
+color: rgb(0, 0, 0);
+font: 10pt "Sans Serif";</string>
                  </property>
                 </widget>
                </item>
@@ -714,13 +737,17 @@ p, li { white-space: pre-wrap; }
      <height>30</height>
     </rect>
    </property>
-   <widget class="QMenu" name="indexMenu" >
-    <property name="title" >
-     <string>Содержание</string>
-    </property>
-   </widget>
-   <addaction name="indexMenu" />
   </widget>
+  <action name="largerAction" >
+   <property name="text" >
+    <string>Крупный</string>
+   </property>
+  </action>
+  <action name="smallerAction" >
+   <property name="text" >
+    <string>Мелкий</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>

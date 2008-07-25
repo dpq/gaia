@@ -22,9 +22,10 @@
 #include <QtGui/QStackedWidget>
 #include <QtGui/QPushButton>
 #include <QtGui/QRadioButton>
-
+#include <QtGui/QMenuBar>
 #include "uiloader.h"
 #include "config.h"
+#define OPERATOR
 
 int main(int argc, char **argv) {
 	QApplication app(argc, argv);
@@ -42,15 +43,54 @@ int main(int argc, char **argv) {
 	QSplashScreen splash(pic);
 
 	splash.show();
-	
-	QList<QString> params = config->parameters("Index");
+
+	QMenuBar *menuBar = redBook->findChild<QMenuBar*>("menuBar");
 	QStackedWidget *stack = redBook->findChild<QStackedWidget*>("stackedWidget");
-	stack->setCurrentIndex(0);
+	
+#ifdef OPERATOR
+	QAction *editAction = menuBar->addAction(config->value("Labels", "edit").toString());
+	editAction->setObjectName("editAction");
+	QAction *saveAction = menuBar->addAction(config->value("Labels", "save").toString());
+	saveAction->setObjectName("saveAction");
+	QAction *cancelAction = menuBar->addAction(config->value("Labels", "cancel").toString());
+	cancelAction->setObjectName("cancelAction");
+	QObject::connect(editAction, SIGNAL(activated()), stack, SLOT(edit()));
+	QObject::connect(saveAction, SIGNAL(activated()), stack, SLOT(saveEdit()));
+	QObject::connect(cancelAction, SIGNAL(activated()), stack, SLOT(cancelEdit()));
+
+	menuBar->addSeparator();
+#endif
+
+	QMenu *indexMenu = new QMenu(config->value("Labels", "indexLabel").toString());
+	indexMenu->setObjectName("indexMenu");
+	menuBar->addMenu(indexMenu);
+
+	/*QAction *upAction = menuBar->addAction(config->value("Labels", "lists").toString());
+	upAction->setObjectName("upAction");
+	QObject::connect(upAction, SIGNAL(activated()), stack, SLOT(up()));*/
+	
+	QMenu *specMenu = menuBar->addMenu(config->value("Labels", "spec").toString());
+	specMenu->setObjectName("specMenu");
+	QAction *rfAction = specMenu->addAction(config->value("Labels", "rf").toString());
+	QAction *subjAction = specMenu->addAction(config->value("Labels", "subj").toString());
+	QAction *arealAction = specMenu->addAction(config->value("Labels", "areal").toString());
+	
+	QMenu *fontMenu = menuBar->addMenu(config->value("Labels", "settings").toString());
+	fontMenu->setObjectName("fontMenu");
+	QAction *lgAction = fontMenu->addAction(config->value("Labels", "font1").toString());
+	QAction *smAction = fontMenu->addAction(config->value("Labels", "font0").toString());
+	QObject::connect(smAction, SIGNAL(activated()), stack, SLOT(smallerFont()));
+	QObject::connect(lgAction, SIGNAL(activated()), stack, SLOT(largerFont()));
+
+	QAction *helpAction = menuBar->addAction(config->value("Labels", "help").toString());
+	helpAction->setObjectName("helpAction");
+	QObject::connect(helpAction, SIGNAL(activated()), stack, SLOT(showHelp()));
+
+	QList<QString> params = config->parameters("Index");
 
 	QListWidget *indexList = redBook->findChild<QListWidget*>("indexList");
 	indexList->setCursor(Qt::PointingHandCursor);
 	indexList->setSelectionMode(QAbstractItemView::NoSelection);
-	QMenu *indexMenu = redBook->findChild<QMenu*>("indexMenu");
 	indexList->clear();
 	for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 		QString section = config->value("Index", *param).toString();
@@ -84,8 +124,16 @@ int main(int argc, char **argv) {
 
 	QObject::connect(redBook->findChild<QPushButton*>("prevButton"), SIGNAL(clicked()), stack, SLOT(prevSpecies()));
 	QObject::connect(redBook->findChild<QPushButton*>("nextButton"), SIGNAL(clicked()), stack, SLOT(nextSpecies()));
+	QObject::connect(redBook->findChild<QPushButton*>("printButton"), SIGNAL(clicked()), stack, SLOT(printSpecies()));
 
 	QObject::connect(&app, SIGNAL(focusChanged(QWidget*, QWidget*)), stack, SLOT(changeFocus(QWidget*, QWidget*)));
+
+	stack->setCurrentIndex(0);
+	editAction->setVisible(false);
+	saveAction->setVisible(false);
+	cancelAction->setVisible(false);
+	specMenu->menuAction()->setVisible(false);
+	fontMenu->menuAction()->setVisible(false);
 
 	redBook->show();
 	sleep(3);

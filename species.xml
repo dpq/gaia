@@ -66,7 +66,7 @@
 			<species author="Forster" id="59" lat="Hyperoodon ampullatus" oldid="395" rus="Высоколобый бутылконос" status="1" year="1770"/>
 			<species author="G. Cuvier" id="60" lat="Ziphius cavirostris" oldid="396" rus="Клюворыл" status="3" year="1823"/>
 			<species author="True" id="61" lat="Mesoplodon stejnegeri" oldid="397" rus="Командорский ремнезуб" status="4" year="1885"/>
-			<species author="Erxleben" comment="охотско-корейская и чукотско-калифорнийская популяция" id="62" lat="Eschrichtius gibbosus" oldid="398" rus="Серый кит" status="1,3" year="1777"/>
+			<species author="Erxleben" comment="охотско-корейская и чукотско-калифорнийская популяция" id="62" lat="Eschrichtius gibbosus" oldid="398" rus="Серый кит" status="1,5" year="1777"/>
 			<species author="Linnaeus" comment="северо-атлантическая, берингово-чукотская и охотоморская популяции" id="63" lat="Balaena mysticetus" oldid="399" rus="Гренландский кит" status="1,5" year="1758"/>
 			<species author="Lacepede" id="64" lat="Eubalaena glacialis japonica" oldid="400(1)" rus="Японский кит" status="1" year="1818"/>
 			<species author="Borowski" id="65" lat="Megaptera novaeangliae" oldid="401" rus="Горбач" status="1" year="1781"/>
