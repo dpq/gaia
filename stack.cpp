@@ -76,6 +76,18 @@ Stack::~Stack() {
 	delete chapterLayout;
 }
 
+void Stack::initIndex() {
+	QListWidget *indexList = findChild<QListWidget*>("indexList");
+	indexList->clear();
+	QList<QString> params = config->parameters("Index");
+	for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
+		QString section = config->value("Index", *param).toString();
+		QListWidgetItem *item = new QListWidgetItem(section);
+		item->setData(Qt::UserRole, *param);
+		indexList->addItem(item);
+	}
+}
+
 void Stack::viewDocument(QListWidgetItem *item) {
 	QString id = "", text = "";
 	/* Index menu */
@@ -103,6 +115,11 @@ void Stack::viewDocument(QListWidgetItem *item) {
 	QAction *fontMenu = parent()->parent()->findChild<QMenu*>("fontMenu")->menuAction();
 	
 	if (indexMode == "lit") {
+		if (text == "..") {
+			indexMode = "";
+			initIndex();
+			return;
+		}
 		currentDir = "p6";
 		docTitle->setText(config->value("Index", "p6").toString());
 		chapterCombo->show();
@@ -112,6 +129,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			QString chapter = config->value("Chapters", *param).toString();
 			chapterCombo->addItem(chapter, *param);
 		}
+		//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 		chapterCombo->setCurrentIndex(chapterCombo->findText(text));
 		editAction->setVisible(false);
 		saveAction->setVisible(false);
@@ -123,6 +141,11 @@ void Stack::viewDocument(QListWidgetItem *item) {
 		return;
 	}
 	if (indexMode == "app") {
+		if (text == "..") {
+			indexMode = "";
+			initIndex();
+			return;
+		}
 		currentDir = "p7";
 		docTitle->setText(config->value("Index", "p7").toString());
 		chapterCombo->show();
@@ -132,6 +155,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			QString chapter = config->value("Appendix", *param).toString();
 			chapterCombo->addItem(chapter, *param);
 		}
+		//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 		chapterCombo->setCurrentIndex(chapterCombo->findText(text));
 		editAction->setVisible(false);
 		saveAction->setVisible(false);
@@ -161,6 +185,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			indexList->clear();
 			indexLabel->setText(config->value("Index", "p7").toString());
 			QList<QString> params = config->parameters("Appendix");
+			indexList->addItem("..");
 			for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 				QString section = config->value("Appendix", *param).toString();
 				QListWidgetItem *item = new QListWidgetItem(section);
@@ -179,12 +204,14 @@ void Stack::viewDocument(QListWidgetItem *item) {
 				QString chapter = config->value("Appendix", *param).toString();
 				chapterCombo->addItem(chapter, *param);
 			}
+			//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 			chapterCombo->setCurrentIndex(0);
 			editAction->setVisible(false);
 			saveAction->setVisible(false);
 			cancelAction->setVisible(false);
 			specMenu->setVisible(false);
 			fontMenu->setVisible(true);
+			indexMode = "";
 			this->setCurrentIndex(1);
 		}
 	}
@@ -194,6 +221,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			indexList->clear();
 			indexLabel->setText(config->value("Index", "p6").toString());
 			QList<QString> params = config->parameters("Chapters");
+			indexList->addItem("..");
 			for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 				QString section = config->value("Chapters", *param).toString();
 				QListWidgetItem *item = new QListWidgetItem(section);
@@ -212,12 +240,14 @@ void Stack::viewDocument(QListWidgetItem *item) {
 				QString chapter = config->value("Chapters", *param).toString();
 				chapterCombo->addItem(chapter, *param);
 			}
+			//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 			chapterCombo->setCurrentIndex(0);
 			editAction->setVisible(false);
 			saveAction->setVisible(false);
 			cancelAction->setVisible(false);
 			specMenu->setVisible(false);
 			fontMenu->setVisible(true);
+			indexMode = "";
 			this->setCurrentIndex(1);
 		}
 	}

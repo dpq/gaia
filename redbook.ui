@@ -181,7 +181,7 @@ color: #0000ff;</string>
           <property name="styleSheet" >
            <string notr="true" >background-color: #0080c0;</string>
           </property>
-          <layout class="QVBoxLayout" >
+          <layout class="QVBoxLayout" name="verticalLayout_3" >
            <item>
             <widget class="QLabel" name="docTitle" >
              <property name="styleSheet" >
@@ -196,11 +196,47 @@ color: #0000ff;</string>
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="chapterCombo" >
-             <property name="styleSheet" >
-              <string notr="true" >background-color: rgb(255, 255, 255);</string>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_3" >
+             <item>
+              <spacer name="horizontalSpacer_3" >
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QComboBox" name="chapterCombo" >
+               <property name="sizePolicy" >
+                <sizepolicy vsizetype="Fixed" hsizetype="Expanding" >
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="styleSheet" >
+                <string notr="true" >background-color: rgb(255, 255, 255);</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_4" >
+               <property name="orientation" >
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0" >
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
            <item>
             <widget class="QTextBrowser" name="docViewer" >
@@ -371,6 +407,18 @@ p, li { white-space: pre-wrap; }
               <layout class="QVBoxLayout" >
                <item>
                 <widget class="QLabel" name="taxoLabel" >
+                 <property name="sizePolicy" >
+                  <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize" >
+                  <size>
+                   <width>0</width>
+                   <height>30</height>
+                  </size>
+                 </property>
                  <property name="text" >
                   <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
