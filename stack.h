@@ -40,6 +40,7 @@ public slots:
 	void smallerFont();
 	//void up();
 	void showHelp();
+	void showIndex();
 	void initIndex();
 
 	void edit();

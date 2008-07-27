@@ -62,6 +62,7 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	core->openZoneFile(":/zones.xml");
 	chapterLayout = new QMap<QString, QString>(core->chapterLayout(DEFAULT_ZONE));
 	articleId = "a0";
+	chapterId = "radioc0";
 	editMode = false;
 }
 
@@ -115,7 +116,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 	QAction *fontMenu = parent()->parent()->findChild<QMenu*>("fontMenu")->menuAction();
 	
 	if (indexMode == "lit") {
-		if (text == "..") {
+		if (text == config->value("Labels", "back").toString()) {
 			indexMode = "";
 			initIndex();
 			return;
@@ -129,7 +130,6 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			QString chapter = config->value("Chapters", *param).toString();
 			chapterCombo->addItem(chapter, *param);
 		}
-		//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 		chapterCombo->setCurrentIndex(chapterCombo->findText(text));
 		editAction->setVisible(false);
 		saveAction->setVisible(false);
@@ -137,11 +137,12 @@ void Stack::viewDocument(QListWidgetItem *item) {
 		specMenu->setVisible(false);
 		fontMenu->setVisible(true);
 		this->setCurrentIndex(1);
+		//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 		indexMode = "";
 		return;
 	}
 	if (indexMode == "app") {
-		if (text == "..") {
+		if (text == config->value("Labels", "back").toString()) {
 			indexMode = "";
 			initIndex();
 			return;
@@ -155,7 +156,6 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			QString chapter = config->value("Appendix", *param).toString();
 			chapterCombo->addItem(chapter, *param);
 		}
-		//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 		chapterCombo->setCurrentIndex(chapterCombo->findText(text));
 		editAction->setVisible(false);
 		saveAction->setVisible(false);
@@ -163,6 +163,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 		specMenu->setVisible(false);
 		fontMenu->setVisible(true);
 		this->setCurrentIndex(1);
+		//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 		indexMode = "";
 		return;
 	}
@@ -170,7 +171,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 	/* Main screen */
 	if (id == "p5") {
 		currentDir = "";
-		radioc0->setChecked(true);
+		findChild<QRadioButton*>(chapterId)->setChecked(true);
 		viewRusAlpha();
 		editAction->setVisible(false);
 		saveAction->setVisible(false);
@@ -185,7 +186,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			indexList->clear();
 			indexLabel->setText(config->value("Index", "p7").toString());
 			QList<QString> params = config->parameters("Appendix");
-			indexList->addItem("..");
+			indexList->addItem(config->value("Labels", "back").toString());
 			for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 				QString section = config->value("Appendix", *param).toString();
 				QListWidgetItem *item = new QListWidgetItem(section);
@@ -204,7 +205,6 @@ void Stack::viewDocument(QListWidgetItem *item) {
 				QString chapter = config->value("Appendix", *param).toString();
 				chapterCombo->addItem(chapter, *param);
 			}
-			//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 			chapterCombo->setCurrentIndex(0);
 			editAction->setVisible(false);
 			saveAction->setVisible(false);
@@ -212,6 +212,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			specMenu->setVisible(false);
 			fontMenu->setVisible(true);
 			indexMode = "";
+			//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 			this->setCurrentIndex(1);
 		}
 	}
@@ -221,7 +222,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			indexList->clear();
 			indexLabel->setText(config->value("Index", "p6").toString());
 			QList<QString> params = config->parameters("Chapters");
-			indexList->addItem("..");
+			indexList->addItem(config->value("Labels", "back").toString());
 			for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 				QString section = config->value("Chapters", *param).toString();
 				QListWidgetItem *item = new QListWidgetItem(section);
@@ -240,7 +241,6 @@ void Stack::viewDocument(QListWidgetItem *item) {
 				QString chapter = config->value("Chapters", *param).toString();
 				chapterCombo->addItem(chapter, *param);
 			}
-			//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 			chapterCombo->setCurrentIndex(0);
 			editAction->setVisible(false);
 			saveAction->setVisible(false);
@@ -248,6 +248,7 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			specMenu->setVisible(false);
 			fontMenu->setVisible(true);
 			indexMode = "";
+			//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 			this->setCurrentIndex(1);
 		}
 	}
@@ -263,6 +264,25 @@ void Stack::viewDocument(QListWidgetItem *item) {
 		chapterCombo->hide();
 		this->setCurrentIndex(1);
 	}
+}
+
+void Stack::showIndex() {
+	QComboBox *chapterCombo = findChild<QComboBox*>("chapterCombo");
+	QAction *editAction = parent()->parent()->findChild<QAction*>("editAction");
+	QAction *saveAction = parent()->parent()->findChild<QAction*>("saveAction");
+	QAction *cancelAction = parent()->parent()->findChild<QAction*>("cancelAction");
+	QAction *specMenu = parent()->parent()->findChild<QMenu*>("specMenu")->menuAction();
+	QAction *fontMenu = parent()->parent()->findChild<QMenu*>("fontMenu")->menuAction();
+	currentDir = "";
+	indexMode = "";
+	initIndex();
+	editAction->setVisible(false);
+	saveAction->setVisible(false);
+	cancelAction->setVisible(false);
+	specMenu->setVisible(false);
+	fontMenu->setVisible(false);
+	chapterCombo->hide();
+	this->setCurrentIndex(0);
 }
 
 void Stack::viewChapter(const QString &chapter) {
@@ -401,16 +421,31 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	findChild<QLabel*>("speciesLabel")->setWordWrap(true);
 	findChild<QLabel*>("speciesLabel")->setText("<div style=\"whitespace:pre-wrap\">" + line1 + "<br />" + line2 + "</div>");
 	findChild<QLabel*>("commentLabel")->setText(speciesText.trimmed() + "\n" + cathegory + "\n" + compilers);
-	refreshArticle();
-	findChild<QListWidget*>("sectionList")->clear();
+
+	bool selectionFound = false;
+	QListWidgetItem *allIndex = 0;
+	QListWidget *sectionList = findChild<QListWidget*>("sectionList");
+	sectionList->clear();
 	QList<QString> parameters = config->parameters("ArticleType");
 	for (QList<QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
-		if (*i == "a2" && !QFile().exists(core->zoneUrl() + "/" + DEFAULT_ZONE + QString::number(speciesId) + "002.txt"))
+		if (*i == "a2" && !QFile().exists(core->zoneUrl() + "/" + QString::number(DEFAULT_ZONE)  + "/" + QString::number(speciesId)  + "/" + "002.txt"))
 			continue;
 		QListWidgetItem *item = new QListWidgetItem(config->value("ArticleType", *i).toString());
 		item->setData(Qt::UserRole, *i);
-		findChild<QListWidget*>("sectionList")->addItem(item);
+		sectionList->addItem(item);
+		if (*i == articleId) {
+			sectionList->setCurrentItem(item);
+			selectionFound = true;
+		}
+		if (*i == "a0")
+			allIndex = item;
 	}
+
+	if (! selectionFound) {
+		sectionList->setCurrentItem(allIndex);
+		articleId = "a0";
+	}
+	refreshArticle();
 	
 	/* Colorizing */
 	QWidget *colorPage = findChild<QWidget*>("colorPage");
@@ -425,7 +460,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	}
 	stops = stops.left(stops.length() - 1);
 	colorPage->setStyleSheet(stylesheet + stops + ")");
-	QString specialBackground = "", lc = labelColor(cat[0]), cc = commentColor(cat[0]);
+	QString specialBackground = "", lc = labelColor(cat[0]), cc = commentColor(cat[0]), bc = pageColor(cat[0]);
 	if (cat.size() > 1) {
 		specialBackground = "background-color: #ffffff; border: 1px solid black;";
 		cc = "#000000";
@@ -434,7 +469,15 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 
 	findChild<QLabel*>("speciesLabel")->setStyleSheet(specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc);
 	findChild<QLabel*>("commentLabel")->setStyleSheet(specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc);
-
+	if (specialBackground != "") {
+		sectionList->setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc);
+		qApp->setStyleSheet(qApp->styleSheet() + "QListWidget#sectionList::item::selected { border: 1px solid black }");
+	}
+	else {
+		sectionList->setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:" + bc + "; selection-color:" + lc);
+		qApp->setStyleSheet(qApp->styleSheet().replace("QListWidget#sectionList::item::selected { border: 1px solid black }", ""));
+	}
+//border: 1px solid black; 
 	QAction *editAction = parent()->parent()->findChild<QAction*>("editAction");
 	QAction *saveAction = parent()->parent()->findChild<QAction*>("saveAction");
 	QAction *cancelAction = parent()->parent()->findChild<QAction*>("cancelAction");
@@ -492,12 +535,12 @@ void Stack::refreshArticle() {
 	QString all = "";
 	if (articleId == "a0") {
 		for (int i = 1; i < 8; i++) {
-			if (i == 2 && !QFile().exists(core->zoneUrl() + "/" + DEFAULT_ZONE + QString::number(speciesId) + "002.txt"))
+			if (i == 2 && !QFile().exists(core->zoneUrl() + "/" + QString::number(DEFAULT_ZONE)  + "/" + QString::number(speciesId)  + "/" + "002.txt"))
 				continue;
 			all += "     " + config->value("ArticleType", "a" + QString::number(i)).toString() + "\n";
 			all += core->speciesChapter(speciesId, DEFAULT_ZONE, "a" + QString::number(i)) + "\n\n";
 		}
-		findChild<QTextBrowser*>("articleBrowser")->setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\"><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" /></head><body align=\"justify\"><div style=\"white-space: pre-wrap\">" + all + "</div></body><html>");
+		findChild<QTextBrowser*>("articleBrowser")->setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\"><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" /></head><body align=\"justify\" style=\"margin: 15px\"><div style=\"white-space: pre-wrap\">" + all + "</div></body><html>");
 	}
 	else
 		findChild<QTextBrowser*>("articleBrowser")->setText(core->speciesChapter(speciesId, DEFAULT_ZONE, articleId));
@@ -583,7 +626,10 @@ void Stack::edit() {
 }
 
 void Stack::showHelp() {
-
+	QTextBrowser *helpBrowser = new QTextBrowser();
+	helpBrowser->setSource(qApp->applicationDirPath() + "/doc/help/h" + QString::number(currentIndex()) + ".html");
+	helpBrowser->show();
+	qDebug() << "HI";
 }
 
 void Stack::printSpecies() {

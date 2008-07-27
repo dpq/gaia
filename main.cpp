@@ -103,6 +103,9 @@ int main(int argc, char **argv) {
 	}
 	QObject::connect(indexList, SIGNAL(itemClicked(QListWidgetItem*)), stack, SLOT(viewDocument(QListWidgetItem*)));
 
+	QComboBox *chapterCombo = redBook->findChild<QComboBox*>("chapterCombo");
+	params = config->parameters("Appendix");
+
 	QObject::connect(redBook->findChild<QComboBox*>("chapterCombo"), SIGNAL(currentIndexChanged(const QString &)), stack, SLOT(viewChapter(const QString &)));
 
 	QObject::connect(redBook->findChild<QPushButton*>("latButton"), SIGNAL(clicked()), stack, SLOT(viewLatAlpha()));
@@ -126,18 +129,27 @@ int main(int argc, char **argv) {
 	QObject::connect(redBook->findChild<QPushButton*>("nextButton"), SIGNAL(clicked()), stack, SLOT(nextSpecies()));
 	QObject::connect(redBook->findChild<QPushButton*>("printButton"), SIGNAL(clicked()), stack, SLOT(printSpecies()));
 
+	QObject::connect(redBook->findChild<QPushButton*>("docBackButton"), SIGNAL(clicked()), stack, SLOT(showIndex()));
+	QObject::connect(redBook->findChild<QPushButton*>("speciesBackButton"), SIGNAL(clicked()), stack, SLOT(showIndex()));
+
+
 	QObject::connect(&app, SIGNAL(focusChanged(QWidget*, QWidget*)), stack, SLOT(changeFocus(QWidget*, QWidget*)));
 
-	stack->setCurrentIndex(0);
 	editAction->setVisible(false);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
 	specMenu->menuAction()->setVisible(false);
 	fontMenu->menuAction()->setVisible(false);
-
+	QString advStyle = "";
+	advStyle += "QRadioButton::indicator::checked { image: url(\":/radio.png\") }";
+	advStyle += "QListWidget#indexList::item::hover { background: qlineargradient(spread:pad, x1:0, y1:1,  x2:0, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.0157895 rgba(255, 197, 166, 255), stop:0.647368 rgba(255, 255, 255, 255), stop:0.757895 rgba(255, 255, 255, 255), stop:1 rgba(255, 220, 197, 255)); }";
+	//advStyle += "QListWidget#sectionList::item::selected { border: 1px solid black }";
+	app.setStyleSheet(advStyle);
+// QListWidget#indexList::item::hover { background-color: #ff0000; }
+//stop:0 rgba(255, 255, 255, 255), stop:0.0157895 rgba(255, 197, 166, 255), stop:0.647368 rgba(255, 255, 255, 255), stop:0.757895 rgba(255, 255, 255, 255), stop:1 rgba(255, 220, 197, 255)
 	redBook->show();
 	sleep(3);
 	splash.finish(redBook);
-	
+	stack->setCurrentIndex(0);
 	return app.exec();
 }
