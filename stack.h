@@ -53,7 +53,8 @@ private:
 	QString labelColor(int cat);
 	QString currentDir, alphaMode, chapterId, articleId, indexMode;
 	void refreshArticle();
-	int speciesId;
+	void printAux(QPainter &painter, QPrinter &printer);
+	int speciesId, zoneId;
 	bool editMode;
 	GaiaCore *core;
 	QrbConfig *config;

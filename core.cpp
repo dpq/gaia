@@ -10,8 +10,6 @@
 #include <QtXml/QDomElement>
 #include <QtXml/QDomDocument>
 #include <QtGui/QPixmap>
-#include <QtGui/QPainter>
-#include <QtGui/QPrinter>
 #include <QtCore/QString>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
@@ -468,71 +466,3 @@ QList<QDomElement> GaiaCore::allElements(const QDomElement &element, const QStri
 	}
 	return res;
 }
-
-//void GaiaCore::printInfo(int speciesId, int zoneId) const {
-	/*QPrinter printer;
-	QPrintDialog *dialog = new QPrintDialog(&printer, this);
-	dialog->setWindowTitle(tr("Print Document"));
-	if (dialog->exec() != QDialog::Accepted)
-		return;
-
-	QPainter painter;
-	int textOffset = 0;
-	int bottomOffset = 60;
-
-	painter.begin(&printer);
-	printAux(painter, printer);*/
-
-	/** Заголовок: русское и латинское название; статус; составители 
-	QFont f = painter.font();
-	QFont f2 = f;
-	f2.setBold(true);
-	f2.setPointSize(14);
-	painter.setFont(f2);
-	if (comment == "")
-		painter.drawText(0, 80, rus);
-	else
-		painter.drawText(0, 100, QString("%1 (%2)").arg(rus).arg(comment));
-
-	painter.drawText(0, 120, lat);
-	painter.setFont(f);
-	painter.drawText(0, 140, QString("%1 %2").arg(config->value(TEXT, "Cathegory").toString()).arg(status));
-	painter.drawText(0, 155, compiler.trimmed());*/
-
-	/** Портрет */
-	//painter.drawPixmap(printer.pageRect().width() - 225, 80, 225, 150, *(detailPhoto->pixmap()));
-
-	/** Федеральная карта */
-	//painter.drawPixmap(0, 240, 225, 150, *(detailAreal->pixmap()));
-
-	/** Карта региона */
-	//painter.drawPixmap(printer.pageRect().width()/2, 225, 225, 150, *(localAreal->pixmap()));
-
-	//textOffset = 400;
-
-	/** Текст статьи или выбранных рубрик 
-	QStringList doc = textView->toPlainText().split(". ");
-	QString str = "";
-	for (int i = 0; i < doc.size(); i++) {
-		if (painter.boundingRect(0, 0, printer.pageRect().width(), printer.pageRect().height(), Qt::TextWordWrap, str + doc[i]).height() > printer.pageRect().height() - bottomOffset - textOffset) {
-			painter.drawText(0, textOffset, printer.pageRect().width(), printer.pageRect().height() - bottomOffset, Qt::TextWordWrap, str + ". ");
-			printer.newPage();
-			printAux(painter, printer);
-			textOffset = 80;
-			str =  doc[i] + ". ";
-		}
-			str += doc[i] + ". ";
-	}
-	painter.drawText(0, textOffset, printer.pageRect().width(), printer.pageRect().height() - bottomOffset, Qt::TextWordWrap, str);
-	painter.end();*/
-//}
-
-//void GaiaCore::printAux(QPainter &painter, QPrinter &printer) {
-	/** Логотип */
-	//painter.drawPixmap(0, 20, 30, 30, *(logo->pixmap()));
-	/** Верхний колонтитул */
-	//painter.drawText(QRect(40, 20, printer.pageRect().width() - 70, 30), Qt::TextWordWrap, config->value(TEXT, "TopBanner").toString());
-
-	/** Нижний колонтитул */
-	//painter.drawText(QRect(40, printer.pageRect().height() - 40, printer.pageRect().width() - 70, 30), Qt::TextWordWrap, config->value(TEXT, "BottomBanner").toString());
-//}

@@ -8,7 +8,7 @@
  ***************************************************************************/
 #include "stack.h"
 #include <QtGui/QTextBrowser>
-#include <QtDebug>
+#include <QtCore/QDate>
 #include <QtGui/QListWidgetItem>
 #include <QtGui/QTreeWidget>
 #include <QtGui/QAction>
@@ -18,10 +18,12 @@
 #include <QtGui/QApplication>
 #include <QtGui/QRadioButton>
 #include <QtCore/QStringList>
+#include <QtGui/QPrintDialog>
 #include <QtCore/QFile>
+#include <QtGui/QPainter>
+#include <QtGui/QPrinter>
 #include "config.h"
 #include "core.h"
-#define DEFAULT_ZONE 1
 
 Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	currentDir = "";
@@ -60,10 +62,11 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	indices.append(482);
 	chapterMap->insert("radioc7", QList<int>(indices));
 	core->openZoneFile(":/zones.xml");
-	chapterLayout = new QMap<QString, QString>(core->chapterLayout(DEFAULT_ZONE));
+	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
 	articleId = "a0";
 	chapterId = "radioc0";
 	editMode = false;
+	zoneId = 1;
 }
 
 Stack::~Stack() {
@@ -137,7 +140,6 @@ void Stack::viewDocument(QListWidgetItem *item) {
 		specMenu->setVisible(false);
 		fontMenu->setVisible(true);
 		this->setCurrentIndex(1);
-		//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 		indexMode = "";
 		return;
 	}
@@ -163,7 +165,6 @@ void Stack::viewDocument(QListWidgetItem *item) {
 		specMenu->setVisible(false);
 		fontMenu->setVisible(true);
 		this->setCurrentIndex(1);
-		//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 		indexMode = "";
 		return;
 	}
@@ -212,7 +213,6 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			specMenu->setVisible(false);
 			fontMenu->setVisible(true);
 			indexMode = "";
-			//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 			this->setCurrentIndex(1);
 		}
 	}
@@ -248,7 +248,6 @@ void Stack::viewDocument(QListWidgetItem *item) {
 			specMenu->setVisible(false);
 			fontMenu->setVisible(true);
 			indexMode = "";
-			//chapterCombo->setFixedSize(chapterCombo->sizeHint());
 			this->setCurrentIndex(1);
 		}
 	}
@@ -397,13 +396,13 @@ void Stack::treeItemSelected(QTreeWidgetItem *item) {
 void Stack::listItemSelected(QListWidgetItem *item) {
 	speciesId = item->data(Qt::UserRole).toInt();
 	findChild<QLabel*>("photoLabel")->setPixmap(core->entryPicture(speciesId));
-	findChild<QLabel*>("arealLabel")->setPixmap(core->speciesAreal(speciesId, DEFAULT_ZONE));
-	QString speciesText = core->speciesChapter(speciesId, DEFAULT_ZONE, "ax");
+	findChild<QLabel*>("arealLabel")->setPixmap(core->speciesAreal(speciesId, zoneId));
+	QString speciesText = core->speciesChapter(speciesId, zoneId, "ax");
 	QString line1 = speciesText.split("\n")[0].toUpper();
 	QString line2 = speciesText.split("\n")[1];
 	speciesText = speciesText.split("\n")[2] + "\n" + speciesText.split("\n")[3] + "\n";
 
-	QStringList litText = core->speciesChapter(speciesId, DEFAULT_ZONE, "a7").split("\n", QString::SkipEmptyParts);
+	QStringList litText = core->speciesChapter(speciesId, zoneId, "a7").split("\n", QString::SkipEmptyParts);
 	QString compilers = "";
 	for (int i = litText.size() - 1; i >= 0; i--) {
 		if (litText[i].trimmed().length() > 0) {
@@ -411,7 +410,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 			break;
 		}
 	}
-	QList<int> cat = core->speciesStatus(speciesId, DEFAULT_ZONE);
+	QList<int> cat = core->speciesStatus(speciesId, zoneId);
 	QString cathegory = "";
 	for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
 		cathegory += QString::number(*i) + ", ";
@@ -421,14 +420,13 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	findChild<QLabel*>("speciesLabel")->setWordWrap(true);
 	findChild<QLabel*>("speciesLabel")->setText("<div style=\"whitespace:pre-wrap\">" + line1 + "<br />" + line2 + "</div>");
 	findChild<QLabel*>("commentLabel")->setText(speciesText.trimmed() + "\n" + cathegory + "\n" + compilers);
-
 	bool selectionFound = false;
 	QListWidgetItem *allIndex = 0;
 	QListWidget *sectionList = findChild<QListWidget*>("sectionList");
 	sectionList->clear();
 	QList<QString> parameters = config->parameters("ArticleType");
 	for (QList<QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
-		if (*i == "a2" && !QFile().exists(core->zoneUrl() + "/" + QString::number(DEFAULT_ZONE)  + "/" + QString::number(speciesId)  + "/" + "002.txt"))
+		if (*i == "a2" && !QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + "002.txt"))
 			continue;
 		QListWidgetItem *item = new QListWidgetItem(config->value("ArticleType", *i).toString());
 		item->setData(Qt::UserRole, *i);
@@ -477,7 +475,6 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		sectionList->setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:" + bc + "; selection-color:" + lc);
 		qApp->setStyleSheet(qApp->styleSheet().replace("QListWidget#sectionList::item::selected { border: 1px solid black }", ""));
 	}
-//border: 1px solid black; 
 	QAction *editAction = parent()->parent()->findChild<QAction*>("editAction");
 	QAction *saveAction = parent()->parent()->findChild<QAction*>("saveAction");
 	QAction *cancelAction = parent()->parent()->findChild<QAction*>("cancelAction");
@@ -535,15 +532,15 @@ void Stack::refreshArticle() {
 	QString all = "";
 	if (articleId == "a0") {
 		for (int i = 1; i < 8; i++) {
-			if (i == 2 && !QFile().exists(core->zoneUrl() + "/" + QString::number(DEFAULT_ZONE)  + "/" + QString::number(speciesId)  + "/" + "002.txt"))
+			if (i == 2 && !QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + "002.txt"))
 				continue;
 			all += "     " + config->value("ArticleType", "a" + QString::number(i)).toString() + "\n";
-			all += core->speciesChapter(speciesId, DEFAULT_ZONE, "a" + QString::number(i)) + "\n\n";
+			all += core->speciesChapter(speciesId, zoneId, "a" + QString::number(i)) + "\n\n";
 		}
 		findChild<QTextBrowser*>("articleBrowser")->setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\"><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" /></head><body align=\"justify\" style=\"margin: 15px\"><div style=\"white-space: pre-wrap\">" + all + "</div></body><html>");
 	}
 	else
-		findChild<QTextBrowser*>("articleBrowser")->setText(core->speciesChapter(speciesId, DEFAULT_ZONE, articleId));
+		findChild<QTextBrowser*>("articleBrowser")->setText(core->speciesChapter(speciesId, zoneId, articleId));
 }
 
 void Stack::setArticle(QListWidgetItem *item) {
@@ -629,11 +626,75 @@ void Stack::showHelp() {
 	QTextBrowser *helpBrowser = new QTextBrowser();
 	helpBrowser->setSource(qApp->applicationDirPath() + "/doc/help/h" + QString::number(currentIndex()) + ".html");
 	helpBrowser->show();
-	qDebug() << "HI";
 }
 
 void Stack::printSpecies() {
+	QPrinter printer;
+	QPrintDialog *dialog = new QPrintDialog(&printer, 0);
+	dialog->setWindowTitle(tr("Print Document"));
+	if (dialog->exec() != QDialog::Accepted)
+		return;
 
+
+	QLabel *photoLabel = findChild<QLabel*>("photoLabel");
+	QLabel *arealLabel = findChild<QLabel*>("arealLabel");
+	QLabel *speciesLabel = findChild<QLabel*>("speciesLabel");
+	QLabel *commentLabel = findChild<QLabel*>("commentLabel");
+	QPainter painter;
+	int textOffset = 0;
+	int bottomOffset = 60;
+
+	painter.begin(&printer);
+	printAux(painter, printer);
+
+	/** Заголовок: русское и латинское название; статус; составители  */
+	QFont f = painter.font();
+	QFont f2 = f;
+	f2.setBold(true);
+	f2.setPointSize(14);
+	painter.setFont(f2);
+	painter.drawText(QRect(0, 80, printer.pageRect().width(), 50), Qt::TextWordWrap, speciesLabel->text().replace("<br />","\n").remove("<div style=\"whitespace:pre-wrap\">").remove("</div>"));
+
+	painter.drawText(0, 145, core->entryLatName(speciesId));
+	painter.setFont(f);
+	painter.drawText(QRect(0, 155, printer.pageRect().width(), 75), Qt::TextWordWrap, commentLabel->text());
+
+	/** Портрет */
+	painter.drawPixmap(printer.pageRect().width() - 265, 225, 225, 150, *(arealLabel->pixmap()));
+
+	/** Карта ареала */
+	painter.drawPixmap(40, 225, 225, 150, *(photoLabel->pixmap()));
+
+	textOffset = 400;
+
+	/** Текст статьи или выбранных рубрик */
+	QTextBrowser *articleBrowser = findChild<QTextBrowser*>("articleBrowser");
+	QStringList doc = articleBrowser->toPlainText().split(". ");
+	QString str = "";
+	for (int i = 0; i < doc.size(); i++) {
+		if (painter.boundingRect(0, 0, printer.pageRect().width(), printer.pageRect().height(), Qt::TextWordWrap, str + doc[i]).height() > printer.pageRect().height() - bottomOffset - textOffset) {
+			painter.drawText(0, textOffset, printer.pageRect().width(), printer.pageRect().height() - bottomOffset, Qt::TextWordWrap, str);
+			printer.newPage();
+			printAux(painter, printer);
+			textOffset = 80;
+			str =  doc[i] + ". ";
+		}
+			str += doc[i] + ". ";
+	}
+	painter.drawText(0, textOffset, printer.pageRect().width(), printer.pageRect().height() - bottomOffset, Qt::TextWordWrap, str);
+	painter.end();
+}
+
+void Stack::printAux(QPainter &painter, QPrinter &printer) {
+	/** Логотип */
+	painter.drawPixmap(0, 20, 30, 30, *(findChild<QLabel*>("logoLabel")->pixmap()));
+
+	/** Верхний колонтитул */
+	painter.drawText(QRect(40, 20, printer.pageRect().width() - 70, 30), Qt::TextWordWrap, config->value("Labels", "TopBanner").toString());
+
+	/** Нижний колонтитул */
+	painter.drawText(QRect(40, printer.pageRect().height() - 40, printer.pageRect().width() - 70, 30), Qt::TextWordWrap, config->value("Labels", "BottomBanner").toString());
+	painter.drawText(QRect(printer.pageRect().width() - 70, printer.pageRect().height() - 40, printer.pageRect().width(), 30), Qt::TextWordWrap, QDate::currentDate().toString("yyyy-MM-dd"));
 }
 
 void Stack::largerFont() {

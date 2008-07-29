@@ -156,9 +156,6 @@ public:
 	GaiaCore();
 	~GaiaCore();
 
-//public slots:
-//	void printInfo(int speciesId, int zoneId) const;
-
 private:
 	QDomDocument zoneDoc, taxonomyDoc;
 	int maxZoneId, maxTaxonomyId;
@@ -167,7 +164,6 @@ private:
 	QList<QDomElement> allElements(const QDomElement &element, const QString &tagName = "");
 	void deleteDirectory(const QString &path);
 	static const QString taxonomyLevels[];
-//	void printAux(QPainter &painter, QPrinter &printer);
 };
 
 /**
