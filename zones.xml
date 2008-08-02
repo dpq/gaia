@@ -1,13 +1,37 @@
 <?xml version="1.0" encoding="utf8"?>
 <geo version="1.0" url="zones">
-	<zone id="1" name="Russian Federation">
-		<chapter file="000.txt" name="ax" />
-		<chapter file="001.txt" name="a1" />
-		<chapter file="002.txt" name="a2" />
-		<chapter file="003.txt" name="a3" />
-		<chapter file="004.txt" name="a4" />
-		<chapter file="005.txt" name="a5" />
-		<chapter file="006.txt" name="a6" />
-		<chapter file="007.txt" name="a7" />
+	<zone id="0" name="Мировая охрана">
+		<chapter file="000.txt" name="Наименование вида" />
+		<chapter file="001.txt" name="Состояние ресурсов и охрана в ареале" />
+		<chapter file="002.txt" name="Роль России в сохранении вида" />
+		<zone id="1" name="Российская Федерация">
+			<chapter file="000.txt" name="Наименование вида" />
+			<chapter file="001.txt" name="Категория и статус" />
+			<chapter file="002.txt" name="Описание взрослой стадии" />
+			<chapter file="003.txt" name="Распространение" />
+			<chapter file="004.txt" name="Места обитания и биология" />
+			<chapter file="005.txt" name="Численность и лимитирующие факторы" />
+			<chapter file="006.txt" name="Принятые и необходимые меры охраны" />
+			<chapter file="007.txt" name="Источники информации" />
+			<zone id="2" name="Республика Тува">
+				<chapter file="000.txt" name="Наименование вида" />
+				<chapter file="001.txt" name="Категория и статус" />
+				<chapter file="002.txt" name="Распространение" />
+				<chapter file="003.txt" name="Места обитания и образ жизни" />
+				<chapter file="004.txt" name="Численность и лимитирующие факторы" />
+				<chapter file="005.txt" name="Принятые и необходимые меры охраны" />
+				<chapter file="006.txt" name="Источники информации" />
+			</zone>
+			<zone id="3" name="Читинская область">
+				<chapter file="000.txt" name="Наименование вида" />
+				<chapter file="001.txt" name="Статус" />
+				<chapter file="002.txt" name="Распространение" />
+				<chapter file="003.txt" name="Численность" />
+				<chapter file="004.txt" name="Особенности биологии" />
+				<chapter file="005.txt" name="Основные лимитирующие факторы" />
+				<chapter file="006.txt" name="Принятые и необходимые меры охраны" />
+				<chapter file="007.txt" name="Источники информации" />
+			</zone>
+		</zone>
 	</zone>
 </geo>

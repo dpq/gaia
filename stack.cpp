@@ -17,11 +17,15 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QApplication>
 #include <QtGui/QRadioButton>
+#include <QtGui/QPushButton>
 #include <QtCore/QStringList>
 #include <QtGui/QPrintDialog>
+#include <QtGui/QDialog>
 #include <QtCore/QFile>
 #include <QtGui/QPainter>
 #include <QtGui/QPrinter>
+#include <QtGui/QVBoxLayout>
+#include <QtGui/QHBoxLayout>
 #include "config.h"
 #include "core.h"
 
@@ -63,10 +67,12 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	chapterMap->insert("radioc7", QList<int>(indices));
 	core->openZoneFile(":/zones.xml");
 	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
-	articleId = "a0";
+	articleId = "ОЧЕРК ПОЛНОСТЬЮ";
 	chapterId = "radioc0";
 	editMode = false;
 	zoneId = 1;
+	firstItemId = -1;
+	lastItemId = -1;
 }
 
 Stack::~Stack() {
@@ -108,7 +114,6 @@ void Stack::viewDocument(QListWidgetItem *item) {
 	QTextBrowser *docViewer = findChild<QTextBrowser*>("docViewer");
 	QLabel *docTitle = findChild<QLabel*>("docTitle");
 	QComboBox *chapterCombo = findChild<QComboBox*>("chapterCombo");
-	QRadioButton *radioc0 = findChild<QRadioButton*>("radioc0");
 	QListWidget *indexList = findChild<QListWidget*>("indexList");
 	QLabel *indexLabel = findChild<QLabel*>("indexLabel");
 	
@@ -351,6 +356,7 @@ void Stack::setTaxoChapter(bool isChecked) {
 void Stack::updateTaxoTree() {
 	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
 	taxoTree->clear();
+	firstItemId = lastItemId = -1;
 	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
 		QDomElement root = core->taxonomyEntry(chapterMap->value(chapterId)[i]);
 		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(root.attribute("rus") + " - " + root.attribute("lat")), 0);
@@ -372,8 +378,12 @@ void Stack::insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root) {
 		if (oldid != QString())
 			oldid += ". ";
 		QString appendum = "";
-		if (element.tagName() == "species")
+		if (element.tagName() == "species") {
 			appendum = " (" + element.attribute("author") + ", " + element.attribute("year") + ") (" + element.attribute("status") + ")";
+			lastItemId = element.attribute("id").toInt();
+			if (firstItemId == -1)
+				firstItemId = element.attribute("id").toInt();
+		}
 		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(oldid + element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum), 0);
 		insertTaxoPart(item, element);
 		item->setToolTip(0, element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum);
@@ -397,7 +407,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	speciesId = item->data(Qt::UserRole).toInt();
 	findChild<QLabel*>("photoLabel")->setPixmap(core->entryPicture(speciesId));
 	findChild<QLabel*>("arealLabel")->setPixmap(core->speciesAreal(speciesId, zoneId));
-	QString speciesText = core->speciesChapter(speciesId, zoneId, "ax");
+	QString speciesText = core->speciesChapter(speciesId, zoneId, "Наименование вида");
 	QString line1 = speciesText.split("\n")[0].toUpper();
 	QString line2 = speciesText.split("\n")[1];
 	speciesText = speciesText.split("\n")[2] + "\n" + speciesText.split("\n")[3] + "\n";
@@ -530,9 +540,9 @@ QString Stack::pageColor(int cat) {
 
 void Stack::refreshArticle() {
 	QString all = "";
-	if (articleId == "a0") {
+	if (articleId == "ОЧЕРК ПОЛНОСТЬЮ") {
 		for (int i = 1; i < 8; i++) {
-			if (i == 2 && !QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + "002.txt"))
+			if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + core->chapterLayout(zoneId)[articleId]))
 				continue;
 			all += "     " + config->value("ArticleType", "a" + QString::number(i)).toString() + "\n";
 			all += core->speciesChapter(speciesId, zoneId, "a" + QString::number(i)) + "\n\n";
@@ -549,25 +559,26 @@ void Stack::setArticle(QListWidgetItem *item) {
 }
 
 void Stack::nextSpecies() {
-	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
+
+/*	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
 	if (alphaList->count() > alphaList->currentRow() + 1) {
 		alphaList->setCurrentRow(alphaList->currentRow() + 1);
 	}
 	else {
 		alphaList->setCurrentRow(0);
 	}
-	listItemSelected(alphaList->currentItem());
+	listItemSelected(alphaList->currentItem()); */
 }
 
 void Stack::prevSpecies() {
-	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
+/*	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
 	if (alphaList->currentRow() > 0) {
 		alphaList->setCurrentRow(alphaList->currentRow() - 1);
 	}
 	else {
 		alphaList->setCurrentRow(alphaList->count() - 1);
 	}
-	listItemSelected(alphaList->currentItem());
+	listItemSelected(alphaList->currentItem());*/
 }
 
 void Stack::changeFocus(QWidget *old, QWidget *now) {
@@ -623,9 +634,21 @@ void Stack::edit() {
 }
 
 void Stack::showHelp() {
+	QDialog *helpDialog = new QDialog(qApp->activeWindow());
+	QVBoxLayout *helpLayout = new QVBoxLayout(helpDialog);
+	QHBoxLayout *buttonLayout = new QHBoxLayout();
+	QPushButton *closeButton = new QPushButton(config->value("Labels", "close").toString());
+	buttonLayout->addStretch();
+	buttonLayout->addWidget(closeButton);
 	QTextBrowser *helpBrowser = new QTextBrowser();
+	helpLayout->addWidget(helpBrowser);
+	helpLayout->addLayout(buttonLayout);
+	connect(closeButton, SIGNAL(clicked()), helpDialog, SLOT(accept()));
+	helpDialog->setStyleSheet("background-color:#ffffff; color: #000000");
 	helpBrowser->setSource(qApp->applicationDirPath() + "/doc/help/h" + QString::number(currentIndex()) + ".html");
-	helpBrowser->show();
+	helpDialog->resize(400, 300);
+	helpDialog->exec();
+	delete helpDialog;
 }
 
 void Stack::printSpecies() {

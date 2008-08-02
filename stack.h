@@ -48,6 +48,7 @@ public slots:
 	void cancelEdit();
 
 private:
+	int firstItemId, lastItemId;
 	QString pageColor(int cat);
 	QString commentColor(int cat);
 	QString labelColor(int cat);

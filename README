@@ -1,6 +1,7 @@
-To whoever reads this: the author of these lines David Parunakian aka Rumith is in no way responsible
-for the abomination that is the GUI of this software product!
-It has been designed and enforced by the V.Prisyajnyuk, who probably damned his immortal soul in process.
+=== To whoever reads this ===
+The author of these lines - David Parunakian aka Rumith - is in no way responsible
+for the abomination that is the GUI of this software product.
+It has been designed and enforced by Dr. V.E.Prisyajnyuk, who probably damned his immortal soul in process.
 
 Code to be developed and supported:
 config[.h|.cpp]
@@ -10,12 +11,12 @@ Config is responsible for loading configuration files formatted not unlike Micro
 Core contains GaiaCore, the basis for developing a full-scale biological data mining and analysis system.
 
 
-Files hacked together during a couple of hours so the above-mentioned GUI works:
+Files hacked together so the above-mentioned GUI works:
 main.cpp
 uiloader[.h|.cpp]
 stack[.h|.cpp]
 
-I will of course accept bug reports for these, too - just don't expect a superb quality from them.
+I will of course accept bug reports for these, too - just don't expect superb quality from them.
 
 
 Sincerely yours,
@@ -24,8 +25,8 @@ Jaffar Pharun Rumith
 
 
 - Сменная зона
-- Вызов справки
 - Ввод информации
+- Скролл по систематике
 
 + Починить мелкий шрифт в артикл
 + "Очерк полностью" на самый верх
@@ -48,3 +49,4 @@ Jaffar Pharun Rumith
 + Ширина комбобокса
 + Печать
 + Запоминать раздел книги
++ Вызов справки
