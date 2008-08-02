@@ -26,6 +26,7 @@
 #include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
+#include <QtDebug>
 #include "config.h"
 #include "core.h"
 
@@ -67,7 +68,7 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	chapterMap->insert("radioc7", QList<int>(indices));
 	core->openZoneFile(":/zones.xml");
 	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
-	articleId = "ОЧЕРК ПОЛНОСТЬЮ";
+	articleId = config->value("Labels", "Full").toString();
 	chapterId = "radioc0";
 	editMode = false;
 	zoneId = 1;
@@ -407,12 +408,12 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	speciesId = item->data(Qt::UserRole).toInt();
 	findChild<QLabel*>("photoLabel")->setPixmap(core->entryPicture(speciesId));
 	findChild<QLabel*>("arealLabel")->setPixmap(core->speciesAreal(speciesId, zoneId));
-	QString speciesText = core->speciesChapter(speciesId, zoneId, "Наименование вида");
+	qDebug() << speciesId << zoneId;
+	QString speciesText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Name").toString());
 	QString line1 = speciesText.split("\n")[0].toUpper();
 	QString line2 = speciesText.split("\n")[1];
 	speciesText = speciesText.split("\n")[2] + "\n" + speciesText.split("\n")[3] + "\n";
-
-	QStringList litText = core->speciesChapter(speciesId, zoneId, "a7").split("\n", QString::SkipEmptyParts);
+	QStringList litText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Lit").toString()).split("\n", QString::SkipEmptyParts);
 	QString compilers = "";
 	for (int i = litText.size() - 1; i >= 0; i--) {
 		if (litText[i].trimmed().length() > 0) {
@@ -434,7 +435,24 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	QListWidgetItem *allIndex = 0;
 	QListWidget *sectionList = findChild<QListWidget*>("sectionList");
 	sectionList->clear();
-	QList<QString> parameters = config->parameters("ArticleType");
+	qDebug() << "A";
+	QMap<QString, QString> parameters = core->chapterLayout(zoneId);
+	for (QMap<QString, QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
+		qDebug() << QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + i.value());
+		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + i.value()))
+			continue;
+		QListWidgetItem *item = new QListWidgetItem(i.key());
+		item->setData(Qt::UserRole, i.value());
+		sectionList->addItem(item);
+		if (i.key() == articleId) {
+			sectionList->setCurrentItem(item);
+			selectionFound = true;
+		}
+		if (i.key() == config->value("Labels", "Full").toString())
+			allIndex = item;
+	}
+
+/*	QList<QString> parameters = config->parameters("ArticleType");
 	for (QList<QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
 		if (*i == "a2" && !QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + "002.txt"))
 			continue;
@@ -447,12 +465,13 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		}
 		if (*i == "a0")
 			allIndex = item;
-	}
+	}*/
 
 	if (! selectionFound) {
 		sectionList->setCurrentItem(allIndex);
-		articleId = "a0";
+		articleId = config->value("Labels", "Full").toString();
 	}
+	qDebug() << "X";
 	refreshArticle();
 	
 	/* Colorizing */
@@ -540,12 +559,13 @@ QString Stack::pageColor(int cat) {
 
 void Stack::refreshArticle() {
 	QString all = "";
-	if (articleId == "ОЧЕРК ПОЛНОСТЬЮ") {
-		for (int i = 1; i < 8; i++) {
-			if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + core->chapterLayout(zoneId)[articleId]))
+	if (articleId == config->value("Labels", "Full").toString()) {
+		QMap<QString, QString> parameters = core->chapterLayout(zoneId);
+		for (QMap<QString, QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
+			if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + i.value()))
 				continue;
-			all += "     " + config->value("ArticleType", "a" + QString::number(i)).toString() + "\n";
-			all += core->speciesChapter(speciesId, zoneId, "a" + QString::number(i)) + "\n\n";
+			all += "\t" + i.key() + "\n";
+			all += core->speciesChapter(speciesId, zoneId, i.key()) + "\n\n";
 		}
 		findChild<QTextBrowser*>("articleBrowser")->setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\"><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" /></head><body align=\"justify\" style=\"margin: 15px\"><div style=\"white-space: pre-wrap\">" + all + "</div></body><html>");
 	}
@@ -559,26 +579,25 @@ void Stack::setArticle(QListWidgetItem *item) {
 }
 
 void Stack::nextSpecies() {
-
-/*	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
+	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
 	if (alphaList->count() > alphaList->currentRow() + 1) {
 		alphaList->setCurrentRow(alphaList->currentRow() + 1);
 	}
 	else {
 		alphaList->setCurrentRow(0);
 	}
-	listItemSelected(alphaList->currentItem()); */
+	listItemSelected(alphaList->currentItem());
 }
 
 void Stack::prevSpecies() {
-/*	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
+	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
 	if (alphaList->currentRow() > 0) {
 		alphaList->setCurrentRow(alphaList->currentRow() - 1);
 	}
 	else {
 		alphaList->setCurrentRow(alphaList->count() - 1);
 	}
-	listItemSelected(alphaList->currentItem());*/
+	listItemSelected(alphaList->currentItem());
 }
 
 void Stack::changeFocus(QWidget *old, QWidget *now) {
