@@ -145,7 +145,7 @@ QString GaiaCore::zoneName(int zoneId) const {
 	return zone(zoneId).attribute("name");
 }
 
-QMap<QString, QString> GaiaCore::chapterLayout(int zoneId) const {
+QMap<QString, QString> GaiaCore::chapterLayout(int zoneId, bool listedOnly) const {
 	if (this->zone(zoneId) == QDomElement())
 		return QMap<QString, QString>();
 	QDomElement zone = this->zone(zoneId);
@@ -155,7 +155,8 @@ QMap<QString, QString> GaiaCore::chapterLayout(int zoneId) const {
 	for (int i = 0; i< chapters.size(); i++) {
 		QDomElement chapter = chapters.at(i).toElement();
 		if (chapter.tagName() == "chapter")
-			res.insert(chapter.attribute("name"), chapter.attribute("file"));
+			if (listedOnly == false || chapter.attribute("listed") != "false")
+				res.insert(chapter.attribute("name"), chapter.attribute("file"));
 	}
 	return res;
 }

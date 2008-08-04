@@ -45,7 +45,7 @@ public slots:
 
 public:
 	QString zoneName(int zoneId) const;
-	QMap<QString, QString> chapterLayout(int zoneId) const;
+	QMap<QString, QString> chapterLayout(int zoneId, bool listedOnly = false) const;
 #ifdef OPERATOR
 public slots:
 	void setZoneName(int zoneId, const QString &name);

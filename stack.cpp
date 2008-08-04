@@ -434,14 +434,16 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	QListWidget *sectionList = findChild<QListWidget*>("sectionList");
 	sectionList->clear();
 	sectionList->addItem(config->value("Labels", "Full").toString());
-	QMap<QString, QString> parameters = core->chapterLayout(zoneId);
-	for (QMap<QString, QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
-		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + i.value()))
+	QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
+	QList<QString> keys = parameters.values();
+	qSort(keys);
+	for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
+		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
 			continue;
-		QListWidgetItem *item = new QListWidgetItem(i.key());
-		item->setData(Qt::UserRole, i.value());
+		QListWidgetItem *item = new QListWidgetItem(parameters.key(*i));
+		item->setData(Qt::UserRole, *i);
 		sectionList->addItem(item);
-		if (i.key() == articleId) {
+		if (parameters.key(*i) == articleId) {
 			sectionList->setCurrentItem(item);
 			selectionFound = true;
 		}
@@ -554,12 +556,14 @@ QString Stack::pageColor(int cat) {
 void Stack::refreshArticle() {
 	QString all = "";
 	if (articleId == "") {
-		QMap<QString, QString> parameters = core->chapterLayout(zoneId);
-		for (QMap<QString, QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
-			if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + i.value()))
+		QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
+		QList<QString> keys = parameters.values();
+		qSort(keys);
+		for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
+			if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
 				continue;
-			all += "\t" + i.key() + "\n";
-			all += core->speciesChapter(speciesId, zoneId, i.key()) + "\n\n";
+			all += "\t" + parameters.key(*i) + "\n";
+			all += core->speciesChapter(speciesId, zoneId, parameters.key(*i)) + "\n\n";
 		}
 		findChild<QTextBrowser*>("articleBrowser")->setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\"><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" /></head><body align=\"justify\" style=\"margin: 15px\"><div style=\"white-space: pre-wrap\">" + all + "</div></body><html>");
 	}
