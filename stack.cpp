@@ -68,7 +68,7 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	chapterMap->insert("radioc7", QList<int>(indices));
 	core->openZoneFile(":/zones.xml");
 	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
-	articleId = config->value("Labels", "Full").toString();
+	articleId = "";
 	chapterId = "radioc0";
 	editMode = false;
 	zoneId = 1;
@@ -431,9 +431,9 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	findChild<QLabel*>("speciesLabel")->setText("<div style=\"whitespace:pre-wrap\">" + line1 + "<br />" + line2 + "</div>");
 	findChild<QLabel*>("commentLabel")->setText(speciesText.trimmed() + "\n" + cathegory + "\n" + compilers);
 	bool selectionFound = false;
-	QListWidgetItem *allIndex = 0;
 	QListWidget *sectionList = findChild<QListWidget*>("sectionList");
 	sectionList->clear();
+	sectionList->addItem(config->value("Labels", "Full").toString());
 	QMap<QString, QString> parameters = core->chapterLayout(zoneId);
 	for (QMap<QString, QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
 		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + i.value()))
@@ -445,8 +445,6 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 			sectionList->setCurrentItem(item);
 			selectionFound = true;
 		}
-		if (i.key() == config->value("Labels", "Full").toString())
-			allIndex = item;
 	}
 
 /*	QList<QString> parameters = config->parameters("ArticleType");
@@ -465,8 +463,8 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	}*/
 
 	if (! selectionFound) {
-		sectionList->setCurrentItem(allIndex);
-		articleId = config->value("Labels", "Full").toString();
+		sectionList->setCurrentRow(0);
+		articleId = "";
 	}
 	refreshArticle();
 	
@@ -555,7 +553,7 @@ QString Stack::pageColor(int cat) {
 
 void Stack::refreshArticle() {
 	QString all = "";
-	if (articleId == config->value("Labels", "Full").toString()) {
+	if (articleId == "") {
 		QMap<QString, QString> parameters = core->chapterLayout(zoneId);
 		for (QMap<QString, QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
 			if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + i.value()))
@@ -570,7 +568,7 @@ void Stack::refreshArticle() {
 }
 
 void Stack::setArticle(QListWidgetItem *item) {
-	articleId = item->text();
+	articleId = (item->data(Qt::UserRole).toString() == "" ? "" : item->text());
 	refreshArticle();
 }
 
