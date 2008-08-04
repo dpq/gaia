@@ -408,7 +408,6 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	speciesId = item->data(Qt::UserRole).toInt();
 	findChild<QLabel*>("photoLabel")->setPixmap(core->entryPicture(speciesId));
 	findChild<QLabel*>("arealLabel")->setPixmap(core->speciesAreal(speciesId, zoneId));
-	qDebug() << speciesId << zoneId;
 	QString speciesText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Name").toString());
 	QString line1 = speciesText.split("\n")[0].toUpper();
 	QString line2 = speciesText.split("\n")[1];
@@ -435,10 +434,8 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	QListWidgetItem *allIndex = 0;
 	QListWidget *sectionList = findChild<QListWidget*>("sectionList");
 	sectionList->clear();
-	qDebug() << "A";
 	QMap<QString, QString> parameters = core->chapterLayout(zoneId);
 	for (QMap<QString, QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
-		qDebug() << QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + i.value());
 		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + i.value()))
 			continue;
 		QListWidgetItem *item = new QListWidgetItem(i.key());
@@ -471,7 +468,6 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		sectionList->setCurrentItem(allIndex);
 		articleId = config->value("Labels", "Full").toString();
 	}
-	qDebug() << "X";
 	refreshArticle();
 	
 	/* Colorizing */
@@ -574,7 +570,7 @@ void Stack::refreshArticle() {
 }
 
 void Stack::setArticle(QListWidgetItem *item) {
-	articleId = item->data(Qt::UserRole).toString();
+	articleId = item->text();
 	refreshArticle();
 }
 
