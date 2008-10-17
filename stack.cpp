@@ -72,8 +72,7 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	chapterId = "radioc0";
 	editMode = false;
 	zoneId = 1;
-	firstItemId = -1;
-	lastItemId = -1;
+	taxoSpecies = new QList<QTreeWidgetItem*>();
 }
 
 Stack::~Stack() {
@@ -85,11 +84,14 @@ Stack::~Stack() {
 	delete rusAlphas;
 	delete chapterMap;
 	delete chapterLayout;
+	delete taxoSpecies;
 }
 
 void Stack::initIndex() {
 	QListWidget *indexList = findChild<QListWidget*>("indexList");
+	QLabel *indexLabel = findChild<QLabel*>("indexLabel");
 	indexList->clear();
+	indexLabel->setText(config->value("Labels", "indexLabel").toString());
 	QList<QString> params = config->parameters("Index");
 	for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 		QString section = config->value("Index", *param).toString();
@@ -185,7 +187,12 @@ void Stack::viewDocument(QListWidgetItem *item) {
 		cancelAction->setVisible(false);
 		specMenu->setVisible(false);
 		fontMenu->setVisible(false);
+		QListWidget *alphaList = findChild<QListWidget*>("alphaList");
+		QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
+		taxoTree->clearSelection();
+		alphaList->clearSelection();
 		this->setCurrentIndex(2);
+		//taxoTree->setGeometry(alphaList->geometry());
 	}
 	/* Appendix */
 	else if (id == "p7") {
@@ -259,7 +266,12 @@ void Stack::viewDocument(QListWidgetItem *item) {
 	}
 	else {
 		currentDir = "";
-		docViewer->setSource(qApp->applicationDirPath() + "/doc/" + id + ".html");
+		QFile file(qApp->applicationDirPath() + "/doc/" + id + ".html");
+		file.open(QIODevice::ReadOnly | QIODevice::Text);
+		docViewer->setHtml(QString::fromUtf8(file.readAll()));
+		file.close();
+		// Here and further: setSource() appears to be broken in Windows
+		//docViewer->setSource(qApp->applicationDirPath() + "/doc/" + id + ".html");
 		docTitle->setText(text);
 		editAction->setVisible(false);
 		saveAction->setVisible(false);
@@ -295,8 +307,10 @@ void Stack::viewChapter(const QString &chapter) {
 		return;
 	QTextBrowser *docViewer = findChild<QTextBrowser*>("docViewer");
 	QComboBox *chapterCombo = qobject_cast<QComboBox*>(sender());
-	QString file = chapterCombo->itemData(chapterCombo->currentIndex()).toString();
-	docViewer->setSource(qApp->applicationDirPath() + "/doc/" + currentDir + "/" + file + ".html");
+	QFile file(qApp->applicationDirPath() + "/doc/" + currentDir + "/" + chapterCombo->itemData(chapterCombo->currentIndex()).toString() + ".html");
+	file.open(QIODevice::ReadOnly | QIODevice::Text);
+	docViewer->setHtml(QString::fromUtf8(file.readAll()));
+	file.close();
 }
 
 void Stack::viewLatAlpha() {
@@ -312,7 +326,7 @@ void Stack::viewLatAlpha() {
 			QString comment = (*i).attribute("comment");
 			if (comment != QString())
 				comment = " [" + comment + "]";
-			latItem->setToolTip((*i).attribute("rus") + comment);
+			latItem->setToolTip("<font color=\"red\"><pre>" + (*i).attribute("rus") + comment + "</pre></font>");
 			latItem->setData(Qt::UserRole, (*i).attribute("id"));
 			alphaList->addItem(latItem);
 		}
@@ -334,7 +348,7 @@ void Stack::viewRusAlpha() {
 			if (comment != QString())
 				comment = " [" + comment + "]";
 			rusItem->setText((*i).attribute("rus") + comment);
-			rusItem->setToolTip((*i).attribute("lat"));
+			rusItem->setToolTip("<font color=\"red\"><pre>" + (*i).attribute("lat") + "</pre></font>");
 			rusItem->setData(Qt::UserRole, (*i).attribute("id"));
 			alphaList->addItem(rusItem);
 		}
@@ -357,12 +371,13 @@ void Stack::setTaxoChapter(bool isChecked) {
 void Stack::updateTaxoTree() {
 	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
 	taxoTree->clear();
-	firstItemId = lastItemId = -1;
+	taxoSpecies->clear();
 	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
 		QDomElement root = core->taxonomyEntry(chapterMap->value(chapterId)[i]);
-		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(root.attribute("rus") + " - " + root.attribute("lat")), 0);
+		QString taxoLevel = config->value("Taxo", root.tagName()).toString();
+		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(taxoLevel + " " + root.attribute("rus").toUpper() + " - " + root.attribute("lat")), 0);
 		insertTaxoPart(item, root);
-		item->setToolTip(0, root.attribute("rus") + " - " + root.attribute("lat"));
+		item->setToolTip(0, "<font color=\"red\"><pre>" +  root.attribute("rus") + " - " + root.attribute("lat") + "</pre></font>");
 		item->setData(0, Qt::UserRole, root.attribute("id"));
 		taxoTree->addTopLevelItem(item);
 	}
@@ -378,17 +393,21 @@ void Stack::insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root) {
 		QString oldid = element.attribute("oldid");
 		if (oldid != QString())
 			oldid += ". ";
+		QTreeWidgetItem *item;
 		QString appendum = "";
 		if (element.tagName() == "species") {
 			appendum = " (" + element.attribute("author") + ", " + element.attribute("year") + ") (" + element.attribute("status") + ")";
-			lastItemId = element.attribute("id").toInt();
-			if (firstItemId == -1)
-				firstItemId = element.attribute("id").toInt();
+			item = new QTreeWidgetItem(QStringList(oldid + element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum), 0);
 		}
-		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(oldid + element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum), 0);
+		else {
+			QString taxoLevel = config->value("Taxo", element.tagName()).toString() + " ";
+			item = new QTreeWidgetItem(QStringList(taxoLevel + element.attribute("rus").toUpper() + comment + " - " + element.attribute("lat")), 0);
+		}	
 		insertTaxoPart(item, element);
-		item->setToolTip(0, element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum);
+		item->setToolTip(0, "<font color=\"red\"><pre>" + element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum + "</pre></font>");
 		item->setData(0, Qt::UserRole, element.attribute("id"));
+		if (element.tagName() == "species")
+				taxoSpecies->append(item);
 		parent->addChild(item);
 	}
 }
@@ -406,6 +425,13 @@ void Stack::treeItemSelected(QTreeWidgetItem *item) {
 
 void Stack::listItemSelected(QListWidgetItem *item) {
 	speciesId = item->data(Qt::UserRole).toInt();
+	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
+	foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
+		if (treeItem->data(0, Qt::UserRole).toInt() == speciesId) {
+			taxoTree->setCurrentItem(treeItem);
+			break;
+		}
+	}
 	findChild<QLabel*>("photoLabel")->setPixmap(core->entryPicture(speciesId));
 	findChild<QLabel*>("arealLabel")->setPixmap(core->speciesAreal(speciesId, zoneId));
 	QString speciesText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Name").toString());
@@ -414,17 +440,20 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	speciesText = speciesText.split("\n")[2] + "\n" + speciesText.split("\n")[3] + "\n";
 	QStringList litText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Lit").toString()).split("\n", QString::SkipEmptyParts);
 	QString compilers = "";
+	
 	for (int i = litText.size() - 1; i >= 0; i--) {
 		if (litText[i].trimmed().length() > 0) {
 			compilers = litText[i].trimmed();
 			break;
 		}
 	}
+	
 	QList<int> cat = core->speciesStatus(speciesId, zoneId);
 	QString cathegory = "";
 	for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
 		cathegory += QString::number(*i) + ", ";
 	}
+	
 	cathegory = cathegory.left(cathegory.length() - 2);
 	cathegory += " " + config->value("Labels", "cathegory").toString().toLower();
 	findChild<QLabel*>("speciesLabel")->setWordWrap(true);
@@ -437,6 +466,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
 	QList<QString> keys = parameters.values();
 	qSort(keys);
+	
 	for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
 		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
 			continue;
@@ -448,21 +478,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 			selectionFound = true;
 		}
 	}
-
-/*	QList<QString> parameters = config->parameters("ArticleType");
-	for (QList<QString>::iterator i = parameters.begin(); i != parameters.end(); i++) {
-		if (*i == "a2" && !QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + "002.txt"))
-			continue;
-		QListWidgetItem *item = new QListWidgetItem(config->value("ArticleType", *i).toString());
-		item->setData(Qt::UserRole, *i);
-		sectionList->addItem(item);
-		if (*i == articleId) {
-			sectionList->setCurrentItem(item);
-			selectionFound = true;
-		}
-		if (*i == "a0")
-			allIndex = item;
-	}*/
+	
 
 	if (! selectionFound) {
 		sectionList->setCurrentRow(0);
@@ -489,6 +505,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		cc = "#000000";
 		lc = "#000000";
 	}
+	
 
 	findChild<QLabel*>("speciesLabel")->setStyleSheet(specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc);
 	findChild<QLabel*>("commentLabel")->setStyleSheet(specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc);
@@ -517,6 +534,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	}
 	specMenu->setVisible(true);
 	fontMenu->setVisible(true);
+	
 	this->setCurrentIndex(3);
 }
 
@@ -576,7 +594,7 @@ void Stack::setArticle(QListWidgetItem *item) {
 	refreshArticle();
 }
 
-void Stack::nextSpecies() {
+/* void Stack::nextSpecies() {
 	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
 	if (alphaList->count() > alphaList->currentRow() + 1) {
 		alphaList->setCurrentRow(alphaList->currentRow() + 1);
@@ -596,7 +614,32 @@ void Stack::prevSpecies() {
 		alphaList->setCurrentRow(alphaList->count() - 1);
 	}
 	listItemSelected(alphaList->currentItem());
+} */
+
+void Stack::nextSpecies() {
+	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
+	if (taxoSpecies->indexOf(taxoTree->currentItem()) < taxoSpecies->count() - 1) {
+		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) + 1));
+	}
+	else {
+		// TODO check for zero length array
+		taxoTree->setCurrentItem(taxoSpecies->first());
+	}
+	treeItemSelected(taxoTree->currentItem());
 }
+
+void Stack::prevSpecies() {
+	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
+	if (taxoSpecies->indexOf(taxoTree->currentItem()) > 0) {
+		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) - 1));
+	}
+	else {
+		// TODO check for zero length array
+		taxoTree->setCurrentItem(taxoSpecies->last());
+	}
+	treeItemSelected(taxoTree->currentItem());
+}
+
 
 void Stack::changeFocus(QWidget *old, QWidget *now) {
 	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
@@ -662,7 +705,11 @@ void Stack::showHelp() {
 	helpLayout->addLayout(buttonLayout);
 	connect(closeButton, SIGNAL(clicked()), helpDialog, SLOT(accept()));
 	helpDialog->setStyleSheet("background-color:#ffffff; color: #000000");
-	helpBrowser->setSource(qApp->applicationDirPath() + "/doc/help/h" + QString::number(currentIndex()) + ".html");
+	QFile file(qApp->applicationDirPath() + "/doc/help/h" + QString::number(currentIndex()) + ".html");
+	file.open(QIODevice::ReadOnly | QIODevice::Text);
+	helpBrowser->setHtml(QString::fromUtf8(file.readAll()));
+	file.close();
+	//helpBrowser->setSource(qApp->applicationDirPath() + "/doc/help/h" + QString::number(currentIndex()) + ".html");
 	helpDialog->resize(400, 300);
 	helpDialog->exec();
 	delete helpDialog;

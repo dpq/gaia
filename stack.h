@@ -56,6 +56,7 @@ private:
 	void refreshArticle();
 	void printAux(QPainter &painter, QPrinter &printer);
 	int speciesId, zoneId;
+	QList<QTreeWidgetItem*> *taxoSpecies;
 	bool editMode;
 	GaiaCore *core;
 	QrbConfig *config;

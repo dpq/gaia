@@ -8,6 +8,7 @@
  ***************************************************************************/
 #include <QtGui/QApplication>
 #include <QtCore/QFile>
+#include <QtCore/QTimer>
 #include <QtGui/QSplashScreen>
 #include <QtGui/QBitmap>
 #include <QtGui/QMenu>
@@ -41,7 +42,6 @@ int main(int argc, char **argv) {
 
 	QPixmap pic(":/splash.png");
 	QSplashScreen splash(pic);
-
 	splash.show();
 
 	QMenuBar *menuBar = redBook->findChild<QMenuBar*>("menuBar");
@@ -71,9 +71,9 @@ int main(int argc, char **argv) {
 	
 	QMenu *specMenu = menuBar->addMenu(config->value("Labels", "spec").toString());
 	specMenu->setObjectName("specMenu");
-	QAction *rfAction = specMenu->addAction(config->value("Labels", "rf").toString());
-	QAction *subjAction = specMenu->addAction(config->value("Labels", "subj").toString());
-	QAction *arealAction = specMenu->addAction(config->value("Labels", "areal").toString());
+	//QAction *rfAction = specMenu->addAction(config->value("Labels", "rf").toString());
+	//QAction *subjAction = specMenu->addAction(config->value("Labels", "subj").toString());
+	//QAction *arealAction = specMenu->addAction(config->value("Labels", "areal").toString());
 	
 	QMenu *fontMenu = menuBar->addMenu(config->value("Labels", "settings").toString());
 	fontMenu->setObjectName("fontMenu");
@@ -143,13 +143,55 @@ int main(int argc, char **argv) {
 	QString advStyle = "";
 	advStyle += "QRadioButton::indicator::checked { image: url(\":/radio.png\") }";
 	advStyle += "QListWidget#indexList::item::hover { background: qlineargradient(spread:pad, x1:0, y1:1,  x2:0, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.0157895 rgba(255, 197, 166, 255), stop:0.647368 rgba(255, 255, 255, 255), stop:0.757895 rgba(255, 255, 255, 255), stop:1 rgba(255, 220, 197, 255)); }";
+	/*advStyle += "QScrollBar:vertical { background-color: grey }";
+	advStyle += "QScrollBar::handle:vertical { background-color: grey }";
+	advStyle += "QScrollBar::add-line:vertical { background-color: grey }";
+	advStyle += "QScrollBar::sub-line:vertical { background-color: grey }";
+	advStyle += "QScrollBar::up-arrow:vertical { background-color: grey }";
+	advStyle += "QScrollBar::down-arrow:vertical { background-color: grey }";
+	advStyle += "QScrollBar::add-page:vertical { background-color: grey }";
+	advStyle += "QScrollBar::sub-page:vertical { background-color: grey }";*/
+	advStyle += "QScrollBar:vertical {\
+              border: 1px solid black;\
+              width: 15px;\
+              margin: 22px 0 22px 0;\
+          }\
+          QScrollBar::handle:vertical {\
+              border: 1px solid black;\
+              background: grey;\
+              min-height: 20px;\
+          }\
+          QScrollBar::add-line:vertical {\
+              border: 1px solid black;\
+              background: #c0c0c0;\
+              height: 20px;\
+              subcontrol-position: bottom;\
+              subcontrol-origin: margin;\
+          }\
+          QScrollBar::sub-line:vertical {\
+              border: 1px solid black;\
+              background: #c0c0c0;\
+              height: 20px;\
+              subcontrol-position: top;\
+              subcontrol-origin: margin;\
+          }\
+          QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\
+              border: 1px solid black;\
+              width: 3px;\
+              height: 3px;\
+			  background: black\
+          }\
+          QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\
+              background: white;\
+          } ";
 	//advStyle += "QListWidget#sectionList::item::selected { border: 1px solid black }";
 	app.setStyleSheet(advStyle);
 // QListWidget#indexList::item::hover { background-color: #ff0000; }
 //stop:0 rgba(255, 255, 255, 255), stop:0.0157895 rgba(255, 197, 166, 255), stop:0.647368 rgba(255, 255, 255, 255), stop:0.757895 rgba(255, 255, 255, 255), stop:1 rgba(255, 220, 197, 255)
-	redBook->show();
-	sleep(3);
 	splash.finish(redBook);
+	QTimer::singleShot(3000, redBook, SLOT(showMaximized()));
+	//redBook->showMaximized();
+	//Windows doesn't have a sleep(3) call
 	stack->setCurrentIndex(0);
 	return app.exec();
 }

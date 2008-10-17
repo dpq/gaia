@@ -9,6 +9,7 @@
 #include "core.h"
 #include <QtXml/QDomElement>
 #include <QtXml/QDomDocument>
+#include <QtGui/QApplication>
 #include <QtGui/QPixmap>
 #include <QtCore/QString>
 #include <QtCore/QFile>
@@ -97,7 +98,7 @@ void GaiaCore::saveZoneFile(const QString &path) {
 #endif
 
 QString GaiaCore::zoneUrl() const {
-	return zoneDoc.documentElement().attribute("url");
+	return qApp->applicationDirPath() + "/" + zoneDoc.documentElement().attribute("url");
 }
 
 #ifdef OPERATOR
@@ -221,7 +222,7 @@ void GaiaCore::saveTaxonomyFile(const QString &path) {
 #endif
 
 QString GaiaCore::taxonomyUrl() const {
-	return taxonomyDoc.documentElement().attribute("url");
+	return qApp->applicationDirPath() + "/" + taxonomyDoc.documentElement().attribute("url");
 }
 
 #ifdef OPERATOR
@@ -339,7 +340,7 @@ bool GaiaCore::speciesEnabled(int speciesId, int zoneId) const {
 }
 
 QPixmap GaiaCore::speciesAreal(int speciesId, int zoneId) const {
-	return QPixmap(zoneDoc.documentElement().attribute("url") + "/" + QString::number(zoneId) + "/" + QString::number(speciesId) + "/areal.png");
+	return QPixmap(zoneUrl() + "/" + QString::number(zoneId) + "/" + QString::number(speciesId) + "/areal.png");
 }
 
 QList<int> GaiaCore::speciesStatus(int speciesId, int zoneId) const {
@@ -366,7 +367,7 @@ QString GaiaCore::speciesChapter(int speciesId, int zoneId, const QString &chapt
 	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
 		return QString();
 	QFile file(QString("%1/%2/%3/%4").arg(zoneUrl()).arg(zoneId).arg(speciesId).arg(chapterLayout(zoneId).value(chapterName)));
-	if (!file.open(QIODevice::ReadOnly))
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 		return QString();
 	QString res = QString::fromUtf8(file.readAll());
 	file.close();

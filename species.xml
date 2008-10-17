@@ -184,8 +184,8 @@
 			<species author="Swinhoe" id="165" lat="Porzana exquisita" oldid="299" rus="Белокрылый погоныш" status="1" year="1873"/>
 			<species author="Gmelin" id="166" lat="Gallicrex cinerea" oldid="300" rus="Рогатая камышница" status="4" year="1789"/>
 			<species author="Linnaeus" id="167" lat="Porphyrio porphyrio" oldid="301" rus="Султанка" status="3" year="1758"/>
-			<species author="Linnaeus" id="168" lat="Otis tarda tarda" oldid="302(1)" rus="Дрофа - европейский подвид" status="3" year="1758"/>
-			<species author="Taczanowski" id="169" lat="Otis tarda dybowskii" oldid="302(2)" rus="Дрофа - восточно-сибирский подвид" status="2" year="1874"/>
+			<species author="Linnaeus" id="168" lat="Otis tarda tarda" oldid="302(1)" rus="Дрофа" comment="европейский подвид" status="3" year="1758"/>
+			<species author="Taczanowski" id="169" lat="Otis tarda dybowskii" oldid="302(2)" rus="Дрофа" comment="восточно-сибирский подвид" status="2" year="1874"/>
 			<species author="Linnaeus" id="170" lat="Tetrax tetrax" oldid="303" rus="Стрепет" status="3" year="1758"/>
 			<species author="Jacquin" id="171" lat="Clamydotis undulata" oldid="304" rus="Джек" status="1" year="1784"/>
 		</order>
@@ -201,8 +201,8 @@
 			<species author="Swinhoe" comment="дальневосточный подвид" id="181" lat="Haematopus ostralegus osculans" oldid="312(2)" rus="Кулик-сорока" status="4" year="1871"/>
 			<species author="Nordmann" id="182" lat="Tringa guttier" oldid="313" rus="Охотский улит" status="1" year="1835"/>
 			<species author="Linnaeus" id="183" lat="Eurynorhynchus pygmeus" oldid="314" rus="Лопатень" status="3" year="1758"/>
-			<species author="C.L. Brehm" id="184" lat="подвид Calidris alpina schinzii" oldid="315(1)" rus="Чернозобик" status="1" year="1822"/>
-			<species author="Nechaev et Tomkovich" id="185" lat="подвид Calidris alpina actilis" oldid="315(2)" rus="Чернозобик" status="1" year="1987"/>
+			<species author="C.L. Brehm" id="184" lat="Calidris alpina schinzii" oldid="315(1)" rus="Чернозобик" comment="балтийский подвид" status="1" year="1822"/>
+			<species author="Nechaev et Tomkovich" id="185" lat="Calidris alpina actilis" oldid="315(2)" rus="Чернозобик" comment="сахалинский подвид" status="1" year="1987"/>
 			<species author="Yamashina" id="186" lat="Calidris ptilochnemis kurilensis" oldid="316" rus="Южнокамчатский берингийский песочник" status="1" year="1929"/>
 			<species author="Vieillot" id="187" lat="Tryngites subruficollis" oldid="317" rus="Желтозобик" status="3" year="1819"/>
 			<species author="Gray" id="188" lat="Gallinago hardwickii" oldid="318" rus="Японский бекас" status="3" year="1831"/>

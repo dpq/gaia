@@ -7,7 +7,6 @@
  *   Copyright 2007-2008 David Parunakian                                  *
  ***************************************************************************/
 #include <QtCore/QFile>
-#include <QtCore/QTextStream>
 #include <QtCore/QRegExp>
 #include <QtCore/QSet>
 #include <QtCore/QVariant>
@@ -53,6 +52,7 @@ QList<QString> QrbConfig::parameters(const QString &section) const {
 	return res;
 }
 
+
 QVariant QrbConfig::value(const QString &section, const QString &parameter) const {
 	int sectionIndex = c_sections->indexOf(section), parameterIndex = c_parameters->indexOf(parameter);
 
@@ -93,7 +93,6 @@ void QrbConfig::error(QrbConfig::Error *code, int *line) {
 void QrbConfig::setFile(const QString &path) {
 	QFile file(path);
 	QString c_section ="", c_param="", c_value="";
-
 	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
 		if (file.error() & (QFile::ReadError | QFile::FatalError | QFile::TimeOutError | QFile::OpenError | QFile::UnspecifiedError)) {
 			error_code = NotFound;
@@ -106,14 +105,13 @@ void QrbConfig::setFile(const QString &path) {
 			return;
 		}
 	}
-
-	QTextStream in(&file);
+	
 	error_code = Ok;
 	error_line = -1;
-	while (!in.atEnd()) {
-		QString line = in.readLine();
+	for (QString line = file.readLine(); !file.atEnd(); line = QString::fromUtf8(file.readLine())) {
 		error_line++;
-
+		line = line.simplified();
+	
 		if (line.contains(";"))
 			line = line.section(';', 0, 0).trimmed();
 
@@ -146,6 +144,7 @@ void QrbConfig::setFile(const QString &path) {
 		setValue(c_section, c_param, c_value);
 	}
 	error_code = Ok;
+	file.close();
 	return;
 }
 

@@ -5,7 +5,7 @@
 QT+=xml
 CONFIG+=uitools
 TEMPLATE = app
-TARGET = 
+TARGET = gaia
 DEPENDPATH += .
 INCLUDEPATH += .
 
