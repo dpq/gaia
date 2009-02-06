@@ -426,6 +426,8 @@ void Stack::treeItemSelected(QTreeWidgetItem *item) {
 }
 
 void Stack::listItemSelected(QListWidgetItem *item) {
+	QTime benchmark;
+	benchmark.start();
 	speciesId = item->data(Qt::UserRole).toInt();
 	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
 	foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
@@ -434,21 +436,35 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 			break;
 		}
 	}
-	findChild<QLabel*>("photoLabel")->setPixmap(core->entryPicture(speciesId));
-	findChild<QLabel*>("arealLabel")->setPixmap(core->speciesAreal(speciesId, zoneId));
+	qDebug() << "Finding the current speciesId and setting taxoTree: " << benchmark.restart();
+
+	QLabel *photoLabel = findChild<QLabel*>("photoLabel");
+	QLabel *arealLabel = findChild<QLabel*>("arealLabel");
+	QLabel *speciesLabel = findChild<QLabel*>("speciesLabel");
+	QLabel *commentLabel = findChild<QLabel*>("commentLabel");
+
+	qDebug() << "Creating pointers to widgets :" << benchmark.restart();
+
+	photoLabel->setPixmap(core->entryPicture(speciesId));
+	arealLabel->setPixmap(core->speciesAreal(speciesId, zoneId));
+	
 	QString speciesText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Name").toString());
 	QString line1 = speciesText.split("\n")[0].toUpper();
 	QString line2 = speciesText.split("\n")[1];
 	speciesText = speciesText.split("\n")[2] + "\n" + speciesText.split("\n")[3] + "\n";
-	QStringList litText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Lit").toString()).split("\n", QString::SkipEmptyParts);
-	QString compilers = "";
 	
+	QStringList litText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Lit").toString()).split("\n", QString::SkipEmptyParts);
+	
+	qDebug() << "Loading species, literature text and setting pixmaps provided by the Core: " << benchmark.restart();
+
+	QString compilers = "";
 	for (int i = litText.size() - 1; i >= 0; i--) {
 		if (litText[i].trimmed().length() > 0) {
 			compilers = litText[i].trimmed();
 			break;
 		}
 	}
+	qDebug() << "Extracting compiler names: " << benchmark.restart();
 	
 	QList<int> cat = core->speciesStatus(speciesId, zoneId);
 	QString cathegory = "";
@@ -456,11 +472,13 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		cathegory += QString::number(*i) + ", ";
 	}
 	
+	qDebug() << "Getting cathegory: " << benchmark.restart();
+		
 	cathegory = cathegory.left(cathegory.length() - 2);
 	cathegory += " " + config->value("Labels", "cathegory").toString().toLower();
-	findChild<QLabel*>("speciesLabel")->setWordWrap(true);
-	findChild<QLabel*>("speciesLabel")->setText("<div style=\"whitespace:pre-wrap\">" + line1 + "<br />" + line2 + "</div>");
-	findChild<QLabel*>("commentLabel")->setText(speciesText.trimmed() + "\n" + cathegory + "\n" + compilers);
+	speciesLabel->setWordWrap(true);
+	speciesLabel->setText("<div style=\"whitespace:pre-wrap\">" + line1 + "<br />" + line2 + "</div>");
+	commentLabel->setText(speciesText.trimmed() + "\n" + cathegory + "\n" + compilers);
 	bool selectionFound = false;
 	QListWidget *sectionList = findChild<QListWidget*>("sectionList");
 	sectionList->clear();
@@ -468,7 +486,9 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
 	QList<QString> keys = parameters.values();
 	qSort(keys);
-	
+		
+	qDebug() << "Setting label values and retrieving section list:" << benchmark.restart();
+
 	for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
 		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
 			continue;
@@ -480,12 +500,14 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 			selectionFound = true;
 		}
 	}
-
 	if (! selectionFound) {
 		sectionList->setCurrentRow(0);
 		articleId = "";
 	}
+	qDebug() << "More work on sectionList: " << benchmark.restart();
+	
 	refreshArticle();
+	qDebug() << "Article refreshed: " << benchmark.restart();
 	
 	/* Colorizing */
 	QWidget *colorPage = findChild<QWidget*>("colorPage");
@@ -511,16 +533,19 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		cc = "#000000";
 		lc = "#000000";
 	}
-	findChild<QLabel*>("speciesLabel")->setStyleSheet("#speciesLabel {" + specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc + "}");
-	findChild<QLabel*>("commentLabel")->setStyleSheet("#commentLabel {" + specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc + "}");
+	speciesLabel->setStyleSheet("#speciesLabel {" + specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc + "}");
+	commentLabel->setStyleSheet("#commentLabel {" + specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc + "}");
 	if (specialBackground != "") {
-		sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc + "}");
-		qApp->setStyleSheet(qApp->styleSheet() + "QListWidget#sectionList::item::selected { border: 1px solid black }");
+		sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc + "} #sectionList::item::selected { border: 1px solid black }");
+		//qApp->setStyleSheet(qApp->styleSheet() + "QListWidget#sectionList::item::selected { border: 1px solid black }");
 	}
 	else {
-		sectionList->setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:" + bc + "; selection-color:" + lc);
-		qApp->setStyleSheet(qApp->styleSheet().replace("QListWidget#sectionList::item::selected { border: 1px solid black }", ""));
+		sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:" + bc + "; selection-color:" + lc + "}");
+		//qApp->setStyleSheet(qApp->styleSheet().replace("QListWidget#sectionList::item::selected { border: 1px solid black }", ""));
 	}
+	
+	qDebug() << "Installed colors: " << benchmark.restart();
+	
 	QAction *editAction = parent()->parent()->findChild<QAction*>("editAction");
 	QAction *saveAction = parent()->parent()->findChild<QAction*>("saveAction");
 	QAction *cancelAction = parent()->parent()->findChild<QAction*>("cancelAction");
@@ -552,6 +577,9 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		specMenu->menuAction()->setVisible(false);
 	}
 	fontMenu->setVisible(true);
+	
+	qDebug() << "Initiated the menu: " << benchmark.restart();
+	
 	this->setCurrentIndex(3);
 }
 
@@ -668,6 +696,8 @@ void Stack::prevSpecies() {
 	}
 	listItemSelected(alphaList->currentItem());
 } */
+
+#include <QTime>
 
 void Stack::nextSpecies() {
 	if (zoneId != 1) {
