@@ -335,6 +335,20 @@ void GaiaCore::setEntryPicture(int entryId, const QString &picturePath) {
 	return res;
 } */
 
+QList<int> GaiaCore::speciesZones(int speciesId) {
+	/* Scroll through all zones */
+	QList<int> res;
+	res.clear();
+	QList<QDomElement> zoneList = zoneElementsByTagName("zone", QDomElement());
+	foreach (const QDomElement &zone, zoneList) {
+		QString zoneId = zone.attribute("id");
+		if (QFile::exists(QString("%1/%2/%3/").arg(zoneUrl()).arg(zoneId).arg(speciesId))) {
+			res.append(zoneId.toInt());
+		}
+	}
+	return res;
+}
+
 bool GaiaCore::speciesEnabled(int speciesId, int zoneId) const {
 	return !QFile::exists(QString("%1/%2/%3/disabled").arg(zoneUrl()).arg(zoneId).arg(speciesId));
 }

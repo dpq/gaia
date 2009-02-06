@@ -35,13 +35,15 @@ public slots:
 	void nextSpecies();
 	void prevSpecies();
 	void printSpecies();
+	void printDocument();
 	void changeFocus(QWidget *old, QWidget *now);
 	void largerFont();
 	void smallerFont();
-	//void up();
+	void up();
 	void showHelp();
 	void showIndex();
 	void initIndex();
+	void setZone(QAction *action);
 
 	void edit();
 	void saveEdit();
@@ -64,7 +66,9 @@ private:
 	QList<QListWidgetItem*> *rusAlphas;
 	QMap<QString, QList<int> > *chapterMap;
 	QMap<QString, QString> *chapterLayout;
+	QMap<QAction*, int> *zoneMapping;
 	void insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root);
+	void refreshSectionList();
 };
 
 #endif

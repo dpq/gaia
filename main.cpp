@@ -67,8 +67,9 @@ int main(int argc, char **argv) {
 
 	/*QAction *upAction = menuBar->addAction(config->value("Labels", "lists").toString());
 	upAction->setObjectName("upAction");
-	QObject::connect(upAction, SIGNAL(activated()), stack, SLOT(up()));*/
-	
+	*/
+	QObject::connect(redBook->findChild<QPushButton*>("backToListsButton"), SIGNAL(clicked()), stack, SLOT(up()));
+
 	QMenu *specMenu = menuBar->addMenu(config->value("Labels", "spec").toString());
 	specMenu->setObjectName("specMenu");
 	//QAction *rfAction = specMenu->addAction(config->value("Labels", "rf").toString());
@@ -128,6 +129,7 @@ int main(int argc, char **argv) {
 	QObject::connect(redBook->findChild<QPushButton*>("prevButton"), SIGNAL(clicked()), stack, SLOT(prevSpecies()));
 	QObject::connect(redBook->findChild<QPushButton*>("nextButton"), SIGNAL(clicked()), stack, SLOT(nextSpecies()));
 	QObject::connect(redBook->findChild<QPushButton*>("printButton"), SIGNAL(clicked()), stack, SLOT(printSpecies()));
+	QObject::connect(redBook->findChild<QPushButton*>("docPrintButton"), SIGNAL(clicked()), stack, SLOT(printDocument()));
 
 	QObject::connect(redBook->findChild<QPushButton*>("docBackButton"), SIGNAL(clicked()), stack, SLOT(showIndex()));
 	QObject::connect(redBook->findChild<QPushButton*>("speciesBackButton"), SIGNAL(clicked()), stack, SLOT(showIndex()));

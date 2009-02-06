@@ -73,6 +73,7 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	editMode = false;
 	zoneId = 1;
 	taxoSpecies = new QList<QTreeWidgetItem*>();
+	zoneMapping = new QMap<QAction*, int>();
 }
 
 Stack::~Stack() {
@@ -85,6 +86,7 @@ Stack::~Stack() {
 	delete chapterMap;
 	delete chapterLayout;
 	delete taxoSpecies;
+	delete zoneMapping;
 }
 
 void Stack::initIndex() {
@@ -478,7 +480,6 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 			selectionFound = true;
 		}
 	}
-	
 
 	if (! selectionFound) {
 		sectionList->setCurrentRow(0);
@@ -505,8 +506,6 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		cc = "#000000";
 		lc = "#000000";
 	}
-	
-
 	findChild<QLabel*>("speciesLabel")->setStyleSheet(specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc);
 	findChild<QLabel*>("commentLabel")->setStyleSheet(specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc);
 	if (specialBackground != "") {
@@ -520,7 +519,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	QAction *editAction = parent()->parent()->findChild<QAction*>("editAction");
 	QAction *saveAction = parent()->parent()->findChild<QAction*>("saveAction");
 	QAction *cancelAction = parent()->parent()->findChild<QAction*>("cancelAction");
-	QAction *specMenu = parent()->parent()->findChild<QMenu*>("specMenu")->menuAction();
+	QMenu *specMenu = parent()->parent()->findChild<QMenu*>("specMenu");
 	QAction *fontMenu = parent()->parent()->findChild<QMenu*>("fontMenu")->menuAction();
 	if (editMode) {
 		editAction->setVisible(false);
@@ -532,10 +531,58 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		saveAction->setVisible(false);
 		cancelAction->setVisible(false);
 	}
-	specMenu->setVisible(true);
+	/* Check the Core to see if this species exists in other zones as well */
+	QList<int> speciesZones = core->speciesZones(speciesId);
+	specMenu->clear();
+	zoneMapping->clear();
+	if (speciesZones.size() > 1) {
+		foreach (int zoneId, speciesZones) {
+			QAction *zoneAction = specMenu->addAction(core->zoneName(zoneId));
+			zoneMapping->insert(zoneAction, zoneId);
+			QObject::connect(specMenu, SIGNAL(triggered(QAction*)), this, SLOT(setZone(QAction*)));
+		}
+		specMenu->menuAction()->setVisible(true);
+	}
+	else {
+		specMenu->menuAction()->setVisible(false);
+	}
 	fontMenu->setVisible(true);
-	
 	this->setCurrentIndex(3);
+}
+
+void Stack::setZone(QAction *action) {
+	zoneId = zoneMapping->value(action);
+	delete chapterLayout;
+	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
+	refreshSectionList();
+	refreshArticle();
+}
+
+void Stack::refreshSectionList() {
+	bool selectionFound = false;
+	QListWidget *sectionList = findChild<QListWidget*>("sectionList");
+	sectionList->clear();
+	sectionList->addItem(config->value("Labels", "Full").toString());
+	QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
+	QList<QString> keys = parameters.values();
+	qSort(keys);
+	
+	for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
+		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
+			continue;
+		QListWidgetItem *item = new QListWidgetItem(parameters.key(*i));
+		item->setData(Qt::UserRole, *i);
+		sectionList->addItem(item);
+		if (parameters.key(*i) == articleId) {
+			sectionList->setCurrentItem(item);
+			selectionFound = true;
+		}
+	}
+
+	if (! selectionFound) {
+		sectionList->setCurrentRow(0);
+		articleId = "";
+	}
 }
 
 QString Stack::labelColor(int cat) {
@@ -617,6 +664,12 @@ void Stack::prevSpecies() {
 } */
 
 void Stack::nextSpecies() {
+	if (zoneId != 1) {
+		zoneId = 1;
+		delete chapterLayout;
+		chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
+		refreshSectionList();
+	}
 	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
 	if (taxoSpecies->indexOf(taxoTree->currentItem()) < taxoSpecies->count() - 1) {
 		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) + 1));
@@ -629,6 +682,12 @@ void Stack::nextSpecies() {
 }
 
 void Stack::prevSpecies() {
+	if (zoneId != 1) {
+		zoneId = 1;
+		delete chapterLayout;
+		chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
+		refreshSectionList();
+	}
 	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
 	if (taxoSpecies->indexOf(taxoTree->currentItem()) > 0) {
 		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) - 1));
@@ -652,12 +711,11 @@ void Stack::changeFocus(QWidget *old, QWidget *now) {
 	}
 }
 
-/*void Stack::up() {
+void Stack::up() {
 	findChild<QTreeWidget*>("taxoTree")->clearSelection();
 	findChild<QListWidget*>("alphaList")->clearSelection();
-	this->setCurrentIndex(2);
-	
-}*/
+	this->setCurrentIndex(2);	
+}
 
 void Stack::saveEdit() {
 	QAction *editAction = parent()->parent()->findChild<QAction*>("editAction");
@@ -713,6 +771,15 @@ void Stack::showHelp() {
 	helpDialog->resize(400, 300);
 	helpDialog->exec();
 	delete helpDialog;
+}
+
+void Stack::printDocument() {
+	QPrinter printer;
+	QPrintDialog *dialog = new QPrintDialog(&printer, 0);
+	dialog->setWindowTitle(tr("Print Document"));
+	if (dialog->exec() != QDialog::Accepted)
+		return;
+	parent()->parent()->findChild<QTextBrowser*>("docViewer")->print(&printer);
 }
 
 void Stack::printSpecies() {

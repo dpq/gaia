@@ -6,7 +6,6 @@
  *   (at your option) any later version.                                   *
  *   Copyright 2008 David Parunakian                                       *
  ***************************************************************************/
-
 #include <QtUiTools/QUiLoader>
 
 class UiLoader : public QUiLoader {

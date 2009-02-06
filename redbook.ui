@@ -13,14 +13,6 @@
    <string>Красная книга Российской Федерации</string>
   </property>
   <widget class="QWidget" name="centralwidget" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
-     <y>19</y>
-     <width>1022</width>
-     <height>685</height>
-    </rect>
-   </property>
    <layout class="QGridLayout" >
     <item row="0" column="0" >
      <widget class="Stack" name="stackedWidget" >
@@ -34,14 +26,6 @@
        <number>0</number>
       </property>
       <widget class="QWidget" name="page" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>1004</width>
-         <height>667</height>
-        </rect>
-       </property>
        <layout class="QGridLayout" >
         <item row="0" column="0" colspan="3" >
          <layout class="QHBoxLayout" >
@@ -173,14 +157,6 @@ border-radius: 0px;</string>
        </layout>
       </widget>
       <widget class="QWidget" name="page_3" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>1004</width>
-         <height>667</height>
-        </rect>
-       </property>
        <layout class="QHBoxLayout" >
         <item>
          <widget class="QFrame" name="docFrame" >
@@ -214,7 +190,7 @@ color: #000000</string>
                 </sizepolicy>
                </property>
                <property name="styleSheet" >
-                <string notr="true" >background-color: rgb(255, 255, 255);
+                <string notr="true" >background-color: rgb(200, 200, 200);
 color: #000000;</string>
                </property>
                <property name="text" >
@@ -237,6 +213,16 @@ color: #000000;</string>
                 </size>
                </property>
               </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="docPrintButton" >
+               <property name="styleSheet" >
+                <string notr="true" >background-color: rgb(200, 200, 200);</string>
+               </property>
+               <property name="text" >
+                <string>Печать</string>
+               </property>
+              </widget>
              </item>
              <item>
               <widget class="QComboBox" name="chapterCombo" >
@@ -280,14 +266,6 @@ border: 1px solid black;</string>
        </layout>
       </widget>
       <widget class="QWidget" name="page_2" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>1004</width>
-         <height>667</height>
-        </rect>
-       </property>
        <layout class="QVBoxLayout" >
         <item>
          <widget class="QFrame" name="widget_3" >
@@ -306,7 +284,7 @@ border: 1px solid black;</string>
                 </sizepolicy>
                </property>
                <property name="styleSheet" >
-                <string notr="true" >background-color: rgb(255, 255, 255);
+                <string notr="true" >background-color: rgb(200, 200, 200);
 color: #000000;</string>
                </property>
                <property name="text" >
@@ -334,7 +312,7 @@ color: #000000;</string>
 &lt;html>&lt;head>&lt;meta name="qrichtext" content="1" />&lt;style type="text/css">
 p, li { white-space: pre-wrap; }
 &lt;/style>&lt;/head>&lt;body style=" font-family:'Sans Serif'; font-size:10pt; font-weight:400; font-style:normal;">
-&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:16pt; font-weight:600; font-style:italic; color:#ff0000;">Виды, занесенные в Красную Книгу Российской Федерации&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
+&lt;p style=" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;">&lt;span style=" font-size:16pt; font-weight:600; font-style:italic; color:#ffffff;">Виды, занесенные в Красную Книгу Российской Федерации&lt;/span>&lt;/p>&lt;/body>&lt;/html></string>
                </property>
                <property name="alignment" >
                 <set>Qt::AlignCenter</set>
@@ -605,14 +583,6 @@ selection-background-color: rgb(255, 0, 0);</string>
        </layout>
       </widget>
       <widget class="QWidget" name="page_4" >
-       <property name="geometry" >
-        <rect>
-         <x>0</x>
-         <y>0</y>
-         <width>1004</width>
-         <height>667</height>
-        </rect>
-       </property>
        <layout class="QVBoxLayout" >
         <item>
          <layout class="QGridLayout" >
@@ -622,6 +592,34 @@ selection-background-color: rgb(255, 0, 0);</string>
              <string notr="true" >background-color: rgb(255, 248, 250);</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_2" >
+             <item>
+              <layout class="QHBoxLayout" name="_2" >
+               <item>
+                <widget class="QPushButton" name="backToListsButton" >
+                 <property name="styleSheet" >
+                  <string notr="true" >background-color: rgb(200, 200, 200);
+color: #000000;</string>
+                 </property>
+                 <property name="text" >
+                  <string>&lt;&lt; Список видов</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer" >
+                 <property name="orientation" >
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0" >
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+              </layout>
+             </item>
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_2" >
                <item>
@@ -717,7 +715,7 @@ selection-background-color: rgb(255, 0, 0);</string>
                         </sizepolicy>
                        </property>
                        <property name="styleSheet" >
-                        <string notr="true" >background-color: rgb(255, 255, 255);
+                        <string notr="true" >background-color: rgb(200, 200, 200);
 color: #000000;</string>
                        </property>
                        <property name="text" >
@@ -734,7 +732,7 @@ color: #000000;</string>
                         </sizepolicy>
                        </property>
                        <property name="styleSheet" >
-                        <string notr="true" >background-color: rgb(255, 255, 255);
+                        <string notr="true" >background-color: rgb(200, 200, 200);
 color: #000000;</string>
                        </property>
                        <property name="text" >
@@ -745,7 +743,7 @@ color: #000000;</string>
                      <item>
                       <widget class="QPushButton" name="printButton" >
                        <property name="styleSheet" >
-                        <string notr="true" >background-color: rgb(255, 255, 255);
+                        <string notr="true" >background-color: rgb(200, 200, 200);
 color: #000000;</string>
                        </property>
                        <property name="text" >
@@ -762,7 +760,7 @@ color: #000000;</string>
                <item>
                 <widget class="QListWidget" name="sectionList" >
                  <property name="sizePolicy" >
-                  <sizepolicy vsizetype="Maximum" hsizetype="Fixed" >
+                  <sizepolicy vsizetype="Maximum" hsizetype="Maximum" >
                    <horstretch>0</horstretch>
                    <verstretch>0</verstretch>
                   </sizepolicy>
@@ -771,8 +769,7 @@ color: #000000;</string>
                   <enum>Qt::NoFocus</enum>
                  </property>
                  <property name="styleSheet" >
-                  <string notr="true" >background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);</string>
+                  <string notr="true" >background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);</string>
                  </property>
                 </widget>
                </item>
@@ -866,9 +863,7 @@ color: rgb(0, 0, 0);</string>
                   </sizepolicy>
                  </property>
                  <property name="styleSheet" >
-                  <string notr="true" >background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);
-font: 10pt "Sans Serif";</string>
+                  <string notr="true" >background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font: 10pt "Sans Serif";</string>
                  </property>
                 </widget>
                </item>
@@ -891,7 +886,7 @@ font: 10pt "Sans Serif";</string>
      <x>0</x>
      <y>0</y>
      <width>1022</width>
-     <height>19</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

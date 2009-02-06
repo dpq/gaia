@@ -8,9 +8,10 @@
  ***************************************************************************/
 #ifndef CORE_H
 #define CORE_H
-#include <QtCore/QObject>
+
 #define OPERATOR
 
+#include <QtCore/QObject>
 #include <QtCore/QMap>
 #include <QtCore/QHash>
 #include <QtXml/QDomDocument>
@@ -25,9 +26,11 @@ Q_OBJECT
 public:
 	void openZoneFile(const QString &path);
 #ifdef OPERATOR
+public slots:
 	void saveZoneFile(const QString &path);
 #endif
 
+public:
 	QString zoneUrl() const;
 #ifdef OPERATOR
 public slots:
@@ -141,6 +144,8 @@ public:
 	QPixmap speciesAreal(int speciesId, int zoneId) const;
 	QList<int> speciesStatus(int speciesId, int zoneId) const;
 	QString speciesChapter(int speciesId, int zoneId, const QString &chapterName) const;
+	// Return the list of zones where the species is met
+	QList<int> speciesZones(int speciesId);
 
 #ifdef OPERATOR
 public slots:
