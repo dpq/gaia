@@ -74,6 +74,7 @@ Stack::Stack(QWidget *parent) : QStackedWidget(parent) {
 	zoneId = 1;
 	taxoSpecies = new QList<QTreeWidgetItem*>();
 	zoneMapping = new QMap<QAction*, int>();
+	currentCathegory =  "";
 }
 
 Stack::~Stack() {
@@ -426,8 +427,8 @@ void Stack::treeItemSelected(QTreeWidgetItem *item) {
 }
 
 void Stack::listItemSelected(QListWidgetItem *item) {
-	QTime benchmark;
-	benchmark.start();
+	//QTime benchmark;
+	//benchmark.start();
 	speciesId = item->data(Qt::UserRole).toInt();
 	QTreeWidget *taxoTree = findChild<QTreeWidget*>("taxoTree");
 	foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
@@ -436,14 +437,14 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 			break;
 		}
 	}
-	qDebug() << "Finding the current speciesId and setting taxoTree: " << benchmark.restart();
+	//qDebug() << "Finding the current speciesId and setting taxoTree: " << benchmark.restart();
 
 	QLabel *photoLabel = findChild<QLabel*>("photoLabel");
 	QLabel *arealLabel = findChild<QLabel*>("arealLabel");
 	QLabel *speciesLabel = findChild<QLabel*>("speciesLabel");
 	QLabel *commentLabel = findChild<QLabel*>("commentLabel");
 
-	qDebug() << "Creating pointers to widgets :" << benchmark.restart();
+	// qDebug() << "Creating pointers to widgets :" << benchmark.restart();
 
 	photoLabel->setPixmap(core->entryPicture(speciesId));
 	arealLabel->setPixmap(core->speciesAreal(speciesId, zoneId));
@@ -455,7 +456,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	
 	QStringList litText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Lit").toString()).split("\n", QString::SkipEmptyParts);
 	
-	qDebug() << "Loading species, literature text and setting pixmaps provided by the Core: " << benchmark.restart();
+	// qDebug() << "Loading species, literature text and setting pixmaps provided by the Core: " << benchmark.restart();
 
 	QString compilers = "";
 	for (int i = litText.size() - 1; i >= 0; i--) {
@@ -464,7 +465,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 			break;
 		}
 	}
-	qDebug() << "Extracting compiler names: " << benchmark.restart();
+	// qDebug() << "Extracting compiler names: " << benchmark.restart();
 	
 	QList<int> cat = core->speciesStatus(speciesId, zoneId);
 	QString cathegory = "";
@@ -472,7 +473,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		cathegory += QString::number(*i) + ", ";
 	}
 	
-	qDebug() << "Getting cathegory: " << benchmark.restart();
+	// qDebug() << "Getting cathegory: " << benchmark.restart();
 		
 	cathegory = cathegory.left(cathegory.length() - 2);
 	cathegory += " " + config->value("Labels", "cathegory").toString().toLower();
@@ -487,7 +488,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	QList<QString> keys = parameters.values();
 	qSort(keys);
 		
-	qDebug() << "Setting label values and retrieving section list:" << benchmark.restart();
+	// qDebug() << "Setting label values and retrieving section list:" << benchmark.restart();
 
 	for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
 		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
@@ -504,47 +505,49 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 		sectionList->setCurrentRow(0);
 		articleId = "";
 	}
-	qDebug() << "More work on sectionList: " << benchmark.restart();
+	// qDebug() << "More work on sectionList: " << benchmark.restart();
 	
 	refreshArticle();
-	qDebug() << "Article refreshed: " << benchmark.restart();
+	// qDebug() << "Article refreshed: " << benchmark.restart();
 	
 	/* Colorizing */
-	QWidget *colorPage = findChild<QWidget*>("colorPage");
-	if (cat.size() > 1) {
-		QString stylesheet = "#colorPage { background: qconicalgradient(cx:0, cy:0,";
-		QString stops = "";
-		float x = 1.0;
-		for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
-			stops += "stop: " + QString::number(x, 'f', 3) + " " + pageColor(*i) + ",";
-			x -= (0.25/(cat.size()));
-			if (i + 1 != cat.end())
-				stops += "stop: " + QString::number(x + 0.005, 'f', 3) + " " + pageColor(*i) + ",";
-		stops = stops.left(stops.length() - 1);
-		colorPage->setStyleSheet(stylesheet + stops + ") }");
+	if (currentCathegory != cathegory) {
+		QWidget *colorPage = findChild<QWidget*>("colorPage");
+		if (cat.size() > 1) {
+			QString stylesheet = "#colorPage { background: qconicalgradient(cx:0, cy:0,";
+			QString stops = "";
+			float x = 1.0;
+			for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
+				stops += " stop: " + QString::number(x, 'f', 3) + " " + pageColor(*i) + ",";
+				x -= (0.25/(cat.size()));
+				if (i + 1 != cat.end())
+					stops += " stop: " + QString::number(x + 0.005, 'f', 3) + " " + pageColor(*i) + ",";
+			stops = stops.left(stops.length() - 1);
+			colorPage->setStyleSheet(stylesheet + stops + ") }");
+			}
 		}
+		else {
+			colorPage->setStyleSheet("#colorPage { background-color:" + pageColor(cat[0]) + "}");
+		}
+		QString specialBackground = "", lc = labelColor(cat[0]), cc = commentColor(cat[0]), bc = pageColor(cat[0]);
+		if (cat.size() > 1) {
+			specialBackground = "background-color: #ffffff; border: 1px solid black;";
+			cc = "#000000";
+			lc = "#000000";
+		}
+		speciesLabel->setStyleSheet("#speciesLabel {" + specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc + "}");
+		commentLabel->setStyleSheet("#commentLabel {" + specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc + "}");
+		if (specialBackground != "") {
+			sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc + "} #sectionList::item::selected { border: 1px solid black }");
+			//qApp->setStyleSheet(qApp->styleSheet() + "QListWidget#sectionList::item::selected { border: 1px solid black }");
+		}
+		else {
+			sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:" + bc + "; selection-color:" + lc + "}");
+			//qApp->setStyleSheet(qApp->styleSheet().replace("QListWidget#sectionList::item::selected { border: 1px solid black }", ""));
+		}
+		currentCathegory = cathegory;
 	}
-	else {
-		colorPage->setStyleSheet("#colorPage { background-color:" + pageColor(cat[0]) + "}");
-	}
-	QString specialBackground = "", lc = labelColor(cat[0]), cc = commentColor(cat[0]), bc = pageColor(cat[0]);
-	if (cat.size() > 1) {
-		specialBackground = "background-color: #ffffff; border: 1px solid black;";
-		cc = "#000000";
-		lc = "#000000";
-	}
-	speciesLabel->setStyleSheet("#speciesLabel {" + specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc + "}");
-	commentLabel->setStyleSheet("#commentLabel {" + specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc + "}");
-	if (specialBackground != "") {
-		sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc + "} #sectionList::item::selected { border: 1px solid black }");
-		//qApp->setStyleSheet(qApp->styleSheet() + "QListWidget#sectionList::item::selected { border: 1px solid black }");
-	}
-	else {
-		sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:" + bc + "; selection-color:" + lc + "}");
-		//qApp->setStyleSheet(qApp->styleSheet().replace("QListWidget#sectionList::item::selected { border: 1px solid black }", ""));
-	}
-	
-	qDebug() << "Installed colors: " << benchmark.restart();
+	// qDebug() << "Installed colors: " << benchmark.restart();
 	
 	QAction *editAction = parent()->parent()->findChild<QAction*>("editAction");
 	QAction *saveAction = parent()->parent()->findChild<QAction*>("saveAction");
@@ -578,7 +581,7 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	}
 	fontMenu->setVisible(true);
 	
-	qDebug() << "Initiated the menu: " << benchmark.restart();
+	// qDebug() << "Initiated the menu: " << benchmark.restart();
 	
 	this->setCurrentIndex(3);
 }
@@ -589,7 +592,7 @@ void Stack::setZone(QAction *action) {
 	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
 	refreshSectionList();
 	refreshArticle();
-	qDebug() << findChild<QWidget*>("colorPage")->styleSheet();
+	//qDebug() << findChild<QWidget*>("colorPage")->styleSheet();
 }
 
 void Stack::refreshSectionList() {

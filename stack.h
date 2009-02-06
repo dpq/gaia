@@ -62,6 +62,7 @@ private:
 	bool editMode;
 	GaiaCore *core;
 	QrbConfig *config;
+	QString currentCathegory;
 	QList<QListWidgetItem*> *latAlphas;
 	QList<QListWidgetItem*> *rusAlphas;
 	QMap<QString, QList<int> > *chapterMap;
