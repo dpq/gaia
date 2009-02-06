@@ -20,7 +20,9 @@
        <bool>false</bool>
       </property>
       <property name="styleSheet" >
-       <string notr="true" >background-color: rgb(0, 0, 0);</string>
+       <string notr="true" >#stackedWidget { 
+	background-color: rgb(0, 0, 0);
+}</string>
       </property>
       <property name="currentIndex" >
        <number>0</number>
@@ -161,7 +163,9 @@ border-radius: 0px;</string>
         <item>
          <widget class="QFrame" name="docFrame" >
           <property name="styleSheet" >
-           <string notr="true" >background-color: #0080c0;</string>
+           <string notr="true" >#docFrame, #docTitle {
+	background-color: #0080c0;
+}</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3" >
            <item>
@@ -190,8 +194,7 @@ color: #000000</string>
                 </sizepolicy>
                </property>
                <property name="styleSheet" >
-                <string notr="true" >background-color: rgb(200, 200, 200);
-color: #000000;</string>
+                <string notr="true" />
                </property>
                <property name="text" >
                 <string>&lt;&lt; Оглавление</string>
@@ -217,7 +220,7 @@ color: #000000;</string>
              <item>
               <widget class="QPushButton" name="docPrintButton" >
                <property name="styleSheet" >
-                <string notr="true" >background-color: rgb(200, 200, 200);</string>
+                <string notr="true" />
                </property>
                <property name="text" >
                 <string>Печать</string>
@@ -246,11 +249,7 @@ color: #000000;</string>
            <item>
             <widget class="QTextBrowser" name="docViewer" >
              <property name="styleSheet" >
-              <string notr="true" >background-color: rgb(255, 255, 255);
-color: rgb(0, 0, 0);
-font: 10pt "Sans Serif";
-border-radius: 0px;
-border: 1px solid black;</string>
+              <string notr="true" />
              </property>
              <property name="locale" >
               <locale country="RussianFederation" language="Russian" />
@@ -270,7 +269,9 @@ border: 1px solid black;</string>
         <item>
          <widget class="QFrame" name="widget_3" >
           <property name="styleSheet" >
-           <string notr="true" >background-color: rgb(170, 0, 0);</string>
+           <string notr="true" >#widget_3, #latButton, #rusButton { 
+	background-color: rgb(170, 0, 0);
+}</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4" >
            <item>
@@ -284,8 +285,7 @@ border: 1px solid black;</string>
                 </sizepolicy>
                </property>
                <property name="styleSheet" >
-                <string notr="true" >background-color: rgb(200, 200, 200);
-color: #000000;</string>
+                <string notr="true" />
                </property>
                <property name="text" >
                 <string>&lt;&lt; Оглавление</string>
@@ -489,8 +489,7 @@ p, li { white-space: pre-wrap; }
                   </sizepolicy>
                  </property>
                  <property name="styleSheet" >
-                  <string notr="true" >background-color: rgb(255, 255, 255);
-selection-background-color: rgb(255, 0, 0);</string>
+                  <string notr="true" >selection-background-color: rgb(255, 0, 0);</string>
                  </property>
                  <property name="horizontalScrollBarPolicy" >
                   <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -565,8 +564,7 @@ p, li { white-space: pre-wrap; }
                <item>
                 <widget class="QListWidget" name="alphaList" >
                  <property name="styleSheet" >
-                  <string notr="true" >background-color: rgb(255, 255, 255);
-selection-background-color: rgb(255, 0, 0);</string>
+                  <string notr="true" >selection-background-color: rgb(255, 0, 0);</string>
                  </property>
                  <property name="horizontalScrollBarPolicy" >
                   <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -589,7 +587,9 @@ selection-background-color: rgb(255, 0, 0);</string>
           <item row="0" column="0" >
            <widget class="QFrame" name="colorPage" >
             <property name="styleSheet" >
-             <string notr="true" >background-color: rgb(255, 248, 250);</string>
+             <string notr="true" >#colorPage {
+	background-color: rgb(255, 248, 250); 
+}</string>
             </property>
             <layout class="QVBoxLayout" name="verticalLayout_2" >
              <item>
@@ -715,8 +715,7 @@ color: #000000;</string>
                         </sizepolicy>
                        </property>
                        <property name="styleSheet" >
-                        <string notr="true" >background-color: rgb(200, 200, 200);
-color: #000000;</string>
+                        <string notr="true" />
                        </property>
                        <property name="text" >
                         <string>&lt;</string>
@@ -732,8 +731,7 @@ color: #000000;</string>
                         </sizepolicy>
                        </property>
                        <property name="styleSheet" >
-                        <string notr="true" >background-color: rgb(200, 200, 200);
-color: #000000;</string>
+                        <string notr="true" />
                        </property>
                        <property name="text" >
                         <string>></string>
@@ -743,8 +741,7 @@ color: #000000;</string>
                      <item>
                       <widget class="QPushButton" name="printButton" >
                        <property name="styleSheet" >
-                        <string notr="true" >background-color: rgb(200, 200, 200);
-color: #000000;</string>
+                        <string notr="true" />
                        </property>
                        <property name="text" >
                         <string>Печать</string>
@@ -769,7 +766,10 @@ color: #000000;</string>
                   <enum>Qt::NoFocus</enum>
                  </property>
                  <property name="styleSheet" >
-                  <string notr="true" >background-color: rgb(255, 255, 255); color: rgb(0, 0, 0);</string>
+                  <string notr="true" >#sectionList { 
+	background-color: rgb(255, 255, 255);
+	color: rgb(0, 0, 0);
+}</string>
                  </property>
                 </widget>
                </item>
@@ -863,7 +863,7 @@ color: #000000;</string>
                   </sizepolicy>
                  </property>
                  <property name="styleSheet" >
-                  <string notr="true" >background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font: 10pt "Sans Serif";</string>
+                  <string notr="true" >#articleBrowser { font: 10pt "Sans Serif"; }</string>
                  </property>
                 </widget>
                </item>

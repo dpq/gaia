@@ -489,27 +489,32 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	
 	/* Colorizing */
 	QWidget *colorPage = findChild<QWidget*>("colorPage");
-	QString stylesheet = "background: qconicalgradient(cx:0, cy:0,";
-	QString stops = "";
-	float x = 1.0;
-	for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
-		stops += "stop: " + QString::number(x, 'f', 3) + " " + pageColor(*i) + ",";
-		x -= (0.25/(cat.size()));
-		if (i + 1 != cat.end())
-			stops += "stop: " + QString::number(x + 0.005, 'f', 3) + " " + pageColor(*i) + ",";
+	if (cat.size() > 1) {
+		QString stylesheet = "#colorPage { background: qconicalgradient(cx:0, cy:0,";
+		QString stops = "";
+		float x = 1.0;
+		for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
+			stops += "stop: " + QString::number(x, 'f', 3) + " " + pageColor(*i) + ",";
+			x -= (0.25/(cat.size()));
+			if (i + 1 != cat.end())
+				stops += "stop: " + QString::number(x + 0.005, 'f', 3) + " " + pageColor(*i) + ",";
+		stops = stops.left(stops.length() - 1);
+		colorPage->setStyleSheet(stylesheet + stops + ") }");
+		}
 	}
-	stops = stops.left(stops.length() - 1);
-	colorPage->setStyleSheet(stylesheet + stops + ")");
+	else {
+		colorPage->setStyleSheet("#colorPage { background-color:" + pageColor(cat[0]) + "}");
+	}
 	QString specialBackground = "", lc = labelColor(cat[0]), cc = commentColor(cat[0]), bc = pageColor(cat[0]);
 	if (cat.size() > 1) {
 		specialBackground = "background-color: #ffffff; border: 1px solid black;";
 		cc = "#000000";
 		lc = "#000000";
 	}
-	findChild<QLabel*>("speciesLabel")->setStyleSheet(specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc);
-	findChild<QLabel*>("commentLabel")->setStyleSheet(specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc);
+	findChild<QLabel*>("speciesLabel")->setStyleSheet("#speciesLabel {" + specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc + "}");
+	findChild<QLabel*>("commentLabel")->setStyleSheet("#commentLabel {" + specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc + "}");
 	if (specialBackground != "") {
-		sectionList->setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc);
+		sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc + "}");
 		qApp->setStyleSheet(qApp->styleSheet() + "QListWidget#sectionList::item::selected { border: 1px solid black }");
 	}
 	else {
@@ -556,6 +561,7 @@ void Stack::setZone(QAction *action) {
 	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
 	refreshSectionList();
 	refreshArticle();
+	qDebug() << findChild<QWidget*>("colorPage")->styleSheet();
 }
 
 void Stack::refreshSectionList() {

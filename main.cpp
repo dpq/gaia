@@ -153,7 +153,7 @@ int main(int argc, char **argv) {
 	advStyle += "QScrollBar::down-arrow:vertical { background-color: grey }";
 	advStyle += "QScrollBar::add-page:vertical { background-color: grey }";
 	advStyle += "QScrollBar::sub-page:vertical { background-color: grey }";*/
-	advStyle += "QScrollBar:vertical {\
+	/* advStyle += "QScrollBar:vertical {\
               border: 1px solid black;\
               width: 15px;\
               margin: 22px 0 22px 0;\
@@ -185,7 +185,7 @@ int main(int argc, char **argv) {
           }\
           QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\
               background: white;\
-          } ";
+          } "; */
 	//advStyle += "QListWidget#sectionList::item::selected { border: 1px solid black }";
 	app.setStyleSheet(advStyle);
 // QListWidget#indexList::item::hover { background-color: #ff0000; }
