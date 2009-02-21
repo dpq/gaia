@@ -440,7 +440,7 @@ void GaiaCore::setSpeciesChapter(int speciesId, int zoneId, const QString &chapt
 	if (!dir.exists(QString::number(speciesId)))
 		if (!dir.mkdir(QString::number(speciesId)))
 			return;
-	QFile file(QString("%1/%2/%3/%4.html").arg(zoneUrl()).arg(zoneId).arg(speciesId).arg(chapterLayout(zoneId).value(chapterName)));
+	QFile file(QString("%1/%2/%3/%4").arg(zoneUrl()).arg(zoneId).arg(speciesId).arg(chapterLayout(zoneId).value(chapterName)));
 	if (!file.open(QIODevice::WriteOnly))
 		return;
 	file.write(chapterHtml.toUtf8());

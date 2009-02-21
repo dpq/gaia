@@ -484,6 +484,10 @@ void Stack::listItemSelected(QListWidgetItem *item) {
 	QListWidget *sectionList = findChild<QListWidget*>("sectionList");
 	sectionList->clear();
 	sectionList->addItem(config->value("Labels", "Full").toString());
+	overviewItem = sectionList->item(0);
+	if (editMode) {
+		overviewItem->setHidden(true);
+	}
 	QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
 	QList<QString> keys = parameters.values();
 	qSort(keys);
@@ -671,38 +675,47 @@ void Stack::refreshArticle() {
 	}
 	else
 		findChild<QTextBrowser*>("articleBrowser")->setText(core->speciesChapter(speciesId, zoneId, articleId));
+	if (editMode) {
+		original = findChild<QTextBrowser*>("articleBrowser")->toPlainText();
+		prevArtRow = findChild<QListWidget*>("sectionList")->currentRow();
+	}
+}
+
+#include <QtGui/QMessageBox>
+
+bool Stack::checkModification() {
+	if (editMode && original != findChild<QTextBrowser*>("articleBrowser")->toPlainText()) {
+		QMessageBox msgBox;
+		msgBox.setText(config->value("Labels", "DocMod").toString());
+		msgBox.setInformativeText(config->value("Labels", "DocSave").toString());
+		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+		msgBox.setDefaultButton(QMessageBox::Save);
+		int ret = msgBox.exec();
+		if (ret == QMessageBox::Cancel) {
+			findChild<QListWidget*>("sectionList")->setCurrentRow(prevArtRow);
+			return false;
+		}
+		if (ret == QMessageBox::Save) {
+			core->setSpeciesChapter(speciesId, zoneId, articleId, findChild<QTextBrowser*>("articleBrowser")->toPlainText());
+		}
+		else if (ret == QMessageBox::Discard) {
+			findChild<QTextBrowser*>("articleBrowser")->setText(original);
+		}
+	}
+	return true;
 }
 
 void Stack::setArticle(QListWidgetItem *item) {
+	if (!checkModification())
+		return;
 	articleId = (item->data(Qt::UserRole).toString() == "" ? "" : item->text());
 	refreshArticle();
 }
 
-/* void Stack::nextSpecies() {
-	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
-	if (alphaList->count() > alphaList->currentRow() + 1) {
-		alphaList->setCurrentRow(alphaList->currentRow() + 1);
-	}
-	else {
-		alphaList->setCurrentRow(0);
-	}
-	listItemSelected(alphaList->currentItem());
-}
-
-void Stack::prevSpecies() {
-	QListWidget *alphaList = findChild<QListWidget*>("alphaList");
-	if (alphaList->currentRow() > 0) {
-		alphaList->setCurrentRow(alphaList->currentRow() - 1);
-	}
-	else {
-		alphaList->setCurrentRow(alphaList->count() - 1);
-	}
-	listItemSelected(alphaList->currentItem());
-} */
-
-#include <QTime>
-
 void Stack::nextSpecies() {
+	if (!checkModification())
+		return;
+	// TODO If we're currently editing, save the current section via the Core
 	if (zoneId != 1) {
 		zoneId = 1;
 		delete chapterLayout;
@@ -718,9 +731,15 @@ void Stack::nextSpecies() {
 		taxoTree->setCurrentItem(taxoSpecies->first());
 	}
 	treeItemSelected(taxoTree->currentItem());
+	// TODO save a rollback version of the current section
+	if (editMode)
+		original = findChild<QTextBrowser*>("articleBrowser")->toPlainText();
 }
 
 void Stack::prevSpecies() {
+	if (!checkModification())
+		return;
+	// TODO If we're currently editing, save the current section via the Core
 	if (zoneId != 1) {
 		zoneId = 1;
 		delete chapterLayout;
@@ -736,6 +755,8 @@ void Stack::prevSpecies() {
 		taxoTree->setCurrentItem(taxoSpecies->last());
 	}
 	treeItemSelected(taxoTree->currentItem());
+	if (editMode)
+		original = findChild<QTextBrowser*>("articleBrowser")->toPlainText();
 }
 
 
@@ -753,10 +774,11 @@ void Stack::changeFocus(QWidget *old, QWidget *now) {
 void Stack::up() {
 	findChild<QTreeWidget*>("taxoTree")->clearSelection();
 	findChild<QListWidget*>("alphaList")->clearSelection();
-	this->setCurrentIndex(2);	
+	this->setCurrentIndex(2);
 }
 
 void Stack::saveEdit() {
+	core->setSpeciesChapter(speciesId, zoneId, articleId, findChild<QTextBrowser*>("articleBrowser")->toPlainText());
 	QAction *editAction = parent()->parent()->findChild<QAction*>("editAction");
 	QAction *saveAction = parent()->parent()->findChild<QAction*>("saveAction");
 	QAction *cancelAction = parent()->parent()->findChild<QAction*>("cancelAction");
@@ -766,6 +788,14 @@ void Stack::saveEdit() {
 	editAction->setVisible(true);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
+	parent()->parent()->findChild<QTextBrowser*>("articleBrowser")->setReadOnly(true);
+	QPushButton *printButton = parent()->parent()->findChild<QPushButton*>("printButton");
+	QPushButton *backButton = parent()->parent()->findChild<QPushButton*>("backToListsButton");
+	printButton->setEnabled(true);
+	backButton->setEnabled(true);
+	qDebug() << "a";
+	overviewItem->setHidden(false);
+	qDebug() << "b";
 }
 
 void Stack::cancelEdit() {
@@ -778,16 +808,43 @@ void Stack::cancelEdit() {
 	editAction->setVisible(true);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
+	findChild<QTextBrowser*>("articleBrowser")->setText(original);
+	parent()->parent()->findChild<QTextBrowser*>("articleBrowser")->setReadOnly(true);
+	QPushButton *printButton = parent()->parent()->findChild<QPushButton*>("printButton");
+	QPushButton *backButton = parent()->parent()->findChild<QPushButton*>("backToListsButton");
+	printButton->setEnabled(true);
+	backButton->setEnabled(true);
+	overviewItem->setHidden(false);
 }
+
+/**setSpeciesChapter(int speciesId, int zoneId, const QString &chapterName, const QString &chapterHtml)*/
 
 void Stack::edit() {
 	QAction *editAction = parent()->parent()->findChild<QAction*>("editAction");
 	QAction *saveAction = parent()->parent()->findChild<QAction*>("saveAction");
 	QAction *cancelAction = parent()->parent()->findChild<QAction*>("cancelAction");
-	editMode = true;
+	QListWidget *sectionList = parent()->parent()->findChild<QListWidget*>("sectionList");
 	editAction->setVisible(false);
 	saveAction->setVisible(true);
 	cancelAction->setVisible(true);
+	parent()->parent()->findChild<QTextBrowser*>("articleBrowser")->setReadOnly(false);
+	if (articleId == "") {
+		overviewItem = sectionList->currentItem();
+		sectionList->setCurrentItem(sectionList->item(1));
+		this->setArticle(sectionList->currentItem());
+	}
+	else {
+		overviewItem = sectionList->item(0);
+	}
+	prevArtRow = sectionList->currentRow();
+	overviewItem->setHidden(true);
+	QPushButton *printButton = parent()->parent()->findChild<QPushButton*>("printButton");
+	QPushButton *backButton = parent()->parent()->findChild<QPushButton*>("backToListsButton");
+	printButton->setEnabled(false);
+	backButton->setEnabled(false);
+	findChild<QTextBrowser*>("articleBrowser")->setFocus();
+	editMode = true;
+	original = findChild<QTextBrowser*>("articleBrowser")->toPlainText();
 }
 
 void Stack::showHelp() {
@@ -806,7 +863,6 @@ void Stack::showHelp() {
 	file.open(QIODevice::ReadOnly | QIODevice::Text);
 	helpBrowser->setHtml(QString::fromUtf8(file.readAll()));
 	file.close();
-	//helpBrowser->setSource(qApp->applicationDirPath() + "/doc/help/h" + QString::number(currentIndex()) + ".html");
 	helpDialog->resize(400, 300);
 	helpDialog->exec();
 	delete helpDialog;
@@ -827,7 +883,6 @@ void Stack::printSpecies() {
 	dialog->setWindowTitle(tr("Print Document"));
 	if (dialog->exec() != QDialog::Accepted)
 		return;
-
 
 	QLabel *photoLabel = findChild<QLabel*>("photoLabel");
 	QLabel *arealLabel = findChild<QLabel*>("arealLabel");

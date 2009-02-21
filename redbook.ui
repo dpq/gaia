@@ -596,10 +596,6 @@ p, li { white-space: pre-wrap; }
               <layout class="QHBoxLayout" name="_2" >
                <item>
                 <widget class="QPushButton" name="backToListsButton" >
-                 <property name="styleSheet" >
-                  <string notr="true" >background-color: rgb(200, 200, 200);
-color: #000000;</string>
-                 </property>
                  <property name="text" >
                   <string>&lt;&lt; Список видов</string>
                  </property>

@@ -2,26 +2,8 @@
 The author of these lines - David Parunakian aka Rumith - is in no way responsible
 for the abomination that is the GUI of this software product.
 It has been designed and enforced by Dr. V.E.Prisyajnyuk, who probably damned his immortal soul in process.
-
-Code to be developed and supported:
-config[.h|.cpp]
-core[.h|.cpp]
-
-Config is responsible for loading configuration files formatted not unlike Microsoft INI files.
-Core contains GaiaCore, the basis for developing a full-scale biological data mining and analysis system.
-
-
-Files hacked together so the above-mentioned GUI works:
-main.cpp
-uiloader[.h|.cpp]
-stack[.h|.cpp]
-
-I will of course accept bug reports for these, too - just don't expect superb quality from them.
-
-
-Sincerely yours,
-
-Jaffar Pharun Rumith
+The supporting code is adequately horrible. I plan to make a refactoring once this revision is over.
+JR
 
 + Сделать кнопки на очерках серыми
 + Кнопка "Список видов"
@@ -31,10 +13,9 @@ Jaffar Pharun Rumith
 + Предисловие к электронной версии
 + Preface
 + Руководство пользователя
-+ Профайлинг и оптимизация
++ Оптимизация на быстродействие
 + Сделать нормальный внешний вид для скроллбаров
 + Вставить градусы: искать по "градус.", "град.", "гр.", "с.ш."
 + Заставка в Windows
-
 - Ввод информации
 - Обложка диска + краткая информация на обороте

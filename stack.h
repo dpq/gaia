@@ -50,6 +50,7 @@ public slots:
 	void cancelEdit();
 
 private:
+	bool checkModification();
 	int firstItemId, lastItemId;
 	QString pageColor(int cat);
 	QString commentColor(int cat);
@@ -70,6 +71,9 @@ private:
 	QMap<QAction*, int> *zoneMapping;
 	void insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root);
 	void refreshSectionList();
+	QListWidgetItem *overviewItem;
+	QString original;
+	int prevArtRow;
 };
 
 #endif
