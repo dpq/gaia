@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>1022</width>
-    <height>704</height>
+    <height>783</height>
    </rect>
   </property>
   <property name="windowTitle" >
@@ -586,6 +586,12 @@ p, li { white-space: pre-wrap; }
          <layout class="QGridLayout" >
           <item row="0" column="0" >
            <widget class="QFrame" name="colorPage" >
+            <property name="sizePolicy" >
+             <sizepolicy vsizetype="Minimum" hsizetype="Minimum" >
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
             <property name="styleSheet" >
              <string notr="true" >#colorPage {
 	background-color: rgb(255, 248, 250); 
@@ -775,21 +781,23 @@ p, li { white-space: pre-wrap; }
               <layout class="QHBoxLayout" >
                <item>
                 <layout class="QVBoxLayout" >
-                 <item>
-                  <spacer>
-                   <property name="orientation" >
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0" >
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
+                 <property name="spacing" >
+                  <number>0</number>
+                 </property>
                  <item>
                   <layout class="QVBoxLayout" >
+                   <property name="spacing" >
+                    <number>15</number>
+                   </property>
+                   <property name="sizeConstraint" >
+                    <enum>QLayout::SetMinimumSize</enum>
+                   </property>
+                   <property name="topMargin" >
+                    <number>0</number>
+                   </property>
+                   <property name="bottomMargin" >
+                    <number>0</number>
+                   </property>
                    <item>
                     <widget class="QLabel" name="photoLabel" >
                      <property name="sizePolicy" >
@@ -848,6 +856,19 @@ p, li { white-space: pre-wrap; }
                    </item>
                   </layout>
                  </item>
+                 <item>
+                  <spacer name="verticalSpacer_2" >
+                   <property name="orientation" >
+                    <enum>Qt::Vertical</enum>
+                   </property>
+                   <property name="sizeHint" stdset="0" >
+                    <size>
+                     <width>0</width>
+                     <height>0</height>
+                    </size>
+                   </property>
+                  </spacer>
+                 </item>
                 </layout>
                </item>
                <item>
@@ -857,6 +878,12 @@ p, li { white-space: pre-wrap; }
                    <horstretch>0</horstretch>
                    <verstretch>1</verstretch>
                   </sizepolicy>
+                 </property>
+                 <property name="minimumSize" >
+                  <size>
+                   <width>0</width>
+                   <height>415</height>
+                  </size>
                  </property>
                  <property name="styleSheet" >
                   <string notr="true" >#articleBrowser { font: 10pt "Sans Serif"; }</string>
@@ -882,7 +909,7 @@ p, li { white-space: pre-wrap; }
      <x>0</x>
      <y>0</y>
      <width>1022</width>
-     <height>22</height>
+     <height>30</height>
     </rect>
    </property>
   </widget>
