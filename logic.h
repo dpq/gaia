@@ -1,13 +1,15 @@
 /***************************************************************************
- *   stack.h                                                               *
+ *   logic.h                                                               *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
  *   Copyright 2008 David Parunakian                                       *
  ***************************************************************************/
-#ifndef STACK_H
-#define STACK_H
+#ifndef LOGIC_H
+#define LOGIC_H
+#include <QtCore/QObject>
+#include <QtCore/QMap>
 #include <QtGui/QStackedWidget>
 class QListWidgetItem;
 class QTreeWidgetItem;
@@ -15,12 +17,16 @@ class QDomElement;
 class GaiaCore;
 class QrbConfig;
 
-class Stack : public QStackedWidget {
+class QAction;
+class QPainter;
+class QPrinter;
+
+class Logic : public QObject {
 Q_OBJECT
 
 public:
-	Stack(QWidget *parent = 0);
-	~Stack();
+	Logic(QWidget *parent = 0);
+	~Logic();
 
 public slots:
 	void viewDocument(QListWidgetItem *item = 0);
@@ -74,6 +80,9 @@ private:
 	QListWidgetItem *overviewItem;
 	QString original;
 	int prevArtRow;
+
+	QWidget *parent;
+	QStackedWidget *stack;
 };
 
 #endif

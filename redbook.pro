@@ -5,12 +5,12 @@
 QT+=xml
 CONFIG+=uitools
 TEMPLATE = app
-TARGET = gaia
+TARGET = redbook
 DEPENDPATH += .
 INCLUDEPATH += .
 
 # Input
-HEADERS += config.h core.h stack.h uiloader.h
+HEADERS += config.h core.h logic.h
 FORMS += redbook.ui
-SOURCES += config.cpp core.cpp main.cpp stack.cpp uiloader.cpp
+SOURCES += config.cpp core.cpp logic.cpp main.cpp
 RESOURCES += redbook.qrc
