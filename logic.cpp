@@ -6,7 +6,6 @@
  *   (at your option) any later version.                                   *
  *   Copyright 2008 David Parunakian                                       *
  ***************************************************************************/
-#include "logic.h"
 #include <QtGui/QTextBrowser>
 #include <QtCore/QDate>
 #include <QtGui/QListWidgetItem>
@@ -26,12 +25,14 @@
 #include <QtGui/QPrinter>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
+#include <QtGui/QMessageBox>
 #include <QtDebug>
+
 #include "config.h"
 #include "core.h"
+#include "logic.h"
 
 Logic::Logic(QWidget *parent) : QObject(parent) {
-	this->parent = parent;
 	currentDir = "";
 	core = new GaiaCore();
 	config = new QrbConfig(":/redbook.conf");
@@ -76,7 +77,30 @@ Logic::Logic(QWidget *parent) : QObject(parent) {
 	taxoSpecies = new QList<QTreeWidgetItem*>();
 	zoneMapping = new QMap<QAction*, int>();
 	currentCathegory =  "";
+
+	this->parent = parent;
 	stack = parent->findChild<QStackedWidget*>("stackedWidget");
+	indexList = parent->findChild<QListWidget*>("indexList");
+	indexLabel = parent->findChild<QLabel*>("indexLabel");
+	docViewer = parent->findChild<QTextBrowser*>("docViewer");
+	articleBrowser = parent->findChild<QTextBrowser*>("articleBrowser");
+	docTitle = parent->findChild<QLabel*>("docTitle");
+	chapterCombo = parent->findChild<QComboBox*>("chapterCombo");
+	editAction = parent->findChild<QAction*>("editAction");
+	saveAction = parent->findChild<QAction*>("saveAction");
+	cancelAction = parent->findChild<QAction*>("cancelAction");
+	specMenu = parent->findChild<QMenu*>("specMenu")->menuAction();
+	fontMenu = parent->findChild<QMenu*>("fontMenu")->menuAction();
+	alphaList = parent->findChild<QListWidget*>("alphaList");
+	taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
+	photoLabel = parent->findChild<QLabel*>("photoLabel");
+	arealLabel = parent->findChild<QLabel*>("arealLabel");
+	speciesLabel = parent->findChild<QLabel*>("speciesLabel");
+	commentLabel = parent->findChild<QLabel*>("commentLabel");
+	sectionList = parent->findChild<QListWidget*>("sectionList");
+	colorPage = parent->findChild<QWidget*>("colorPage");
+	printButton = parent->findChild<QPushButton*>("printButton");
+	backButton = parent->findChild<QPushButton*>("backToListsButton");
 }
 
 Logic::~Logic() {
@@ -93,8 +117,6 @@ Logic::~Logic() {
 }
 
 void Logic::initIndex() {
-	QListWidget *indexList = parent->findChild<QListWidget*>("indexList");
-	QLabel *indexLabel = parent->findChild<QLabel*>("indexLabel");
 	indexList->clear();
 	indexLabel->setText(config->value("Labels", "indexLabel").toString());
 	QList<QString> params = config->parameters("Index");
@@ -118,18 +140,6 @@ void Logic::viewDocument(QListWidgetItem *item) {
 		text = item->text();
 		id = item->data(Qt::UserRole).toString();
 	}
-
-	QTextBrowser *docViewer = parent->findChild<QTextBrowser*>("docViewer");
-	QLabel *docTitle = parent->findChild<QLabel*>("docTitle");
-	QComboBox *chapterCombo = parent->findChild<QComboBox*>("chapterCombo");
-	QListWidget *indexList = parent->findChild<QListWidget*>("indexList");
-	QLabel *indexLabel = parent->findChild<QLabel*>("indexLabel");
-	
-	QAction *editAction = parent->findChild<QAction*>("editAction");
-	QAction *saveAction = parent->findChild<QAction*>("saveAction");
-	QAction *cancelAction = parent->findChild<QAction*>("cancelAction");
-	QAction *specMenu = parent->findChild<QMenu*>("specMenu")->menuAction();
-	QAction *fontMenu = parent->findChild<QMenu*>("fontMenu")->menuAction();
 	
 	if (indexMode == "lit") {
 		if (text == config->value("Labels", "back").toString()) {
@@ -192,12 +202,9 @@ void Logic::viewDocument(QListWidgetItem *item) {
 		cancelAction->setVisible(false);
 		specMenu->setVisible(false);
 		fontMenu->setVisible(false);
-		QListWidget *alphaList = parent->findChild<QListWidget*>("alphaList");
-		QTreeWidget *taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
 		taxoTree->clearSelection();
 		alphaList->clearSelection();
 		stack->setCurrentIndex(2);
-		//taxoTree->setGeometry(alphaList->geometry());
 	}
 	/* Appendix */
 	else if (id == "p7") {
@@ -275,8 +282,6 @@ void Logic::viewDocument(QListWidgetItem *item) {
 		file.open(QIODevice::ReadOnly | QIODevice::Text);
 		docViewer->setHtml(QString::fromUtf8(file.readAll()));
 		file.close();
-		// Here and further: setSource() appears to be broken in Windows
-		//docViewer->setSource(qApp->applicationDirPath() + "/doc/" + id + ".html");
 		docTitle->setText(text);
 		editAction->setVisible(false);
 		saveAction->setVisible(false);
@@ -289,12 +294,6 @@ void Logic::viewDocument(QListWidgetItem *item) {
 }
 
 void Logic::showIndex() {
-	QComboBox *chapterCombo = parent->findChild<QComboBox*>("chapterCombo");
-	QAction *editAction = parent->findChild<QAction*>("editAction");
-	QAction *saveAction = parent->findChild<QAction*>("saveAction");
-	QAction *cancelAction = parent->findChild<QAction*>("cancelAction");
-	QAction *specMenu = parent->findChild<QMenu*>("specMenu")->menuAction();
-	QAction *fontMenu = parent->findChild<QMenu*>("fontMenu")->menuAction();
 	currentDir = "";
 	indexMode = "";
 	initIndex();
@@ -310,7 +309,6 @@ void Logic::showIndex() {
 void Logic::viewChapter(const QString &chapter) {
 	if (chapter == "")
 		return;
-	QTextBrowser *docViewer = parent->findChild<QTextBrowser*>("docViewer");
 	QComboBox *chapterCombo = qobject_cast<QComboBox*>(sender());
 	QFile file(qApp->applicationDirPath() + "/doc/" + currentDir + "/" + chapterCombo->itemData(chapterCombo->currentIndex()).toString() + ".html");
 	file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -319,7 +317,6 @@ void Logic::viewChapter(const QString &chapter) {
 }
 
 void Logic::viewLatAlpha() {
-	QListWidget *alphaList = parent->findChild<QListWidget*>("alphaList");
 	alphaList->clear();
 
 	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
@@ -341,7 +338,6 @@ void Logic::viewLatAlpha() {
 }
 
 void Logic::viewRusAlpha() {
-	QListWidget *alphaList = parent->findChild<QListWidget*>("alphaList");
 	alphaList->clear();
 
 	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
@@ -374,7 +370,6 @@ void Logic::setTaxoChapter(bool isChecked) {
 }
 
 void Logic::updateTaxoTree() {
-	QTreeWidget *taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
 	taxoTree->clear();
 	taxoSpecies->clear();
 	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
@@ -418,7 +413,6 @@ void Logic::insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root) {
 }
 
 void Logic::treeItemSelected(QTreeWidgetItem *item) {
-	QListWidget *alphaList = parent->findChild<QListWidget*>("alphaList");
 	if (!item->text(0).contains(" - ") || !item->text(0).contains(". "))
 		return;
 	QList<QListWidgetItem*> matches = alphaList->findItems(item->text(0).split(" - ")[0].split(". ")[1], Qt::MatchContains);
@@ -429,25 +423,13 @@ void Logic::treeItemSelected(QTreeWidgetItem *item) {
 }
 
 void Logic::listItemSelected(QListWidgetItem *item) {
-	//QTime benchmark;
-	//benchmark.start();
 	speciesId = item->data(Qt::UserRole).toInt();
-	QTreeWidget *taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
 	foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
 		if (treeItem->data(0, Qt::UserRole).toInt() == speciesId) {
 			taxoTree->setCurrentItem(treeItem);
 			break;
 		}
 	}
-	//qDebug() << "Finding the current speciesId and setting taxoTree: " << benchmark.restart();
-
-	QLabel *photoLabel = parent->findChild<QLabel*>("photoLabel");
-	QLabel *arealLabel = parent->findChild<QLabel*>("arealLabel");
-	QLabel *speciesLabel = parent->findChild<QLabel*>("speciesLabel");
-	QLabel *commentLabel = parent->findChild<QLabel*>("commentLabel");
-
-	// qDebug() << "Creating pointers to widgets :" << benchmark.restart();
-
 	photoLabel->setPixmap(core->entryPicture(speciesId));
 	arealLabel->setPixmap(core->speciesAreal(speciesId, zoneId));
 	
@@ -458,8 +440,6 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 	
 	QStringList litText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Lit").toString()).split("\n", QString::SkipEmptyParts);
 	
-	// qDebug() << "Loading species, literature text and setting pixmaps provided by the Core: " << benchmark.restart();
-
 	QString compilers = "";
 	for (int i = litText.size() - 1; i >= 0; i--) {
 		if (litText[i].trimmed().length() > 0) {
@@ -467,7 +447,6 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 			break;
 		}
 	}
-	// qDebug() << "Extracting compiler names: " << benchmark.restart();
 	
 	QList<int> cat = core->speciesStatus(speciesId, zoneId);
 	QString cathegory = "";
@@ -475,15 +454,12 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 		cathegory += QString::number(*i) + ", ";
 	}
 	
-	// qDebug() << "Getting cathegory: " << benchmark.restart();
-		
 	cathegory = cathegory.left(cathegory.length() - 2);
 	cathegory += " " + config->value("Labels", "cathegory").toString().toLower();
 	speciesLabel->setWordWrap(true);
 	speciesLabel->setText("<div style=\"whitespace:pre-wrap\">" + line1 + "<br />" + line2 + "</div>");
 	commentLabel->setText(speciesText.trimmed() + "\n" + cathegory + "\n" + compilers);
 	bool selectionFound = false;
-	QListWidget *sectionList = parent->findChild<QListWidget*>("sectionList");
 	sectionList->clear();
 	sectionList->addItem(config->value("Labels", "Full").toString());
 	overviewItem = sectionList->item(0);
@@ -494,8 +470,6 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 	QList<QString> keys = parameters.values();
 	qSort(keys);
 		
-	// qDebug() << "Setting label values and retrieving section list:" << benchmark.restart();
-
 	for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
 		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
 			continue;
@@ -511,14 +485,11 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 		sectionList->setCurrentRow(0);
 		articleId = "";
 	}
-	// qDebug() << "More work on sectionList: " << benchmark.restart();
 	
 	refreshArticle();
-	// qDebug() << "Article refreshed: " << benchmark.restart();
 	
 	/* Colorizing */
 	if (currentCathegory != cathegory) {
-		QWidget *colorPage = parent->findChild<QWidget*>("colorPage");
 		if (cat.size() > 1) {
 			QString stylesheet = "#colorPage { background: qconicalgradient(cx:0, cy:0,";
 			QString stops = "";
@@ -545,21 +516,13 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 		commentLabel->setStyleSheet("#commentLabel {" + specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc + "}");
 		if (specialBackground != "") {
 			sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc + "} #sectionList::item::selected { border: 1px solid black }");
-			//qApp->setStyleSheet(qApp->styleSheet() + "QListWidget#sectionList::item::selected { border: 1px solid black }");
 		}
 		else {
 			sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:" + bc + "; selection-color:" + lc + "}");
-			//qApp->setStyleSheet(qApp->styleSheet().replace("QListWidget#sectionList::item::selected { border: 1px solid black }", ""));
 		}
 		currentCathegory = cathegory;
 	}
-	// qDebug() << "Installed colors: " << benchmark.restart();
 	
-	QAction *editAction = parent->findChild<QAction*>("editAction");
-	QAction *saveAction = parent->findChild<QAction*>("saveAction");
-	QAction *cancelAction = parent->findChild<QAction*>("cancelAction");
-	QMenu *specMenu = parent->findChild<QMenu*>("specMenu");
-	QAction *fontMenu = parent->findChild<QMenu*>("fontMenu")->menuAction();
 	if (editMode) {
 		editAction->setVisible(false);
 		saveAction->setVisible(true);
@@ -572,22 +535,20 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 	}
 	/* Check the Core to see if this species exists in other zones as well */
 	QList<int> speciesZones = core->speciesZones(speciesId);
-	specMenu->clear();
+	specMenu->menu()->clear();
 	zoneMapping->clear();
 	if (speciesZones.size() > 1) {
 		foreach (int zoneId, speciesZones) {
-			QAction *zoneAction = specMenu->addAction(core->zoneName(zoneId));
+			QAction *zoneAction = specMenu->menu()->addAction(core->zoneName(zoneId));
 			zoneMapping->insert(zoneAction, zoneId);
-			QObject::connect(specMenu, SIGNAL(triggered(QAction*)), this, SLOT(setZone(QAction*)));
+			QObject::connect(specMenu->menu(), SIGNAL(triggered(QAction*)), this, SLOT(setZone(QAction*)));
 		}
-		specMenu->menuAction()->setVisible(true);
+		specMenu->setVisible(true);
 	}
 	else {
-		specMenu->menuAction()->setVisible(false);
+		specMenu->setVisible(false);
 	}
 	fontMenu->setVisible(true);
-	
-	// qDebug() << "Initiated the menu: " << benchmark.restart();
 	
 	stack->setCurrentIndex(3);
 }
@@ -598,12 +559,10 @@ void Logic::setZone(QAction *action) {
 	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
 	refreshSectionList();
 	refreshArticle();
-	//qDebug() << findChild<QWidget*>("colorPage")->styleSheet();
 }
 
 void Logic::refreshSectionList() {
 	bool selectionFound = false;
-	QListWidget *sectionList = parent->findChild<QListWidget*>("sectionList");
 	sectionList->clear();
 	sectionList->addItem(config->value("Labels", "Full").toString());
 	QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
@@ -683,8 +642,6 @@ void Logic::refreshArticle() {
 	}
 }
 
-#include <QtGui/QMessageBox>
-
 bool Logic::checkModification() {
 	if (editMode && original != parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText()) {
 		QMessageBox msgBox;
@@ -717,14 +674,12 @@ void Logic::setArticle(QListWidgetItem *item) {
 void Logic::nextSpecies() {
 	if (!checkModification())
 		return;
-	// TODO If we're currently editing, save the current section via the Core
 	if (zoneId != 1) {
 		zoneId = 1;
 		delete chapterLayout;
 		chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
 		refreshSectionList();
 	}
-	QTreeWidget *taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
 	if (taxoSpecies->indexOf(taxoTree->currentItem()) < taxoSpecies->count() - 1) {
 		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) + 1));
 	}
@@ -733,7 +688,6 @@ void Logic::nextSpecies() {
 		taxoTree->setCurrentItem(taxoSpecies->first());
 	}
 	treeItemSelected(taxoTree->currentItem());
-	// TODO save a rollback version of the current section
 	if (editMode)
 		original = parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText();
 }
@@ -741,14 +695,12 @@ void Logic::nextSpecies() {
 void Logic::prevSpecies() {
 	if (!checkModification())
 		return;
-	// TODO If we're currently editing, save the current section via the Core
 	if (zoneId != 1) {
 		zoneId = 1;
 		delete chapterLayout;
 		chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
 		refreshSectionList();
 	}
-	QTreeWidget *taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
 	if (taxoSpecies->indexOf(taxoTree->currentItem()) > 0) {
 		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) - 1));
 	}
@@ -763,8 +715,6 @@ void Logic::prevSpecies() {
 
 
 void Logic::changeFocus(QWidget *old, QWidget *now) {
-	QTreeWidget *taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
-	QListWidget *alphaList = parent->findChild<QListWidget*>("alphaList");
 	if (old == taxoTree && now == alphaList) {
 		taxoTree->clearSelection();
 	}
@@ -781,29 +731,17 @@ void Logic::up() {
 
 void Logic::saveEdit() {
 	core->setSpeciesChapter(speciesId, zoneId, articleId, parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText());
-	QAction *editAction = parent->findChild<QAction*>("editAction");
-	QAction *saveAction = parent->findChild<QAction*>("saveAction");
-	QAction *cancelAction = parent->findChild<QAction*>("cancelAction");
-	QAction *specMenu = parent->findChild<QMenu*>("specMenu")->menuAction();
-	QAction *fontMenu = parent->findChild<QMenu*>("fontMenu")->menuAction();
 	editMode = false;
 	editAction->setVisible(true);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
 	parent->findChild<QTextBrowser*>("articleBrowser")->setReadOnly(true);
-	QPushButton *printButton = parent->findChild<QPushButton*>("printButton");
-	QPushButton *backButton = parent->findChild<QPushButton*>("backToListsButton");
 	printButton->setEnabled(true);
 	backButton->setEnabled(true);
 	overviewItem->setHidden(false);
 }
 
 void Logic::cancelEdit() {
-	QAction *editAction = parent->findChild<QAction*>("editAction");
-	QAction *saveAction = parent->findChild<QAction*>("saveAction");
-	QAction *cancelAction = parent->findChild<QAction*>("cancelAction");
-	QAction *specMenu = parent->findChild<QMenu*>("specMenu")->menuAction();
-	QAction *fontMenu = parent->findChild<QMenu*>("fontMenu")->menuAction();
 	editMode = false;
 	editAction->setVisible(true);
 	saveAction->setVisible(false);
@@ -820,10 +758,6 @@ void Logic::cancelEdit() {
 /**setSpeciesChapter(int speciesId, int zoneId, const QString &chapterName, const QString &chapterHtml)*/
 
 void Logic::edit() {
-	QAction *editAction = parent->findChild<QAction*>("editAction");
-	QAction *saveAction = parent->findChild<QAction*>("saveAction");
-	QAction *cancelAction = parent->findChild<QAction*>("cancelAction");
-	QListWidget *sectionList = parent->findChild<QListWidget*>("sectionList");
 	editAction->setVisible(false);
 	saveAction->setVisible(true);
 	cancelAction->setVisible(true);
@@ -838,8 +772,6 @@ void Logic::edit() {
 	}
 	prevArtRow = sectionList->currentRow();
 	overviewItem->setHidden(true);
-	QPushButton *printButton = parent->findChild<QPushButton*>("printButton");
-	QPushButton *backButton = parent->findChild<QPushButton*>("backToListsButton");
 	printButton->setEnabled(false);
 	backButton->setEnabled(false);
 	parent->findChild<QTextBrowser*>("articleBrowser")->setFocus();
@@ -883,11 +815,6 @@ void Logic::printSpecies() {
 	dialog->setWindowTitle(tr("Print Document"));
 	if (dialog->exec() != QDialog::Accepted)
 		return;
-
-	QLabel *photoLabel = parent->findChild<QLabel*>("photoLabel");
-	QLabel *arealLabel = parent->findChild<QLabel*>("arealLabel");
-	QLabel *speciesLabel = parent->findChild<QLabel*>("speciesLabel");
-	QLabel *commentLabel = parent->findChild<QLabel*>("commentLabel");
 	QPainter painter;
 	int textOffset = 0;
 	int bottomOffset = 60;
@@ -916,7 +843,6 @@ void Logic::printSpecies() {
 	textOffset = 400;
 
 	/** Текст статьи или выбранных рубрик */
-	QTextBrowser *articleBrowser = parent->findChild<QTextBrowser*>("articleBrowser");
 	QStringList doc = articleBrowser->toPlainText().split(". ");
 	QString str = "";
 	for (int i = 0; i < doc.size(); i++) {

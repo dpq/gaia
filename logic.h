@@ -21,6 +21,13 @@ class QAction;
 class QPainter;
 class QPrinter;
 
+class QListWidget;
+class QLabel;
+class QTextBrowser;
+class QComboBox;
+class QTreeWidget;
+class QPushButton;
+
 class Logic : public QObject {
 Q_OBJECT
 
@@ -81,8 +88,15 @@ private:
 	QString original;
 	int prevArtRow;
 
-	QWidget *parent;
+	QWidget *parent, *colorPage;
 	QStackedWidget *stack;
+	QListWidget *indexList, *alphaList, *sectionList;
+	QLabel *indexLabel, *docTitle, *photoLabel, *arealLabel, *speciesLabel, *commentLabel;
+	QTextBrowser *docViewer, *articleBrowser;
+	QComboBox *chapterCombo;
+	QAction *editAction, *saveAction, *cancelAction, *specMenu, *fontMenu;
+	QTreeWidget *taxoTree;
+	QPushButton *printButton, *backButton;
 };
 
 #endif
