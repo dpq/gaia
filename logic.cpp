@@ -790,7 +790,7 @@ void Logic::showHelp() {
 	helpLayout->addWidget(helpBrowser);
 	helpLayout->addLayout(buttonLayout);
 	connect(closeButton, SIGNAL(clicked()), helpDialog, SLOT(accept()));
-	helpDialog->setStyleSheet("background-color:#ffffff; color: #000000");
+	helpDialog->setStyleSheet("QDialog { background-color:#ffffff; color: #000000 }");
 	QFile file(qApp->applicationDirPath() + "/doc/help/h" + QString::number(stack->currentIndex()) + ".html");
 	file.open(QIODevice::ReadOnly | QIODevice::Text);
 	helpBrowser->setHtml(QString::fromUtf8(file.readAll()));
