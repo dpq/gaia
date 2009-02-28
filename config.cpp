@@ -90,6 +90,7 @@ void QrbConfig::error(QrbConfig::Error *code, int *line) {
 	*line = error_line;
 }
 
+#include <QtDebug>
 void QrbConfig::setFile(const QString &path) {
 	QFile file(path);
 	QString c_section ="", c_param="", c_value="";
@@ -108,7 +109,7 @@ void QrbConfig::setFile(const QString &path) {
 	
 	error_code = Ok;
 	error_line = -1;
-	for (QString line = file.readLine(); !file.atEnd(); line = QString::fromUtf8(file.readLine())) {
+	for (QString line = file.readLine(); ; line = QString::fromUtf8(file.readLine())) {
 		error_line++;
 		line = line.simplified();
 	
@@ -142,6 +143,9 @@ void QrbConfig::setFile(const QString &path) {
 		}
 
 		setValue(c_section, c_param, c_value);
+
+		if (file.atEnd())
+			break;
 	}
 	error_code = Ok;
 	file.close();
