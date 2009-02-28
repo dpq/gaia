@@ -4,33 +4,36 @@
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
- *   Copyright 2008 David Parunakian                                       *
+ *   Copyright 2008-2009 David Parunakian                                  *
  ***************************************************************************/
-#include <QtGui/QTextBrowser>
+#include <QtCore/QFile>
 #include <QtCore/QDate>
-#include <QtGui/QListWidgetItem>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QAction>
-#include <QtGui/QMenu>
+#include <QtGui/QPainter>
+#include <QtGui/QApplication>
+
+#include <QtGui/QMessageBox>
+#include <QtGui/QPrintDialog>
+#include <QtGui/QPrinter>
+
 #include <QtGui/QLabel>
 #include <QtGui/QComboBox>
-#include <QtGui/QApplication>
-#include <QtGui/QRadioButton>
 #include <QtGui/QPushButton>
-#include <QtCore/QStringList>
-#include <QtGui/QPrintDialog>
-#include <QtGui/QDialog>
-#include <QtCore/QFile>
-#include <QtGui/QPainter>
-#include <QtGui/QPrinter>
+#include <QtGui/QRadioButton>
+#include <QtGui/QTextBrowser>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QListWidget>
+
+#include <QtGui/QMenu>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
-#include <QtGui/QMessageBox>
+
 #include <QtDebug>
 
 #include "config.h"
 #include "core.h"
 #include "logic.h"
+
+// TODO Rus - Lat modified lists
 
 Logic::Logic(QWidget *parent) : QObject(parent) {
 	currentDir = "";
@@ -196,7 +199,7 @@ void Logic::viewDocument(QListWidgetItem *item) {
 	if (id == "p5") {
 		currentDir = "";
 		parent->findChild<QRadioButton*>(chapterId)->setChecked(true);
-		viewRusAlpha();
+		rusAlpha();
 		editAction->setVisible(false);
 		saveAction->setVisible(false);
 		cancelAction->setVisible(false);
@@ -316,45 +319,34 @@ void Logic::viewChapter(const QString &chapter) {
 	file.close();
 }
 
-void Logic::viewLatAlpha() {
-	alphaList->clear();
-
-	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
-		QDomElement root = core->taxonomyEntry(chapterMap->value(chapterId)[i]);
-		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", root);
-		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
-			QListWidgetItem *latItem = new QListWidgetItem();
-			latItem->setText((*i).attribute("lat"));
-			QString comment = (*i).attribute("comment");
-			if (comment != QString())
-				comment = " [" + comment + "]";
-			latItem->setToolTip("<font color=\"red\"><pre>" + (*i).attribute("rus") + comment + "</pre></font>");
-			latItem->setData(Qt::UserRole, (*i).attribute("id"));
-			alphaList->addItem(latItem);
-		}
-	}
-	alphaMode = "lat";
-	alphaList->sortItems();
+void Logic::latAlpha() {
+	setAlphaListLang("lat");
 }
 
-void Logic::viewRusAlpha() {
-	alphaList->clear();
+void Logic::rusAlpha() {
+	setAlphaListLang("rus");
+}
 
-	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
-		QDomElement root = core->taxonomyEntry(chapterMap->value(chapterId)[i]);
+void Logic::setAlphaListLang(const QString &lang) {
+	alphaList->clear();
+	QMap<QString, QString> opposite, text;
+	opposite["rus"] = "lat";
+	opposite["lat"] = "rus";
+
+	foreach (int taxonomyId, chapterMap->value(chapterId)) {
+		QDomElement root = core->taxonomyEntry(taxonomyId);
 		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", root);
 		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
-			QListWidgetItem *rusItem = new QListWidgetItem();
-			QString comment = (*i).attribute("comment");
-			if (comment != QString())
-				comment = " [" + comment + "]";
-			rusItem->setText((*i).attribute("rus") + comment);
-			rusItem->setToolTip("<font color=\"red\"><pre>" + (*i).attribute("lat") + "</pre></font>");
-			rusItem->setData(Qt::UserRole, (*i).attribute("id"));
-			alphaList->addItem(rusItem);
+			QListWidgetItem *item = new QListWidgetItem();
+			text["lat"] = (*i).attribute("lat");
+			text["rus"] = (*i).attribute("rus") + ((*i).attribute("comment") == QString() ? "" : " [" + (*i).attribute("comment") + "]");
+			item->setText(text[lang]);
+			item->setToolTip("<font color=\"red\"><pre>" + text[opposite[lang]] + "</pre></font>");
+			item->setData(Qt::UserRole, (*i).attribute("id"));
+			alphaList->addItem(item);
 		}
 	}	
-	alphaMode = "rus";
+	alphaMode = lang;
 	alphaList->sortItems();
 }
 
@@ -363,9 +355,9 @@ void Logic::setTaxoChapter(bool isChecked) {
 		return;
 	chapterId = qobject_cast<QRadioButton*>(sender())->objectName();
 	if (alphaMode == "rus")
-		viewRusAlpha();
+		rusAlpha();
 	else
-		viewLatAlpha();
+		latAlpha();
 	updateTaxoTree();
 }
 
@@ -754,8 +746,6 @@ void Logic::cancelEdit() {
 	backButton->setEnabled(true);
 	overviewItem->setHidden(false);
 }
-
-/**setSpeciesChapter(int speciesId, int zoneId, const QString &chapterName, const QString &chapterHtml)*/
 
 void Logic::edit() {
 	editAction->setVisible(false);

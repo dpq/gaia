@@ -11,8 +11,11 @@
 #include <QtCore/QObject>
 #include <QtCore/QMap>
 #include <QtGui/QStackedWidget>
+class QListWidget;
 class QListWidgetItem;
+class QTreeWidget;
 class QTreeWidgetItem;
+
 class QDomElement;
 class GaiaCore;
 class QrbConfig;
@@ -21,11 +24,9 @@ class QAction;
 class QPainter;
 class QPrinter;
 
-class QListWidget;
 class QLabel;
 class QTextBrowser;
 class QComboBox;
-class QTreeWidget;
 class QPushButton;
 
 class Logic : public QObject {
@@ -38,24 +39,34 @@ public:
 public slots:
 	void viewDocument(QListWidgetItem *item = 0);
 	void viewChapter(const QString &chapter);
-	void viewLatAlpha();
-	void viewRusAlpha();
+
+	void setAlphaListLang(const QString &lang);
+	void latAlpha();
+	void rusAlpha();
+
 	void updateTaxoTree();
 	void setTaxoChapter(bool isChecked);
 	void treeItemSelected(QTreeWidgetItem *item);
 	void listItemSelected(QListWidgetItem *item);
+
 	void setArticle(QListWidgetItem *item);
+
 	void nextSpecies();
 	void prevSpecies();
+
 	void printSpecies();
 	void printDocument();
+
 	void changeFocus(QWidget *old, QWidget *now);
+
 	void largerFont();
 	void smallerFont();
+
 	void up();
 	void showHelp();
 	void showIndex();
 	void initIndex();
+
 	void setZone(QAction *action);
 
 	void edit();
