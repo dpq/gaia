@@ -78,8 +78,13 @@ int main(int argc, char **argv) {
 	QAction *helpAction = menuBar->addAction(config->value("Labels", "help").toString());
 	helpAction->setObjectName("helpAction");
 
+	/* Construct the main index widget */
+	QListWidget *indexList = redBook->findChild<QListWidget*>("indexList");
+	indexList->setCursor(Qt::PointingHandCursor);
+	indexList->setSelectionMode(QAbstractItemView::NoSelection);
+
 	/* Initiate program logic */
-	Logic *logic = new Logic(redBook);
+	Logic *logic = new Logic(config, redBook);
 	QObject::connect(editAction, SIGNAL(activated()), logic, SLOT(edit()));
 	QObject::connect(saveAction, SIGNAL(activated()), logic, SLOT(saveEdit()));
 	QObject::connect(cancelAction, SIGNAL(activated()), logic, SLOT(cancelEdit()));
@@ -89,7 +94,7 @@ int main(int argc, char **argv) {
 
 	QObject::connect(redBook->findChild<QPushButton*>("docPrintButton"), SIGNAL(clicked()), logic, SLOT(printDocument()));
 	QObject::connect(redBook->findChild<QPushButton*>("docBackButton"), SIGNAL(clicked()), logic, SLOT(showIndex()));
-	QObject::connect(redBook->findChild<QComboBox*>("chapterCombo"), SIGNAL(currentIndexChanged(const QString &)), logic, SLOT(viewChapter(const QString &)));
+	QObject::connect(redBook->findChild<QComboBox*>("chapterCombo"), SIGNAL(currentIndexChanged(const QString &)), logic, SLOT(viewMultiDocChapter(const QString &)));
 
 	QObject::connect(redBook->findChild<QPushButton*>("speciesBackButton"), SIGNAL(clicked()), logic, SLOT(showIndex()));
 	QObject::connect(redBook->findChild<QPushButton*>("latButton"), SIGNAL(clicked()), logic, SLOT(latAlpha()));
@@ -115,23 +120,14 @@ int main(int argc, char **argv) {
 
 	QObject::connect(&app, SIGNAL(focusChanged(QWidget*, QWidget*)), logic, SLOT(changeFocus(QWidget*, QWidget*)));
 
-	/* Populate the Red Data Book index */
-	QListWidget *indexList = redBook->findChild<QListWidget*>("indexList");
-	indexList->setCursor(Qt::PointingHandCursor);
-	indexList->setSelectionMode(QAbstractItemView::NoSelection);
-	indexList->clear();
-	QObject::connect(indexList, SIGNAL(itemClicked(QListWidgetItem*)), logic, SLOT(viewDocument(QListWidgetItem*)));
+	QObject::connect(indexList, SIGNAL(itemClicked(QListWidgetItem*)), logic, SLOT(indexWidgetClicked(QListWidgetItem*)));
 
+	/* Populate the index */
+	logic->initIndex();
 	foreach (const QString &param, config->parameters("Index")) {
-		QString section = config->value("Index", param).toString();
-		/* Central index widget */
-		QListWidgetItem *item = new QListWidgetItem(section);
-		item->setData(Qt::UserRole, param);
-		indexList->addItem(item);
-		/* Index menu */
-		QAction *action = indexMenu->addAction(section);
+		QAction *action = indexMenu->addAction(config->value("Index", param).toString());
 		action->setData(param);
-		QObject::connect(action, SIGNAL(triggered()), logic, SLOT(viewDocument()));
+		QObject::connect(action, SIGNAL(triggered()), logic, SLOT(indexMenuClicked()));
 	}
 
 	/* Set advanced style information */

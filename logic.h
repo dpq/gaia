@@ -33,18 +33,20 @@ class Logic : public QObject {
 Q_OBJECT
 
 public:
-	Logic(QWidget *parent = 0);
+	Logic(QrbConfig *config, QWidget *parent = 0);
 	~Logic();
 
 public slots:
-	void viewDocument(QListWidgetItem *item = 0);
-	void viewChapter(const QString &chapter);
+	void indexMenuClicked();
+	void indexWidgetClicked(QListWidgetItem *item);
+
+	void viewMultiDocChapter(const QString &chapter);
 
 	void setAlphaListLang(const QString &lang);
 	void latAlpha();
 	void rusAlpha();
 
-	void updateTaxoTree();
+	void updateTaxonomy();
 	void setTaxoChapter(bool isChecked);
 	void treeItemSelected(QTreeWidgetItem *item);
 	void listItemSelected(QListWidgetItem *item);
@@ -66,7 +68,7 @@ public slots:
 	void showHelp();
 	void showIndex();
 	void initChapterMap();
-	void initIndex();
+	void initIndex(const QString &mode = "");
 
 	void setZone(QAction *action);
 
@@ -75,6 +77,10 @@ public slots:
 	void cancelEdit();
 
 private:
+	void viewSingleDoc(const QString &docId, const QString &docName);
+	void viewMultiDoc(const QString &type, const QString &item = "");
+	void viewSpeciesLists();
+
 	bool checkModification();
 	int firstItemId, lastItemId;
 	QString pageColor(int cat);
@@ -89,8 +95,6 @@ private:
 	GaiaCore *core;
 	QrbConfig *config;
 	QString currentCathegory;
-	QList<QListWidgetItem*> *latAlphas;
-	QList<QListWidgetItem*> *rusAlphas;
 	QMap<QString, QList<int> > *chapterMap;
 	QMap<QString, QString> *chapterLayout;
 	QMap<QAction*, int> *zoneMapping;
@@ -102,13 +106,16 @@ private:
 
 	QWidget *parent, *colorPage;
 	QStackedWidget *stack;
-	QListWidget *indexList, *alphaList, *sectionList;
-	QLabel *indexLabel, *docTitle, *photoLabel, *arealLabel, *speciesLabel, *commentLabel;
+	QListWidget *alphaList, *sectionList;
+	QLabel *indexLabel, *docTitle, *photoLabel, *arealLabel, *speciesLabel, *commentLabel, *logoLabel;
 	QTextBrowser *docViewer, *articleBrowser;
 	QComboBox *chapterCombo;
 	QAction *editAction, *saveAction, *cancelAction, *specMenu, *fontMenu;
 	QTreeWidget *taxoTree;
 	QPushButton *printButton, *backButton;
+	
+	QMap<QString, QString> sectionMapping, oppositeLang;
+	QString multiDocDir;
 };
 
 #endif

@@ -35,27 +35,26 @@
 
 // TODO Rus - Lat modified lists
 
-Logic::Logic(QWidget *parent) : QObject(parent) {
-	currentDir = "";
+Logic::Logic(QrbConfig *config, QWidget *parent) : QObject(parent) {
 	core = new GaiaCore();
-	config = new QrbConfig(":/redbook.conf");
-	latAlphas = new QList<QListWidgetItem*>();
-	rusAlphas = new QList<QListWidgetItem*>();
+	this->config = config;
 	core->openTaxonomyFile(":/species.xml");
-	initChapterMap();
 	core->openZoneFile(":/zones.xml");
+	
+	initChapterMap();
+
+	zoneMapping = new QMap<QAction*, int>();
 	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
+
 	articleId = "";
 	chapterId = "radioc0";
 	editMode = false;
 	zoneId = 1;
 	taxoSpecies = new QList<QTreeWidgetItem*>();
-	zoneMapping = new QMap<QAction*, int>();
 	currentCathegory =  "";
 
 	this->parent = parent;
 	stack = parent->findChild<QStackedWidget*>("stackedWidget");
-	indexList = parent->findChild<QListWidget*>("indexList");
 	indexLabel = parent->findChild<QLabel*>("indexLabel");
 	docViewer = parent->findChild<QTextBrowser*>("docViewer");
 	articleBrowser = parent->findChild<QTextBrowser*>("articleBrowser");
@@ -70,21 +69,25 @@ Logic::Logic(QWidget *parent) : QObject(parent) {
 	taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
 	photoLabel = parent->findChild<QLabel*>("photoLabel");
 	arealLabel = parent->findChild<QLabel*>("arealLabel");
+	logoLabel = parent->findChild<QLabel*>("logoLabel");
 	speciesLabel = parent->findChild<QLabel*>("speciesLabel");
 	commentLabel = parent->findChild<QLabel*>("commentLabel");
 	sectionList = parent->findChild<QListWidget*>("sectionList");
 	colorPage = parent->findChild<QWidget*>("colorPage");
 	printButton = parent->findChild<QPushButton*>("printButton");
 	backButton = parent->findChild<QPushButton*>("backToListsButton");
+	
+	sectionMapping[""] = "Index";
+	sectionMapping["p6"] = "Chapters";
+	sectionMapping["p7"] = "Appendix";
+
+	oppositeLang["rus"] = "lat";
+	oppositeLang["lat"] = "rus";
 }
 
 Logic::~Logic() {
 	delete core;
 	delete config;
-	qDeleteAll(*latAlphas);
-	qDeleteAll(*rusAlphas);
-	delete latAlphas;
-	delete rusAlphas;
 	delete chapterMap;
 	delete chapterLayout;
 	delete taxoSpecies;
@@ -103,184 +106,138 @@ void Logic::initChapterMap() {
 	}
 }
 
-void Logic::initIndex() {
+void Logic::initIndex(const QString &mode) {
+	QListWidget *indexList = parent->findChild<QListWidget*>("indexList");
 	indexList->clear();
-	QList<QString> params = config->parameters("Index");
-	for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
-		QString section = config->value("Index", *param).toString();
-		QListWidgetItem *item = new QListWidgetItem(section);
-		item->setData(Qt::UserRole, *param);
+	if (mode == "") {
+		indexLabel->setText(config->value("Labels", "index").toString());
+	}
+	else if (mode == "p6") {
+		indexLabel->setText(config->value("Index", "p6").toString());
+		indexList->addItem(config->value("Labels", "back").toString());
+	}
+	else if (mode == "p7") {
+		indexLabel->setText(config->value("Index", "p7").toString());
+		indexList->addItem(config->value("Labels", "back").toString());
+	}
+	foreach (const QString &param, config->parameters(sectionMapping[mode])) {
+		QListWidgetItem *item = new QListWidgetItem(config->value(sectionMapping[mode], param).toString());
+		item->setData(Qt::UserRole, param);
 		indexList->addItem(item);
 	}
 }
 
-void Logic::viewDocument(QListWidgetItem *item) {
-	QString id = "", text = "";
-	/* Index menu */
-	if (item == 0) {
-		text = qobject_cast<QAction*>(sender())->text();
-		id = qobject_cast<QAction*>(sender())->data().toString();
-	}
-	/* Index list */
-	else {
-		text = item->text();
-		id = item->data(Qt::UserRole).toString();
-	}
-	
-	if (indexMode == "lit") {
-		if (text == config->value("Labels", "back").toString()) {
-			indexMode = "";
-			initIndex();
-			return;
-		}
-		currentDir = "p6";
-		docTitle->setText(config->value("Index", "p6").toString());
-		chapterCombo->show();
-		chapterCombo->clear();
-		QList<QString> params = config->parameters("Chapters");
-		for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
-			QString chapter = config->value("Chapters", *param).toString();
-			chapterCombo->addItem(chapter, *param);
-		}
-		chapterCombo->setCurrentIndex(chapterCombo->findText(text));
-		editAction->setVisible(false);
-		saveAction->setVisible(false);
-		cancelAction->setVisible(false);
-		specMenu->setVisible(false);
-		fontMenu->setVisible(true);
-		stack->setCurrentIndex(1);
-		indexMode = "";
-		return;
-	}
-	if (indexMode == "app") {
-		if (text == config->value("Labels", "back").toString()) {
-			indexMode = "";
-			initIndex();
-			return;
-		}
-		currentDir = "p7";
-		docTitle->setText(config->value("Index", "p7").toString());
-		chapterCombo->show();
-		chapterCombo->clear();
-		QList<QString> params = config->parameters("Appendix");
-		for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
-			QString chapter = config->value("Appendix", *param).toString();
-			chapterCombo->addItem(chapter, *param);
-		}
-		chapterCombo->setCurrentIndex(chapterCombo->findText(text));
-		editAction->setVisible(false);
-		saveAction->setVisible(false);
-		cancelAction->setVisible(false);
-		specMenu->setVisible(false);
-		fontMenu->setVisible(true);
-		stack->setCurrentIndex(1);
-		indexMode = "";
-		return;
-	}
+void Logic::viewSingleDoc(const QString &docId, const QString &docName) {
+	QFile file(qApp->applicationDirPath() + "/doc/" + docId + ".html");
+	file.open(QIODevice::ReadOnly | QIODevice::Text);
+	docViewer->setHtml(QString::fromUtf8(file.readAll()));
+	file.close();
+	docTitle->setText(docName);
+	editAction->setVisible(false);
+	saveAction->setVisible(false);
+	cancelAction->setVisible(false);
+	specMenu->setVisible(false);
+	fontMenu->setVisible(true);
+	chapterCombo->clear();
+	chapterCombo->hide();
+	stack->setCurrentIndex(1);
+}
 
-	/* Main screen */
-	if (id == "p5") {
-		currentDir = "";
-		parent->findChild<QRadioButton*>(chapterId)->setChecked(true);
-		rusAlpha();
-		editAction->setVisible(false);
-		saveAction->setVisible(false);
-		cancelAction->setVisible(false);
-		specMenu->setVisible(false);
-		fontMenu->setVisible(false);
-		taxoTree->clearSelection();
-		alphaList->clearSelection();
-		stack->setCurrentIndex(2);
+void Logic::viewMultiDoc(const QString &id, const QString &item) {
+	//QString section;
+	if (item == "") {
+		multiDocDir = id;
 	}
-	/* Appendix */
-	else if (id == "p7") {
-		if (item != 0) {
-			indexList->clear();
-			indexLabel->setText(config->value("Index", "p7").toString());
-			QList<QString> params = config->parameters("Appendix");
-			indexList->addItem(config->value("Labels", "back").toString());
-			for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
-				QString section = config->value("Appendix", *param).toString();
-				QListWidgetItem *item = new QListWidgetItem(section);
-				item->setData(Qt::UserRole, *param);
-				indexList->addItem(item);
-			}
-			indexMode = "app";
-		}
-		else {
-			currentDir = "p7";
-			docTitle->setText(config->value("Index", "p7").toString());
-			chapterCombo->show();
-			chapterCombo->clear();
-			QList<QString> params = config->parameters("Appendix");
-			for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
-				QString chapter = config->value("Appendix", *param).toString();
-				chapterCombo->addItem(chapter, *param);
-			}
-			chapterCombo->setCurrentIndex(0);
-			editAction->setVisible(false);
-			saveAction->setVisible(false);
-			cancelAction->setVisible(false);
-			specMenu->setVisible(false);
-			fontMenu->setVisible(true);
-			indexMode = "";
-			stack->setCurrentIndex(1);
-		}
+	//section = id;
+	docTitle->setText(config->value("Index", id).toString());
+	//}
+	//else {
+	//	section = type;
+	//	multiDocDir = type;
+	//	docTitle->setText(config->value("Index", type).toString());
+	//}
+	chapterCombo->clear();
+	chapterCombo->show();
+	foreach (const QString &param, config->parameters(sectionMapping[id])) {
+		chapterCombo->addItem(config->value(sectionMapping[id], param).toString(), param);
 	}
-	/* Literature for animals */
-	else if (id == "p6") {
-		if (item != 0) {
-			indexList->clear();
-			indexLabel->setText(config->value("Index", "p6").toString());
-			QList<QString> params = config->parameters("Chapters");
-			indexList->addItem(config->value("Labels", "back").toString());
-			for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
-				QString section = config->value("Chapters", *param).toString();
-				QListWidgetItem *item = new QListWidgetItem(section);
-				item->setData(Qt::UserRole, *param);
-				indexList->addItem(item);
-			}
-			indexMode = "lit";
-		}
-		else {
-			currentDir = "p6";
-			docTitle->setText(config->value("Index", "p6").toString());
-			chapterCombo->show();
-			chapterCombo->clear();
-			QList<QString> params = config->parameters("Chapters");
-			for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
-				QString chapter = config->value("Chapters", *param).toString();
-				chapterCombo->addItem(chapter, *param);
-			}
-			chapterCombo->setCurrentIndex(0);
-			editAction->setVisible(false);
-			saveAction->setVisible(false);
-			cancelAction->setVisible(false);
-			specMenu->setVisible(false);
-			fontMenu->setVisible(true);
-			indexMode = "";
-			stack->setCurrentIndex(1);
-		}
+	if (item != "") {
+		chapterCombo->setCurrentIndex(chapterCombo->findText(item));
 	}
 	else {
-		currentDir = "";
-		QFile file(qApp->applicationDirPath() + "/doc/" + id + ".html");
-		file.open(QIODevice::ReadOnly | QIODevice::Text);
-		docViewer->setHtml(QString::fromUtf8(file.readAll()));
-		file.close();
-		docTitle->setText(text);
-		editAction->setVisible(false);
-		saveAction->setVisible(false);
-		cancelAction->setVisible(false);
-		specMenu->setVisible(false);
-		fontMenu->setVisible(true);
-		chapterCombo->hide();
-		stack->setCurrentIndex(1);
+		chapterCombo->setCurrentIndex(0);
+	}
+	editAction->setVisible(false);
+	saveAction->setVisible(false);
+	cancelAction->setVisible(false);
+	specMenu->setVisible(false);
+	fontMenu->setVisible(true);
+	stack->setCurrentIndex(1);
+}
+
+void Logic::viewMultiDocChapter(const QString &chapter) {
+	if (chapter == "")
+		return;
+	QFile file(qApp->applicationDirPath() + "/doc/" + multiDocDir + "/" + chapterCombo->itemData(chapterCombo->currentIndex()).toString() + ".html");
+	file.open(QIODevice::ReadOnly | QIODevice::Text);
+	docViewer->setHtml(QString::fromUtf8(file.readAll()));
+	file.close();
+}
+
+void Logic::viewSpeciesLists() {
+	parent->findChild<QRadioButton*>(chapterId)->setChecked(true);
+	rusAlpha();
+	editAction->setVisible(false);
+	saveAction->setVisible(false);
+	cancelAction->setVisible(false);
+	specMenu->setVisible(false);
+	fontMenu->setVisible(false);
+	taxoTree->clearSelection();
+	alphaList->clearSelection();
+	stack->setCurrentIndex(2);
+}
+
+void Logic::indexWidgetClicked(QListWidgetItem *item) {
+	QString text = item->text();
+	QString id = item->data(Qt::UserRole).toString();
+	if (id == "p6" || id == "p7") {
+		multiDocDir = id;
+		initIndex(id);
+	}
+	else if (id == "") {
+		initIndex();
+		return;
+	}
+	else if (id == "p5") {
+		viewSpeciesLists();
+	}
+	else if (id[0] != QChar('p')) {
+		viewMultiDoc(multiDocDir, text);
+	}
+	else {
+		initIndex();
+		viewSingleDoc(id, text);
+	}
+}
+
+void Logic::indexMenuClicked() {
+	QString text = qobject_cast<QAction*>(sender())->text();
+	QString id = qobject_cast<QAction*>(sender())->data().toString();
+	if (id == "p6" || id == "p7") {
+		initIndex(id);
+		viewMultiDoc(id);
+	}
+	else if (id == "p5") {
+		initIndex();
+		viewSpeciesLists();
+	}
+	else {
+		initIndex();
+		viewSingleDoc(id, text);
 	}
 }
 
 void Logic::showIndex() {
-	currentDir = "";
 	indexMode = "";
 	initIndex();
 	editAction->setVisible(false);
@@ -290,16 +247,6 @@ void Logic::showIndex() {
 	fontMenu->setVisible(false);
 	chapterCombo->hide();
 	stack->setCurrentIndex(0);
-}
-
-void Logic::viewChapter(const QString &chapter) {
-	if (chapter == "")
-		return;
-	QComboBox *chapterCombo = qobject_cast<QComboBox*>(sender());
-	QFile file(qApp->applicationDirPath() + "/doc/" + currentDir + "/" + chapterCombo->itemData(chapterCombo->currentIndex()).toString() + ".html");
-	file.open(QIODevice::ReadOnly | QIODevice::Text);
-	docViewer->setHtml(QString::fromUtf8(file.readAll()));
-	file.close();
 }
 
 void Logic::latAlpha() {
@@ -312,10 +259,7 @@ void Logic::rusAlpha() {
 
 void Logic::setAlphaListLang(const QString &lang) {
 	alphaList->clear();
-	QMap<QString, QString> opposite, text;
-	opposite["rus"] = "lat";
-	opposite["lat"] = "rus";
-
+	QMap<QString, QString> text;
 	/* Load into the list all species in the taxonomy entities corresponding to the selected chapter */
 	foreach (int taxonomyId, chapterMap->value(chapterId)) {
 		QDomElement root = core->taxonomyEntry(taxonomyId);
@@ -325,7 +269,7 @@ void Logic::setAlphaListLang(const QString &lang) {
 			text["lat"] = (*i).attribute("lat");
 			text["rus"] = (*i).attribute("rus") + ((*i).attribute("comment") == QString() ? "" : " [" + (*i).attribute("comment") + "]");
 			item->setText(text[lang]);
-			item->setToolTip("<font color=\"red\"><pre>" + text[opposite[lang]] + "</pre></font>");
+			item->setToolTip("<font color=\"red\"><pre>" + text[oppositeLang[lang]] + "</pre></font>");
 			item->setData(Qt::UserRole, (*i).attribute("id"));
 			alphaList->addItem(item);
 		}
@@ -342,14 +286,14 @@ void Logic::setTaxoChapter(bool isChecked) {
 		rusAlpha();
 	else
 		latAlpha();
-	updateTaxoTree();
+	updateTaxonomy();
 }
 
-void Logic::updateTaxoTree() {
+void Logic::updateTaxonomy() {
 	taxoTree->clear();
 	taxoSpecies->clear();
-	for (int i = 0; i < chapterMap->value(chapterId).size(); i++) {
-		QDomElement root = core->taxonomyEntry(chapterMap->value(chapterId)[i]);
+	foreach (int id, chapterMap->value(chapterId)) {
+		QDomElement root = core->taxonomyEntry(id);
 		QString taxoLevel = config->value("Taxo", root.tagName()).toString();
 		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(taxoLevel + " " + root.attribute("rus").toUpper() + " - " + root.attribute("lat")), 0);
 		insertTaxoPart(item, root);
@@ -608,18 +552,18 @@ void Logic::refreshArticle() {
 			all += "\t" + parameters.key(*i) + "\n";
 			all += core->speciesChapter(speciesId, zoneId, parameters.key(*i)) + "\n\n";
 		}
-		parent->findChild<QTextBrowser*>("articleBrowser")->setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\"><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" /></head><body align=\"justify\" style=\"margin: 15px\"><div style=\"white-space: pre-wrap\">" + all + "</div></body><html>");
+		articleBrowser->setText("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"ru\" lang=\"ru\"><head><title></title><meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\" /></head><body align=\"justify\" style=\"margin: 15px\"><div style=\"white-space: pre-wrap\">" + all + "</div></body><html>");
 	}
 	else
-		parent->findChild<QTextBrowser*>("articleBrowser")->setText(core->speciesChapter(speciesId, zoneId, articleId));
+		articleBrowser->setText(core->speciesChapter(speciesId, zoneId, articleId));
 	if (editMode) {
-		original = parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText();
-		prevArtRow = parent->findChild<QListWidget*>("sectionList")->currentRow();
+		original = articleBrowser->toPlainText();
+		prevArtRow = sectionList->currentRow();
 	}
 }
 
 bool Logic::checkModification() {
-	if (editMode && original != parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText()) {
+	if (editMode && original != articleBrowser->toPlainText()) {
 		QMessageBox msgBox;
 		msgBox.setText(config->value("Labels", "DocModified").toString());
 		msgBox.setInformativeText(config->value("Labels", "DocSave").toString());
@@ -627,14 +571,14 @@ bool Logic::checkModification() {
 		msgBox.setDefaultButton(QMessageBox::Save);
 		int ret = msgBox.exec();
 		if (ret == QMessageBox::Cancel) {
-			parent->findChild<QListWidget*>("sectionList")->setCurrentRow(prevArtRow);
+			sectionList->setCurrentRow(prevArtRow);
 			return false;
 		}
 		if (ret == QMessageBox::Save) {
-			core->setSpeciesChapter(speciesId, zoneId, articleId, parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText());
+			core->setSpeciesChapter(speciesId, zoneId, articleId, articleBrowser->toPlainText());
 		}
 		else if (ret == QMessageBox::Discard) {
-			parent->findChild<QTextBrowser*>("articleBrowser")->setText(original);
+			articleBrowser->setText(original);
 		}
 	}
 	return true;
@@ -660,12 +604,11 @@ void Logic::nextSpecies() {
 		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) + 1));
 	}
 	else {
-		// TODO check for zero length array
 		taxoTree->setCurrentItem(taxoSpecies->first());
 	}
 	treeItemSelected(taxoTree->currentItem());
 	if (editMode)
-		original = parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText();
+		original = articleBrowser->toPlainText();
 }
 
 void Logic::prevSpecies() {
@@ -681,12 +624,11 @@ void Logic::prevSpecies() {
 		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) - 1));
 	}
 	else {
-		// TODO check for zero length array
 		taxoTree->setCurrentItem(taxoSpecies->last());
 	}
 	treeItemSelected(taxoTree->currentItem());
 	if (editMode)
-		original = parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText();
+		original = articleBrowser->toPlainText();
 }
 
 
@@ -700,18 +642,18 @@ void Logic::changeFocus(QWidget *old, QWidget *now) {
 }
 
 void Logic::up() {
-	parent->findChild<QTreeWidget*>("taxoTree")->clearSelection();
-	parent->findChild<QListWidget*>("alphaList")->clearSelection();
+	taxoTree->clearSelection();
+	alphaList->clearSelection();
 	stack->setCurrentIndex(2);
 }
 
 void Logic::saveEdit() {
-	core->setSpeciesChapter(speciesId, zoneId, articleId, parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText());
+	core->setSpeciesChapter(speciesId, zoneId, articleId, articleBrowser->toPlainText());
 	editMode = false;
 	editAction->setVisible(true);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
-	parent->findChild<QTextBrowser*>("articleBrowser")->setReadOnly(true);
+	articleBrowser->setReadOnly(true);
 	printButton->setEnabled(true);
 	backButton->setEnabled(true);
 	overviewItem->setHidden(false);
@@ -722,10 +664,8 @@ void Logic::cancelEdit() {
 	editAction->setVisible(true);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
-	parent->findChild<QTextBrowser*>("articleBrowser")->setText(original);
-	parent->findChild<QTextBrowser*>("articleBrowser")->setReadOnly(true);
-	QPushButton *printButton = parent->findChild<QPushButton*>("printButton");
-	QPushButton *backButton = parent->findChild<QPushButton*>("backToListsButton");
+	articleBrowser->setText(original);
+	articleBrowser->setReadOnly(true);
 	printButton->setEnabled(true);
 	backButton->setEnabled(true);
 	overviewItem->setHidden(false);
@@ -735,7 +675,7 @@ void Logic::edit() {
 	editAction->setVisible(false);
 	saveAction->setVisible(true);
 	cancelAction->setVisible(true);
-	parent->findChild<QTextBrowser*>("articleBrowser")->setReadOnly(false);
+	articleBrowser->setReadOnly(false);
 	if (articleId == "") {
 		overviewItem = sectionList->currentItem();
 		sectionList->setCurrentItem(sectionList->item(1));
@@ -748,9 +688,9 @@ void Logic::edit() {
 	overviewItem->setHidden(true);
 	printButton->setEnabled(false);
 	backButton->setEnabled(false);
-	parent->findChild<QTextBrowser*>("articleBrowser")->setFocus();
+	articleBrowser->setFocus();
 	editMode = true;
-	original = parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText();
+	original = articleBrowser->toPlainText();
 }
 
 void Logic::showHelp() {
@@ -780,7 +720,7 @@ void Logic::printDocument() {
 	dialog->setWindowTitle(tr("Print Document"));
 	if (dialog->exec() != QDialog::Accepted)
 		return;
-	parent->findChild<QTextBrowser*>("docViewer")->print(&printer);
+	docViewer->print(&printer);
 }
 
 void Logic::printSpecies() {
@@ -835,7 +775,7 @@ void Logic::printSpecies() {
 
 void Logic::printAux(QPainter &painter, QPrinter &printer) {
 	/** Логотип */
-	painter.drawPixmap(0, 20, 30, 30, *(parent->findChild<QLabel*>("logoLabel")->pixmap()));
+	painter.drawPixmap(0, 20, 30, 30, *(logoLabel->pixmap()));
 
 	/** Верхний колонтитул */
 	painter.drawText(QRect(40, 20, printer.pageRect().width() - 70, 30), Qt::TextWordWrap, config->value("Labels", "TopBanner").toString());
@@ -846,11 +786,11 @@ void Logic::printAux(QPainter &painter, QPrinter &printer) {
 }
 
 void Logic::largerFont() {
-	parent->findChild<QTextBrowser*>("docViewer")->setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font: 16pt \"Sans Serif\"; padding: 15px");
-	parent->findChild<QTextBrowser*>("articleBrowser")->setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font: 16pt \"Sans Serif\"; padding: 15px");
+	docViewer->setStyleSheet("font: 16pt \"Sans Serif\"");
+	articleBrowser->setStyleSheet("font: 16pt \"Sans Serif\"");
 }
 
 void Logic::smallerFont() {
-	parent->findChild<QTextBrowser*>("docViewer")->setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font: 10pt \"Sans Serif\"; padding: 15px");
-	parent->findChild<QTextBrowser*>("articleBrowser")->setStyleSheet("background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); font: 10pt \"Sans Serif\"; padding: 15px");
+	docViewer->setStyleSheet("font: 10pt \"Sans Serif\"");
+	articleBrowser->setStyleSheet("font: 10pt \"Sans Serif\"");
 }
