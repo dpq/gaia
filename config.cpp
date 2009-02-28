@@ -90,7 +90,6 @@ void QrbConfig::error(QrbConfig::Error *code, int *line) {
 	*line = error_line;
 }
 
-#include <QtDebug>
 void QrbConfig::setFile(const QString &path) {
 	QFile file(path);
 	QString c_section ="", c_param="", c_value="";

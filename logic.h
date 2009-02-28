@@ -65,6 +65,7 @@ public slots:
 	void up();
 	void showHelp();
 	void showIndex();
+	void initChapterMap();
 	void initIndex();
 
 	void setZone(QAction *action);

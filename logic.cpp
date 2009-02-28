@@ -42,35 +42,7 @@ Logic::Logic(QWidget *parent) : QObject(parent) {
 	latAlphas = new QList<QListWidgetItem*>();
 	rusAlphas = new QList<QListWidgetItem*>();
 	core->openTaxonomyFile(":/species.xml");
-	chapterMap = new QMap<QString, QList<int> >();
-	QList<int> indices;
-	indices.clear();
-	indices.append(1);
-	chapterMap->insert("radioc0", QList<int>(indices));
-	indices.clear();
-	indices.append(84);
-	chapterMap->insert("radioc1", QList<int>(indices));
-	indices.clear();
-	indices.append(225);
-	indices.append(236);
-	chapterMap->insert("radioc2", QList<int>(indices));
-	indices.clear();
-	indices.append(261);
-	indices.append(266);
-	chapterMap->insert("radioc3", QList<int>(indices));
-	indices.clear();
-	indices.append(322);
-	chapterMap->insert("radioc4", QList<int>(indices));
-	indices.clear();
-	indices.append(430);
-	chapterMap->insert("radioc5", QList<int>(indices));
-	indices.clear();
-	indices.append(502);
-	indices.append(506);
-	chapterMap->insert("radioc6", QList<int>(indices));
-	indices.clear();
-	indices.append(482);
-	chapterMap->insert("radioc7", QList<int>(indices));
+	initChapterMap();
 	core->openZoneFile(":/zones.xml");
 	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
 	articleId = "";
@@ -119,9 +91,20 @@ Logic::~Logic() {
 	delete zoneMapping;
 }
 
+void Logic::initChapterMap() {
+	chapterMap = new QMap<QString, QList<int> >();
+	QList<int> idList;
+	foreach (const QString &chapter, config->parameters("ChapterMapping")) {
+		idList.clear();
+		foreach (const QString &id, config->value("ChapterMapping", chapter).toString().split(" ")) {
+			idList.append(id.toInt());
+		}
+		chapterMap->insert(chapter, idList);
+	}
+}
+
 void Logic::initIndex() {
 	indexList->clear();
-	indexLabel->setText(config->value("Labels", "indexLabel").toString());
 	QList<QString> params = config->parameters("Index");
 	for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 		QString section = config->value("Index", *param).toString();
@@ -333,6 +316,7 @@ void Logic::setAlphaListLang(const QString &lang) {
 	opposite["rus"] = "lat";
 	opposite["lat"] = "rus";
 
+	/* Load into the list all species in the taxonomy entities corresponding to the selected chapter */
 	foreach (int taxonomyId, chapterMap->value(chapterId)) {
 		QDomElement root = core->taxonomyEntry(taxonomyId);
 		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", root);
@@ -425,12 +409,12 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 	photoLabel->setPixmap(core->entryPicture(speciesId));
 	arealLabel->setPixmap(core->speciesAreal(speciesId, zoneId));
 	
-	QString speciesText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Name").toString());
+	QString speciesText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "name").toString());
 	QString line1 = speciesText.split("\n")[0].toUpper();
 	QString line2 = speciesText.split("\n")[1];
 	speciesText = speciesText.split("\n")[2] + "\n" + speciesText.split("\n")[3] + "\n";
 	
-	QStringList litText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "Lit").toString()).split("\n", QString::SkipEmptyParts);
+	QStringList litText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "lit").toString()).split("\n", QString::SkipEmptyParts);
 	
 	QString compilers = "";
 	for (int i = litText.size() - 1; i >= 0; i--) {
@@ -453,7 +437,7 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 	commentLabel->setText(speciesText.trimmed() + "\n" + cathegory + "\n" + compilers);
 	bool selectionFound = false;
 	sectionList->clear();
-	sectionList->addItem(config->value("Labels", "Full").toString());
+	sectionList->addItem(config->value("Labels", "full").toString());
 	overviewItem = sectionList->item(0);
 	if (editMode) {
 		overviewItem->setHidden(true);
@@ -556,7 +540,7 @@ void Logic::setZone(QAction *action) {
 void Logic::refreshSectionList() {
 	bool selectionFound = false;
 	sectionList->clear();
-	sectionList->addItem(config->value("Labels", "Full").toString());
+	sectionList->addItem(config->value("Labels", "full").toString());
 	QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
 	QList<QString> keys = parameters.values();
 	qSort(keys);
@@ -637,7 +621,7 @@ void Logic::refreshArticle() {
 bool Logic::checkModification() {
 	if (editMode && original != parent->findChild<QTextBrowser*>("articleBrowser")->toPlainText()) {
 		QMessageBox msgBox;
-		msgBox.setText(config->value("Labels", "DocMod").toString());
+		msgBox.setText(config->value("Labels", "DocModified").toString());
 		msgBox.setInformativeText(config->value("Labels", "DocSave").toString());
 		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 		msgBox.setDefaultButton(QMessageBox::Save);

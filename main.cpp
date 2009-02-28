@@ -62,14 +62,14 @@ int main(int argc, char **argv) {
 	cancelAction->setVisible(false);
 #endif
 
-	QMenu *indexMenu = menuBar->addMenu(config->value("Labels", "indexLabel").toString());
+	QMenu *indexMenu = menuBar->addMenu(config->value("Labels", "index").toString());
 	indexMenu->setObjectName("indexMenu");
 
 	QMenu *specMenu = menuBar->addMenu(config->value("Labels", "spec").toString());
 	specMenu->setObjectName("specMenu");
 	specMenu->menuAction()->setVisible(false);
 
-	QMenu *fontMenu = menuBar->addMenu(config->value("Labels", "settings").toString());
+	QMenu *fontMenu = menuBar->addMenu(config->value("Labels", "font").toString());
 	fontMenu->setObjectName("fontMenu");
 	fontMenu->menuAction()->setVisible(false);
 	QAction *lgAction = fontMenu->addAction(config->value("Labels", "font1").toString());
@@ -122,16 +122,15 @@ int main(int argc, char **argv) {
 	indexList->clear();
 	QObject::connect(indexList, SIGNAL(itemClicked(QListWidgetItem*)), logic, SLOT(viewDocument(QListWidgetItem*)));
 
-	QList<QString> params = config->parameters("Index");
-	for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
-		QString section = config->value("Index", *param).toString();
+	foreach (const QString &param, config->parameters("Index")) {
+		QString section = config->value("Index", param).toString();
 		/* Central index widget */
 		QListWidgetItem *item = new QListWidgetItem(section);
-		item->setData(Qt::UserRole, *param);
+		item->setData(Qt::UserRole, param);
 		indexList->addItem(item);
 		/* Index menu */
 		QAction *action = indexMenu->addAction(section);
-		action->setData(*param);
+		action->setData(param);
 		QObject::connect(action, SIGNAL(triggered()), logic, SLOT(viewDocument()));
 	}
 
