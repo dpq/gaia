@@ -4,29 +4,24 @@
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
  *   (at your option) any later version.                                   *
- *   Copyright 2008 David Parunakian                                       *
+ *   Copyright 2008-2009 David Parunakian                                  *
  ***************************************************************************/
 #include <QtGui/QApplication>
 #include <QtGui/QSplashScreen>
+#include <QtUiTools/QUiLoader>
 #include <QtCore/QFile>
-#include <QtCore/QTimer>
-#include <QtGui/QBitmap>
-#include <QtGui/QMenu>
-#include <QtGui/QListWidget>
-#include <QtGui/QListWidgetItem>
-#include <QtGui/QTreeWidget>
-#include <QtGui/QTreeWidgetItem>
-#include <QtGui/QCursor>
-#include <QtGui/QLabel>
+
 #include <QtGui/QComboBox>
-#include <QtGui/QTextBrowser>
-#include <QtGui/QStackedWidget>
-#include <QtGui/QPushButton>
+#include <QtGui/QTreeWidget>
+#include <QtGui/QListWidget>
+
 #include <QtGui/QRadioButton>
+#include <QtGui/QPushButton>
+
 #include <QtGui/QMenuBar>
+
 #define OPERATOR
 
-#include <QtUiTools/QUiLoader>
 #include "logic.h"
 #include "config.h"
 
@@ -67,10 +62,8 @@ int main(int argc, char **argv) {
 	cancelAction->setVisible(false);
 #endif
 
-	//QMenu *indexMenu = new QMenu(config->value("Labels", "indexLabel").toString());
 	QMenu *indexMenu = menuBar->addMenu(config->value("Labels", "indexLabel").toString());
 	indexMenu->setObjectName("indexMenu");
-	//menuBar->addMenu(indexMenu);
 
 	QMenu *specMenu = menuBar->addMenu(config->value("Labels", "spec").toString());
 	specMenu->setObjectName("specMenu");
@@ -94,11 +87,13 @@ int main(int argc, char **argv) {
 	QObject::connect(lgAction, SIGNAL(activated()), logic, SLOT(largerFont()));
 	QObject::connect(helpAction, SIGNAL(activated()), logic, SLOT(showHelp()));
 
-	QObject::connect(redBook->findChild<QPushButton*>("backToListsButton"), SIGNAL(clicked()), logic, SLOT(up()));
+	QObject::connect(redBook->findChild<QPushButton*>("docPrintButton"), SIGNAL(clicked()), logic, SLOT(printDocument()));
+	QObject::connect(redBook->findChild<QPushButton*>("docBackButton"), SIGNAL(clicked()), logic, SLOT(showIndex()));
 	QObject::connect(redBook->findChild<QComboBox*>("chapterCombo"), SIGNAL(currentIndexChanged(const QString &)), logic, SLOT(viewChapter(const QString &)));
 
-	QObject::connect(redBook->findChild<QPushButton*>("latButton"), SIGNAL(clicked()), logic, SLOT(viewLatAlpha()));
-	QObject::connect(redBook->findChild<QPushButton*>("rusButton"), SIGNAL(clicked()), logic, SLOT(viewRusAlpha()));
+	QObject::connect(redBook->findChild<QPushButton*>("speciesBackButton"), SIGNAL(clicked()), logic, SLOT(showIndex()));
+	QObject::connect(redBook->findChild<QPushButton*>("latButton"), SIGNAL(clicked()), logic, SLOT(latAlpha()));
+	QObject::connect(redBook->findChild<QPushButton*>("rusButton"), SIGNAL(clicked()), logic, SLOT(rusAlpha()));
 
 	QObject::connect(redBook->findChild<QRadioButton*>("radioc0"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
 	QObject::connect(redBook->findChild<QRadioButton*>("radioc1"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
@@ -112,13 +107,12 @@ int main(int argc, char **argv) {
 	QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), logic, SLOT(treeItemSelected(QTreeWidgetItem *)));
 	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemDoubleClicked(QListWidgetItem*)), logic, SLOT(listItemSelected(QListWidgetItem *)));
 
-	QObject::connect(redBook->findChild<QListWidget*>("sectionList"), SIGNAL(itemClicked(QListWidgetItem*)), logic, SLOT(setArticle(QListWidgetItem*)));
+	QObject::connect(redBook->findChild<QPushButton*>("backToListsButton"), SIGNAL(clicked()), logic, SLOT(up()));
 	QObject::connect(redBook->findChild<QPushButton*>("prevButton"), SIGNAL(clicked()), logic, SLOT(prevSpecies()));
 	QObject::connect(redBook->findChild<QPushButton*>("nextButton"), SIGNAL(clicked()), logic, SLOT(nextSpecies()));
 	QObject::connect(redBook->findChild<QPushButton*>("printButton"), SIGNAL(clicked()), logic, SLOT(printSpecies()));
-	QObject::connect(redBook->findChild<QPushButton*>("docPrintButton"), SIGNAL(clicked()), logic, SLOT(printDocument()));
-	QObject::connect(redBook->findChild<QPushButton*>("docBackButton"), SIGNAL(clicked()), logic, SLOT(showIndex()));
-	QObject::connect(redBook->findChild<QPushButton*>("speciesBackButton"), SIGNAL(clicked()), logic, SLOT(showIndex()));
+	QObject::connect(redBook->findChild<QListWidget*>("sectionList"), SIGNAL(itemClicked(QListWidgetItem*)), logic, SLOT(setArticle(QListWidgetItem*)));
+
 	QObject::connect(&app, SIGNAL(focusChanged(QWidget*, QWidget*)), logic, SLOT(changeFocus(QWidget*, QWidget*)));
 
 	/* Populate the Red Data Book index */
@@ -131,16 +125,15 @@ int main(int argc, char **argv) {
 	QList<QString> params = config->parameters("Index");
 	for (QList<QString>::iterator param = params.begin(); param != params.end(); param++) {
 		QString section = config->value("Index", *param).toString();
-		QAction *action = indexMenu->addAction(section);
-		action->setData(*param);
-		QObject::connect(action, SIGNAL(triggered()), logic, SLOT(viewDocument()));
+		/* Central index widget */
 		QListWidgetItem *item = new QListWidgetItem(section);
 		item->setData(Qt::UserRole, *param);
 		indexList->addItem(item);
+		/* Index menu */
+		QAction *action = indexMenu->addAction(section);
+		action->setData(*param);
+		QObject::connect(action, SIGNAL(triggered()), logic, SLOT(viewDocument()));
 	}
-
-	//QComboBox *chapterCombo = redBook->findChild<QComboBox*>("chapterCombo");
-	//params = config->parameters("Appendix");
 
 	/* Set advanced style information */
 	app.setStyleSheet("QRadioButton::indicator::checked { image: url(\":/radio.png\") } QListWidget#indexList::item::hover { background: qlineargradient(spread:pad, x1:0, y1:1,  x2:0, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.0157895 rgba(255, 197, 166, 255), stop:0.647368 rgba(255, 255, 255, 255), stop:0.757895 rgba(255, 255, 255, 255), stop:1 rgba(255, 220, 197, 255)); }");
