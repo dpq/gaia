@@ -41,13 +41,17 @@ Logic::Logic(QrbConfig *config, QWidget *parent) : QObject(parent) {
 	core->openTaxonomyFile(":/species.xml");
 	core->openZoneFile(":/zones.xml");
 	
-	initChapterMap();
+	initChapterRoots();
+	chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
+	
+	pageColor = new QMap<int, QString>();
+	labelColor = new QMap<int, QString>();
+	commentColor = new QMap<int, QString>();
 
 	zoneMapping = new QMap<QAction*, int>();
-	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
-
 	articleId = "";
 	chapterId = "radioc0";
+	lang = "rus";
 	editMode = false;
 	zoneId = 1;
 	taxoSpecies = new QList<QTreeWidgetItem*>();
@@ -55,10 +59,11 @@ Logic::Logic(QrbConfig *config, QWidget *parent) : QObject(parent) {
 
 	this->parent = parent;
 	stack = parent->findChild<QStackedWidget*>("stackedWidget");
+	indexList = parent->findChild<QListWidget*>("indexList");
 	indexLabel = parent->findChild<QLabel*>("indexLabel");
 	docViewer = parent->findChild<QTextBrowser*>("docViewer");
 	articleBrowser = parent->findChild<QTextBrowser*>("articleBrowser");
-	docTitle = parent->findChild<QLabel*>("docTitle");
+	docTitleLabel = parent->findChild<QLabel*>("docTitleLabel");
 	chapterCombo = parent->findChild<QComboBox*>("chapterCombo");
 	editAction = parent->findChild<QAction*>("editAction");
 	saveAction = parent->findChild<QAction*>("saveAction");
@@ -77,51 +82,75 @@ Logic::Logic(QrbConfig *config, QWidget *parent) : QObject(parent) {
 	printButton = parent->findChild<QPushButton*>("printButton");
 	backButton = parent->findChild<QPushButton*>("backToListsButton");
 	
-	sectionMapping[""] = "Index";
-	sectionMapping["p6"] = "Chapters";
-	sectionMapping["p7"] = "Appendix";
+	indexSections[""] = "Index";
+	indexSections["p6"] = "Chapters";
+	indexSections["p7"] = "Appendix";
 
 	oppositeLang["rus"] = "lat";
 	oppositeLang["lat"] = "rus";
+
+	labelColor->insert(0, "#ffffff");
+	labelColor->insert(1, "#ffff00");
+	labelColor->insert(2, "#008000");
+	labelColor->insert(3, "#008000");
+	labelColor->insert(4, "#008000");
+	labelColor->insert(5, "#00ff00");
+
+	commentColor->insert(0, "#ffffff");
+	commentColor->insert(1, "#ffffff");
+	commentColor->insert(2, "#000000");
+	commentColor->insert(3, "#000000");
+	commentColor->insert(4, "#000000");
+	commentColor->insert(5, "#ffffff");
+	
+	pageColor->insert(0, "#000000");
+	pageColor->insert(1, "#ff0000");
+	pageColor->insert(2, "#ffffa0");
+	pageColor->insert(3, "#ffffff");
+	pageColor->insert(4, "#cccccc");
+	pageColor->insert(5, "#008000");
+
+
+
+
+	initIndex();
 }
 
 Logic::~Logic() {
 	delete core;
-	delete config;
-	delete chapterMap;
-	delete chapterLayout;
+	delete chapterRoots;
+	delete chapterArticles;
+	delete pageColor;
+	delete labelColor;
+	delete commentColor;
+
 	delete taxoSpecies;
 	delete zoneMapping;
 }
 
-void Logic::initChapterMap() {
-	chapterMap = new QMap<QString, QList<int> >();
+void Logic::initChapterRoots() {
+	chapterRoots = new QMap<QString, QList<int> >();
 	QList<int> idList;
-	foreach (const QString &chapter, config->parameters("ChapterMapping")) {
+	foreach (const QString &chapter, config->parameters("ChapterRoots")) {
 		idList.clear();
-		foreach (const QString &id, config->value("ChapterMapping", chapter).toString().split(" ")) {
+		foreach (const QString &id, config->value("ChapterRoots", chapter).toString().split(" ")) {
 			idList.append(id.toInt());
 		}
-		chapterMap->insert(chapter, idList);
+		chapterRoots->insert(chapter, idList);
 	}
 }
 
-void Logic::initIndex(const QString &mode) {
-	QListWidget *indexList = parent->findChild<QListWidget*>("indexList");
+void Logic::initIndex(const QString &section) {
 	indexList->clear();
-	if (mode == "") {
+	if (section == "") {
 		indexLabel->setText(config->value("Labels", "index").toString());
 	}
-	else if (mode == "p6") {
-		indexLabel->setText(config->value("Index", "p6").toString());
+	else if (section == "p6" || section == "p7") {
+		indexLabel->setText(config->value("Index", section).toString());
 		indexList->addItem(config->value("Labels", "back").toString());
 	}
-	else if (mode == "p7") {
-		indexLabel->setText(config->value("Index", "p7").toString());
-		indexList->addItem(config->value("Labels", "back").toString());
-	}
-	foreach (const QString &param, config->parameters(sectionMapping[mode])) {
-		QListWidgetItem *item = new QListWidgetItem(config->value(sectionMapping[mode], param).toString());
+	foreach (const QString &param, config->parameters(indexSections[section])) {
+		QListWidgetItem *item = new QListWidgetItem(config->value(indexSections[section], param).toString());
 		item->setData(Qt::UserRole, param);
 		indexList->addItem(item);
 	}
@@ -132,7 +161,7 @@ void Logic::viewSingleDoc(const QString &docId, const QString &docName) {
 	file.open(QIODevice::ReadOnly | QIODevice::Text);
 	docViewer->setHtml(QString::fromUtf8(file.readAll()));
 	file.close();
-	docTitle->setText(docName);
+	docTitleLabel->setText(docName);
 	editAction->setVisible(false);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
@@ -143,29 +172,22 @@ void Logic::viewSingleDoc(const QString &docId, const QString &docName) {
 	stack->setCurrentIndex(1);
 }
 
+/* When invoked from the index widget, ID is of the paragraph to load. When invoked from the index menu, ID is of the general section */
 void Logic::viewMultiDoc(const QString &id, const QString &item) {
-	//QString section;
 	if (item == "") {
 		multiDocDir = id;
 	}
-	//section = id;
-	docTitle->setText(config->value("Index", id).toString());
-	//}
-	//else {
-	//	section = type;
-	//	multiDocDir = type;
-	//	docTitle->setText(config->value("Index", type).toString());
-	//}
+	docTitleLabel->setText(config->value("Index", id).toString());
 	chapterCombo->clear();
 	chapterCombo->show();
-	foreach (const QString &param, config->parameters(sectionMapping[id])) {
-		chapterCombo->addItem(config->value(sectionMapping[id], param).toString(), param);
+	foreach (const QString &param, config->parameters(indexSections[id])) {
+		chapterCombo->addItem(config->value(indexSections[id], param).toString(), param);
 	}
-	if (item != "") {
-		chapterCombo->setCurrentIndex(chapterCombo->findText(item));
+	if (item == "") {
+		chapterCombo->setCurrentIndex(0);
 	}
 	else {
-		chapterCombo->setCurrentIndex(0);
+		chapterCombo->setCurrentIndex(chapterCombo->findText(item));
 	}
 	editAction->setVisible(false);
 	saveAction->setVisible(false);
@@ -184,19 +206,6 @@ void Logic::viewMultiDocChapter(const QString &chapter) {
 	file.close();
 }
 
-void Logic::viewSpeciesLists() {
-	parent->findChild<QRadioButton*>(chapterId)->setChecked(true);
-	rusAlpha();
-	editAction->setVisible(false);
-	saveAction->setVisible(false);
-	cancelAction->setVisible(false);
-	specMenu->setVisible(false);
-	fontMenu->setVisible(false);
-	taxoTree->clearSelection();
-	alphaList->clearSelection();
-	stack->setCurrentIndex(2);
-}
-
 void Logic::indexWidgetClicked(QListWidgetItem *item) {
 	QString text = item->text();
 	QString id = item->data(Qt::UserRole).toString();
@@ -206,7 +215,6 @@ void Logic::indexWidgetClicked(QListWidgetItem *item) {
 	}
 	else if (id == "") {
 		initIndex();
-		return;
 	}
 	else if (id == "p5") {
 		viewSpeciesLists();
@@ -237,15 +245,26 @@ void Logic::indexMenuClicked() {
 	}
 }
 
+void Logic::viewSpeciesLists() {
+	parent->findChild<QRadioButton*>(chapterId)->setChecked(true);
+	setAlphaListLang(lang);
+	editAction->setVisible(false);
+	saveAction->setVisible(false);
+	cancelAction->setVisible(false);
+	specMenu->setVisible(false);
+	fontMenu->setVisible(false);
+	taxoTree->clearSelection();
+	alphaList->clearSelection();
+	stack->setCurrentIndex(2);
+}
+
 void Logic::showIndex() {
-	indexMode = "";
 	initIndex();
 	editAction->setVisible(false);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
 	specMenu->setVisible(false);
 	fontMenu->setVisible(false);
-	chapterCombo->hide();
 	stack->setCurrentIndex(0);
 }
 
@@ -260,10 +279,8 @@ void Logic::rusAlpha() {
 void Logic::setAlphaListLang(const QString &lang) {
 	alphaList->clear();
 	QMap<QString, QString> text;
-	/* Load into the list all species in the taxonomy entities corresponding to the selected chapter */
-	foreach (int taxonomyId, chapterMap->value(chapterId)) {
-		QDomElement root = core->taxonomyEntry(taxonomyId);
-		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", root);
+	foreach (int taxonomyId, chapterRoots->value(chapterId)) {
+		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", core->taxonomyEntry(taxonomyId));
 		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
 			QListWidgetItem *item = new QListWidgetItem();
 			text["lat"] = (*i).attribute("lat");
@@ -273,8 +290,8 @@ void Logic::setAlphaListLang(const QString &lang) {
 			item->setData(Qt::UserRole, (*i).attribute("id"));
 			alphaList->addItem(item);
 		}
-	}	
-	alphaMode = lang;
+	}
+	this->lang = lang;
 	alphaList->sortItems();
 }
 
@@ -282,17 +299,19 @@ void Logic::setTaxoChapter(bool isChecked) {
 	if (!isChecked)
 		return;
 	chapterId = qobject_cast<QRadioButton*>(sender())->objectName();
-	if (alphaMode == "rus")
+	if (lang == "rus")
 		rusAlpha();
-	else
+	else if (lang == "lat")
 		latAlpha();
+	else
+		return;
 	updateTaxonomy();
 }
 
 void Logic::updateTaxonomy() {
 	taxoTree->clear();
 	taxoSpecies->clear();
-	foreach (int id, chapterMap->value(chapterId)) {
+	foreach (int id, chapterRoots->value(chapterId)) {
 		QDomElement root = core->taxonomyEntry(id);
 		QString taxoLevel = config->value("Taxo", root.tagName()).toString();
 		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(taxoLevel + " " + root.attribute("rus").toUpper() + " - " + root.attribute("lat")), 0);
@@ -415,18 +434,18 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 			QString stops = "";
 			float x = 1.0;
 			for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
-				stops += " stop: " + QString::number(x, 'f', 3) + " " + pageColor(*i) + ",";
+				stops += " stop: " + QString::number(x, 'f', 3) + " " + pageColor->value(*i) + ",";
 				x -= (0.25/(cat.size()));
 				if (i + 1 != cat.end())
-					stops += " stop: " + QString::number(x + 0.005, 'f', 3) + " " + pageColor(*i) + ",";
+					stops += " stop: " + QString::number(x + 0.005, 'f', 3) + " " + pageColor->value(*i) + ",";
 			stops = stops.left(stops.length() - 1);
 			colorPage->setStyleSheet(stylesheet + stops + ") }");
 			}
 		}
 		else {
-			colorPage->setStyleSheet("#colorPage { background-color:" + pageColor(cat[0]) + "}");
+			colorPage->setStyleSheet("#colorPage { background-color:" + pageColor->value(cat[0]) + "}");
 		}
-		QString specialBackground = "", lc = labelColor(cat[0]), cc = commentColor(cat[0]), bc = pageColor(cat[0]);
+		QString specialBackground = "", lc = labelColor->value(cat[0]), cc = commentColor->value(cat[0]), bc = pageColor->value(cat[0]);
 		if (cat.size() > 1) {
 			specialBackground = "background-color: #ffffff; border: 1px solid black;";
 			cc = "#000000";
@@ -475,8 +494,8 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 
 void Logic::setZone(QAction *action) {
 	zoneId = zoneMapping->value(action);
-	delete chapterLayout;
-	chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
+	delete chapterArticles;
+	chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
 	refreshSectionList();
 	refreshArticle();
 }
@@ -504,39 +523,6 @@ void Logic::refreshSectionList() {
 	if (! selectionFound) {
 		sectionList->setCurrentRow(0);
 		articleId = "";
-	}
-}
-
-QString Logic::labelColor(int cat) {
-	switch (cat) {
-	case 0: return "#ffffff";
-	case 1: return "#ffff00";
-	case 2: return "#008000";
-	case 3: return "#008000";
-	case 4: return "#008000";
-	case 5: return "#00ff00";
-	}
-}
-
-QString Logic::commentColor(int cat) {
-	switch (cat) {
-	case 0: return "#ffffff";
-	case 1: return "#ffffff";
-	case 2: return "#000000";
-	case 3: return "#000000";
-	case 4: return "#000000";
-	case 5: return "#ffffff";
-	}
-}
-
-QString Logic::pageColor(int cat) {
-	switch (cat) {
-	case 0: return "#000000";
-	case 1: return "#ff0000";
-	case 2: return "#ffffa0";
-	case 3: return "#ffffff";
-	case 4: return "#cccccc";
-	case 5: return "#008000";
 	}
 }
 
@@ -596,8 +582,8 @@ void Logic::nextSpecies() {
 		return;
 	if (zoneId != 1) {
 		zoneId = 1;
-		delete chapterLayout;
-		chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
+		delete chapterArticles;
+		chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
 		refreshSectionList();
 	}
 	if (taxoSpecies->indexOf(taxoTree->currentItem()) < taxoSpecies->count() - 1) {
@@ -616,8 +602,8 @@ void Logic::prevSpecies() {
 		return;
 	if (zoneId != 1) {
 		zoneId = 1;
-		delete chapterLayout;
-		chapterLayout = new QMap<QString, QString>(core->chapterLayout(zoneId));
+		delete chapterArticles;
+		chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
 		refreshSectionList();
 	}
 	if (taxoSpecies->indexOf(taxoTree->currentItem()) > 0) {

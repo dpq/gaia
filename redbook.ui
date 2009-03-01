@@ -163,13 +163,13 @@ border-radius: 0px;</string>
         <item>
          <widget class="QFrame" name="docFrame" >
           <property name="styleSheet" >
-           <string notr="true" >#docFrame, #docTitle {
+           <string notr="true" >#docFrame, #docTitleLabel {
 	background-color: #0080c0;
 }</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3" >
            <item>
-            <widget class="QLabel" name="docTitle" >
+            <widget class="QLabel" name="docTitleLabel" >
              <property name="styleSheet" >
               <string notr="true" >font: 75 14pt "Sans Serif";
 background-color: #0080c0;

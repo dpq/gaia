@@ -123,7 +123,6 @@ int main(int argc, char **argv) {
 	QObject::connect(indexList, SIGNAL(itemClicked(QListWidgetItem*)), logic, SLOT(indexWidgetClicked(QListWidgetItem*)));
 
 	/* Populate the index */
-	logic->initIndex();
 	foreach (const QString &param, config->parameters("Index")) {
 		QAction *action = indexMenu->addAction(config->value("Index", param).toString());
 		action->setData(param);

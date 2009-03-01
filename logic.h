@@ -67,9 +67,8 @@ public slots:
 	void up();
 	void showHelp();
 	void showIndex();
-	void initChapterMap();
-	void initIndex(const QString &mode = "");
-
+	void initChapterRoots();
+	
 	void setZone(QAction *action);
 
 	void edit();
@@ -78,14 +77,12 @@ public slots:
 
 private:
 	void viewSingleDoc(const QString &docId, const QString &docName);
-	void viewMultiDoc(const QString &type, const QString &item = "");
+	void viewMultiDoc(const QString &id, const QString &item = "");
 	void viewSpeciesLists();
+	void initIndex(const QString &section = "");
 
 	bool checkModification();
 	int firstItemId, lastItemId;
-	QString pageColor(int cat);
-	QString commentColor(int cat);
-	QString labelColor(int cat);
 	QString currentDir, alphaMode, chapterId, articleId, indexMode;
 	void refreshArticle();
 	void printAux(QPainter &painter, QPrinter &printer);
@@ -95,8 +92,6 @@ private:
 	GaiaCore *core;
 	QrbConfig *config;
 	QString currentCathegory;
-	QMap<QString, QList<int> > *chapterMap;
-	QMap<QString, QString> *chapterLayout;
 	QMap<QAction*, int> *zoneMapping;
 	void insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root);
 	void refreshSectionList();
@@ -106,16 +101,22 @@ private:
 
 	QWidget *parent, *colorPage;
 	QStackedWidget *stack;
-	QListWidget *alphaList, *sectionList;
-	QLabel *indexLabel, *docTitle, *photoLabel, *arealLabel, *speciesLabel, *commentLabel, *logoLabel;
+	QListWidget *alphaList, *sectionList, *indexList;
+	QLabel *indexLabel, *docTitleLabel, *photoLabel, *arealLabel, *speciesLabel, *commentLabel, *logoLabel;
 	QTextBrowser *docViewer, *articleBrowser;
 	QComboBox *chapterCombo;
 	QAction *editAction, *saveAction, *cancelAction, *specMenu, *fontMenu;
 	QTreeWidget *taxoTree;
 	QPushButton *printButton, *backButton;
 	
-	QMap<QString, QString> sectionMapping, oppositeLang;
-	QString multiDocDir;
+	QMap<QString, QString> indexSections, oppositeLang;
+	QString multiDocDir, lang;
+
+	QMap<QString, QList<int> > *chapterRoots;
+	QMap<QString, QString> *chapterArticles;
+
+	QMap<int, QString> *pageColor, *labelColor, *commentColor;
+
 };
 
 #endif
