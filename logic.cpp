@@ -33,8 +33,6 @@
 #include "core.h"
 #include "logic.h"
 
-// TODO Rus - Lat modified lists
-
 Logic::Logic(QrbConfig *config, QWidget *parent) : QObject(parent) {
 	core = new GaiaCore();
 	this->config = config;
@@ -109,9 +107,6 @@ Logic::Logic(QrbConfig *config, QWidget *parent) : QObject(parent) {
 	pageColor->insert(3, "#ffffff");
 	pageColor->insert(4, "#cccccc");
 	pageColor->insert(5, "#008000");
-
-
-
 
 	initIndex();
 }
@@ -247,7 +242,7 @@ void Logic::indexMenuClicked() {
 
 void Logic::viewSpeciesLists() {
 	parent->findChild<QRadioButton*>(chapterId)->setChecked(true);
-	setAlphaListLang(lang);
+	populateAlphaList();
 	editAction->setVisible(false);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
@@ -268,15 +263,52 @@ void Logic::showIndex() {
 	stack->setCurrentIndex(0);
 }
 
-void Logic::latAlpha() {
-	setAlphaListLang("lat");
+void Logic::chapterSelected(bool isChecked) {
+	if (!isChecked)
+		return;
+	chapterId = qobject_cast<QRadioButton*>(sender())->objectName();
+	populateAlphaList();
+	populateSystematics();
 }
 
-void Logic::rusAlpha() {
-	setAlphaListLang("rus");
+void Logic::populateSystematics() {
+	taxoTree->clear();
+	taxoSpecies->clear();
+	foreach (int id, chapterRoots->value(chapterId)) {
+		QDomElement root = core->taxonomyEntry(id);
+		QString taxoLevel = config->value("Taxo", root.tagName()).toString();
+		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(taxoLevel + " " + root.attribute("rus").toUpper() + " - " + root.attribute("lat")), 0);
+		insertTaxoPart(item, root);
+		item->setToolTip(0, "<font color=\"red\"><pre>" +  root.attribute("rus") + " - " + root.attribute("lat") + "</pre></font>");
+		item->setData(0, Qt::UserRole, root.attribute("id"));
+		taxoTree->addTopLevelItem(item);
+	}
+	taxoTree->expandAll();
 }
 
-void Logic::setAlphaListLang(const QString &lang) {
+void Logic::insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root) {
+	for (int i = 0; i < root.childNodes().size(); i++) {
+		QDomElement element = root.childNodes().at(i).toElement();
+		QString comment = (element.attribute("comment") == "" ? "" : " [" + element.attribute("comment") + "]");
+		QString oldid = (element.attribute("oldid") == "" ? "" : element.attribute("oldid") + ". ");
+		QTreeWidgetItem *item;
+		if (element.tagName() == "species") {
+			QString reference = " (" + element.attribute("author") + ", " + element.attribute("year") + ") (" + element.attribute("status") + ")";
+			item = new QTreeWidgetItem(QStringList(oldid + element.attribute("rus") + comment + " - " + element.attribute("lat") + reference), 0);
+			item->setToolTip(0, "<font color=\"red\"><pre>" + element.attribute("rus") + comment + " - " + element.attribute("lat") + reference + "</pre></font>");
+			taxoSpecies->append(item);
+		}
+		else {
+			QString taxonomyLevel = config->value("Taxo", element.tagName()).toString() + " ";
+			item = new QTreeWidgetItem(QStringList(taxonomyLevel + element.attribute("rus").toUpper() + " - " + element.attribute("lat")), 0);
+		}
+		insertTaxoPart(item, element);
+		item->setData(0, Qt::UserRole, element.attribute("id"));
+		parent->addChild(item);
+	}
+}
+
+void Logic::populateAlphaList() {
 	alphaList->clear();
 	QMap<QString, QString> text;
 	foreach (int taxonomyId, chapterRoots->value(chapterId)) {
@@ -295,62 +327,17 @@ void Logic::setAlphaListLang(const QString &lang) {
 	alphaList->sortItems();
 }
 
-void Logic::setTaxoChapter(bool isChecked) {
-	if (!isChecked)
-		return;
-	chapterId = qobject_cast<QRadioButton*>(sender())->objectName();
-	if (lang == "rus")
-		rusAlpha();
-	else if (lang == "lat")
-		latAlpha();
-	else
-		return;
-	updateTaxonomy();
+void Logic::latAlpha() {
+	lang = "lat";
+	populateAlphaList();
 }
 
-void Logic::updateTaxonomy() {
-	taxoTree->clear();
-	taxoSpecies->clear();
-	foreach (int id, chapterRoots->value(chapterId)) {
-		QDomElement root = core->taxonomyEntry(id);
-		QString taxoLevel = config->value("Taxo", root.tagName()).toString();
-		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(taxoLevel + " " + root.attribute("rus").toUpper() + " - " + root.attribute("lat")), 0);
-		insertTaxoPart(item, root);
-		item->setToolTip(0, "<font color=\"red\"><pre>" +  root.attribute("rus") + " - " + root.attribute("lat") + "</pre></font>");
-		item->setData(0, Qt::UserRole, root.attribute("id"));
-		taxoTree->addTopLevelItem(item);
-	}
-	taxoTree->expandAll();
+void Logic::rusAlpha() {
+	lang = "rus";
+	populateAlphaList();
 }
 
-void Logic::insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root) {
-	for (int i = 0; i < root.childNodes().size(); i++) {
-		QDomElement element = root.childNodes().at(i).toElement();
-		QString comment = element.attribute("comment");
-		if (comment != QString())
-			comment = " [" + comment + "]";
-		QString oldid = element.attribute("oldid");
-		if (oldid != QString())
-			oldid += ". ";
-		QTreeWidgetItem *item;
-		QString appendum = "";
-		if (element.tagName() == "species") {
-			appendum = " (" + element.attribute("author") + ", " + element.attribute("year") + ") (" + element.attribute("status") + ")";
-			item = new QTreeWidgetItem(QStringList(oldid + element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum), 0);
-		}
-		else {
-			QString taxoLevel = config->value("Taxo", element.tagName()).toString() + " ";
-			item = new QTreeWidgetItem(QStringList(taxoLevel + element.attribute("rus").toUpper() + comment + " - " + element.attribute("lat")), 0);
-		}	
-		insertTaxoPart(item, element);
-		item->setToolTip(0, "<font color=\"red\"><pre>" + element.attribute("rus") + comment + " - " + element.attribute("lat") + appendum + "</pre></font>");
-		item->setData(0, Qt::UserRole, element.attribute("id"));
-		if (element.tagName() == "species")
-				taxoSpecies->append(item);
-		parent->addChild(item);
-	}
-}
-
+// TODO Rus - Lat modified lists
 void Logic::treeItemSelected(QTreeWidgetItem *item) {
 	if (!item->text(0).contains(" - ") || !item->text(0).contains(". "))
 		return;
@@ -493,10 +480,18 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 }
 
 void Logic::setZone(QAction *action) {
+	bool isHidden = overviewItem->isHidden();
+	checkModification();
 	zoneId = zoneMapping->value(action);
 	delete chapterArticles;
 	chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
 	refreshSectionList();
+	overviewItem = sectionList->item(0);
+	if (isHidden) {
+		overviewItem->setHidden(true);
+		sectionList->setCurrentItem(sectionList->item(1));
+		this->setArticle(sectionList->currentItem());
+	}
 	refreshArticle();
 }
 
@@ -571,8 +566,6 @@ bool Logic::checkModification() {
 }
 
 void Logic::setArticle(QListWidgetItem *item) {
-	if (!checkModification())
-		return;
 	articleId = (item->data(Qt::UserRole).toString() == "" ? "" : item->text());
 	refreshArticle();
 }
@@ -617,7 +610,7 @@ void Logic::prevSpecies() {
 		original = articleBrowser->toPlainText();
 }
 
-
+// TODO put here synchronization instead
 void Logic::changeFocus(QWidget *old, QWidget *now) {
 	if (old == taxoTree && now == alphaList) {
 		taxoTree->clearSelection();
@@ -627,6 +620,7 @@ void Logic::changeFocus(QWidget *old, QWidget *now) {
 	}
 }
 
+// TODO sync
 void Logic::up() {
 	taxoTree->clearSelection();
 	alphaList->clearSelection();
@@ -635,67 +629,67 @@ void Logic::up() {
 
 void Logic::saveEdit() {
 	core->setSpeciesChapter(speciesId, zoneId, articleId, articleBrowser->toPlainText());
+	articleBrowser->setReadOnly(true);
 	editMode = false;
 	editAction->setVisible(true);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
-	articleBrowser->setReadOnly(true);
 	printButton->setEnabled(true);
 	backButton->setEnabled(true);
 	overviewItem->setHidden(false);
 }
 
 void Logic::cancelEdit() {
+	articleBrowser->setText(original);
+	articleBrowser->setReadOnly(true);
 	editMode = false;
 	editAction->setVisible(true);
 	saveAction->setVisible(false);
 	cancelAction->setVisible(false);
-	articleBrowser->setText(original);
-	articleBrowser->setReadOnly(true);
 	printButton->setEnabled(true);
 	backButton->setEnabled(true);
 	overviewItem->setHidden(false);
 }
 
 void Logic::edit() {
+	original = articleBrowser->toPlainText();
+	articleBrowser->setReadOnly(false);
+	editMode = true;
 	editAction->setVisible(false);
 	saveAction->setVisible(true);
 	cancelAction->setVisible(true);
-	articleBrowser->setReadOnly(false);
-	if (articleId == "") {
-		overviewItem = sectionList->currentItem();
-		sectionList->setCurrentItem(sectionList->item(1));
-		this->setArticle(sectionList->currentItem());
-	}
-	else {
-		overviewItem = sectionList->item(0);
-	}
-	prevArtRow = sectionList->currentRow();
-	overviewItem->setHidden(true);
 	printButton->setEnabled(false);
 	backButton->setEnabled(false);
+	overviewItem->setHidden(true);
+	if (articleId == "") {
+		sectionList->setCurrentItem(sectionList->item(1));
+		if (checkModification())
+			this->setArticle(sectionList->currentItem());
+	}
+	prevArtRow = sectionList->currentRow();
 	articleBrowser->setFocus();
-	editMode = true;
-	original = articleBrowser->toPlainText();
 }
 
 void Logic::showHelp() {
 	QDialog *helpDialog = new QDialog(qApp->activeWindow());
-	QVBoxLayout *helpLayout = new QVBoxLayout(helpDialog);
+
 	QHBoxLayout *buttonLayout = new QHBoxLayout();
 	QPushButton *closeButton = new QPushButton(config->value("Labels", "close").toString());
 	buttonLayout->addStretch();
 	buttonLayout->addWidget(closeButton);
+
+	QVBoxLayout *helpLayout = new QVBoxLayout(helpDialog);
 	QTextBrowser *helpBrowser = new QTextBrowser();
 	helpLayout->addWidget(helpBrowser);
 	helpLayout->addLayout(buttonLayout);
-	connect(closeButton, SIGNAL(clicked()), helpDialog, SLOT(accept()));
-	helpDialog->setStyleSheet("QDialog { background-color:#ffffff; color: #000000 }");
+
 	QFile file(qApp->applicationDirPath() + "/doc/help/h" + QString::number(stack->currentIndex()) + ".html");
 	file.open(QIODevice::ReadOnly | QIODevice::Text);
 	helpBrowser->setHtml(QString::fromUtf8(file.readAll()));
 	file.close();
+	
 	helpDialog->resize(400, 300);
+	connect(closeButton, SIGNAL(clicked()), helpDialog, SLOT(accept()));
 	helpDialog->exec();
 	delete helpDialog;
 }
@@ -722,7 +716,7 @@ void Logic::printSpecies() {
 	painter.begin(&printer);
 	printAux(painter, printer);
 
-	/** Заголовок: русское и латинское название; статус; составители  */
+	/* Russian and Latin names; status; compilers */
 	QFont f = painter.font();
 	QFont f2 = f;
 	f2.setBold(true);
@@ -734,15 +728,15 @@ void Logic::printSpecies() {
 	painter.setFont(f);
 	painter.drawText(QRect(0, 155, printer.pageRect().width(), 75), Qt::TextWordWrap, commentLabel->text());
 
-	/** Портрет */
+	/* Species picture */
 	painter.drawPixmap(printer.pageRect().width() - 265, 225, 225, 150, *(arealLabel->pixmap()));
 
-	/** Карта ареала */
+	/* Species range */
 	painter.drawPixmap(40, 225, 225, 150, *(photoLabel->pixmap()));
 
 	textOffset = 400;
 
-	/** Текст статьи или выбранных рубрик */
+	/* Text of the selected articles */
 	QStringList doc = articleBrowser->toPlainText().split(". ");
 	QString str = "";
 	for (int i = 0; i < doc.size(); i++) {
@@ -760,13 +754,13 @@ void Logic::printSpecies() {
 }
 
 void Logic::printAux(QPainter &painter, QPrinter &printer) {
-	/** Логотип */
+	/* Logo */
 	painter.drawPixmap(0, 20, 30, 30, *(logoLabel->pixmap()));
 
-	/** Верхний колонтитул */
+	/* Top banner */
 	painter.drawText(QRect(40, 20, printer.pageRect().width() - 70, 30), Qt::TextWordWrap, config->value("Labels", "TopBanner").toString());
 
-	/** Нижний колонтитул */
+	/* Bottom banner */
 	painter.drawText(QRect(40, printer.pageRect().height() - 40, printer.pageRect().width() - 70, 30), Qt::TextWordWrap, config->value("Labels", "BottomBanner").toString());
 	painter.drawText(QRect(printer.pageRect().width() - 70, printer.pageRect().height() - 40, printer.pageRect().width(), 30), Qt::TextWordWrap, QDate::currentDate().toString("yyyy-MM-dd"));
 }

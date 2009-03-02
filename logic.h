@@ -42,12 +42,16 @@ public slots:
 
 	void viewMultiDocChapter(const QString &chapter);
 
-	void setAlphaListLang(const QString &lang);
+	void largerFont();
+	void smallerFont();
+
+	void chapterSelected(bool isChecked);
+
+	void populateAlphaList();
 	void latAlpha();
 	void rusAlpha();
 
-	void updateTaxonomy();
-	void setTaxoChapter(bool isChecked);
+	void populateSystematics();
 	void treeItemSelected(QTreeWidgetItem *item);
 	void listItemSelected(QListWidgetItem *item);
 
@@ -60,9 +64,6 @@ public slots:
 	void printDocument();
 
 	void changeFocus(QWidget *old, QWidget *now);
-
-	void largerFont();
-	void smallerFont();
 
 	void up();
 	void showHelp();

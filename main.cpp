@@ -100,14 +100,14 @@ int main(int argc, char **argv) {
 	QObject::connect(redBook->findChild<QPushButton*>("latButton"), SIGNAL(clicked()), logic, SLOT(latAlpha()));
 	QObject::connect(redBook->findChild<QPushButton*>("rusButton"), SIGNAL(clicked()), logic, SLOT(rusAlpha()));
 
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc0"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc1"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc2"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc3"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc4"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc5"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc6"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc7"), SIGNAL(toggled(bool)), logic, SLOT(setTaxoChapter(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc0"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc1"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc2"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc3"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc4"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc5"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc6"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+	QObject::connect(redBook->findChild<QRadioButton*>("radioc7"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
 
 	QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), logic, SLOT(treeItemSelected(QTreeWidgetItem *)));
 	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemDoubleClicked(QListWidgetItem*)), logic, SLOT(listItemSelected(QListWidgetItem *)));
