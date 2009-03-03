@@ -278,7 +278,7 @@ void Logic::populateSystematics() {
 		QDomElement root = core->taxonomyEntry(id);
 		QString taxoLevel = config->value("Taxo", root.tagName()).toString();
 		QTreeWidgetItem *item = new QTreeWidgetItem(QStringList(taxoLevel + " " + root.attribute("rus").toUpper() + " - " + root.attribute("lat")), 0);
-		insertTaxoPart(item, root);
+		populateSystematicsBranch(item, root);
 		item->setToolTip(0, "<font color=\"red\"><pre>" +  root.attribute("rus") + " - " + root.attribute("lat") + "</pre></font>");
 		item->setData(0, Qt::UserRole, root.attribute("id"));
 		taxoTree->addTopLevelItem(item);
@@ -286,7 +286,7 @@ void Logic::populateSystematics() {
 	taxoTree->expandAll();
 }
 
-void Logic::insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root) {
+void Logic::populateSystematicsBranch(QTreeWidgetItem *parent, const QDomElement &root) {
 	for (int i = 0; i < root.childNodes().size(); i++) {
 		QDomElement element = root.childNodes().at(i).toElement();
 		QString comment = (element.attribute("comment") == "" ? "" : " [" + element.attribute("comment") + "]");
@@ -302,7 +302,7 @@ void Logic::insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root) {
 			QString taxonomyLevel = config->value("Taxo", element.tagName()).toString() + " ";
 			item = new QTreeWidgetItem(QStringList(taxonomyLevel + element.attribute("rus").toUpper() + " - " + element.attribute("lat")), 0);
 		}
-		insertTaxoPart(item, element);
+		populateSystematicsBranch(item, element);
 		item->setData(0, Qt::UserRole, element.attribute("id"));
 		parent->addChild(item);
 	}
@@ -337,15 +337,39 @@ void Logic::rusAlpha() {
 	populateAlphaList();
 }
 
-// TODO Rus - Lat modified lists
+void Logic::treeItemHighlighted(QTreeWidgetItem *item) {
+	if (taxoSpecies->indexOf(item) == -1)
+		return;
+	speciesId = item->data(0, Qt::UserRole).toInt();
+	foreach (QListWidgetItem *listItem, alphaList->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard)) {
+		if (listItem->data(Qt::UserRole).toInt() == speciesId) {
+			alphaList->setCurrentItem(listItem);
+			break;
+		}
+	}
+}
+
+void Logic::listItemHighlighted(QListWidgetItem *item) {
+	speciesId = item->data(Qt::UserRole).toInt();
+	foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
+		if (treeItem->data(0, Qt::UserRole).toInt() == speciesId) {
+			taxoTree->setCurrentItem(treeItem);
+			break;
+		}
+	}
+}
+
 void Logic::treeItemSelected(QTreeWidgetItem *item) {
-	if (!item->text(0).contains(" - ") || !item->text(0).contains(". "))
+	if (taxoSpecies->indexOf(item) == -1)
 		return;
-	QList<QListWidgetItem*> matches = alphaList->findItems(item->text(0).split(" - ")[0].split(". ")[1], Qt::MatchContains);
-	if (matches.size() == 0)
-		return;
-	alphaList->setCurrentItem(matches[0]);
-	listItemSelected(matches[0]);
+	speciesId = item->data(0, Qt::UserRole).toInt();
+	foreach (QListWidgetItem *listItem, alphaList->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard)) {
+		if (listItem->data(Qt::UserRole).toInt() == speciesId) {
+			alphaList->setCurrentItem(listItem);
+			break;
+		}
+	}
+	viewSpeciesArticle();
 }
 
 void Logic::listItemSelected(QListWidgetItem *item) {
@@ -356,6 +380,10 @@ void Logic::listItemSelected(QListWidgetItem *item) {
 			break;
 		}
 	}
+	viewSpeciesArticle();
+}
+
+void Logic::viewSpeciesArticle() {
 	photoLabel->setPixmap(core->entryPicture(speciesId));
 	arealLabel->setPixmap(core->speciesAreal(speciesId, zoneId));
 	
@@ -610,7 +638,6 @@ void Logic::prevSpecies() {
 		original = articleBrowser->toPlainText();
 }
 
-// TODO put here synchronization instead
 void Logic::changeFocus(QWidget *old, QWidget *now) {
 	if (old == taxoTree && now == alphaList) {
 		taxoTree->clearSelection();
@@ -620,7 +647,6 @@ void Logic::changeFocus(QWidget *old, QWidget *now) {
 	}
 }
 
-// TODO sync
 void Logic::up() {
 	taxoTree->clearSelection();
 	alphaList->clearSelection();

@@ -52,8 +52,12 @@ public slots:
 	void rusAlpha();
 
 	void populateSystematics();
+
 	void treeItemSelected(QTreeWidgetItem *item);
 	void listItemSelected(QListWidgetItem *item);
+
+	void treeItemHighlighted(QTreeWidgetItem *item);
+	void listItemHighlighted(QListWidgetItem *item);
 
 	void setArticle(QListWidgetItem *item);
 
@@ -80,9 +84,11 @@ private:
 	void viewSingleDoc(const QString &docId, const QString &docName);
 	void viewMultiDoc(const QString &id, const QString &item = "");
 	void viewSpeciesLists();
+	void viewSpeciesArticle();
 	void initIndex(const QString &section = "");
-
+	void populateSystematicsBranch(QTreeWidgetItem *parent, const QDomElement &root);
 	bool checkModification();
+
 	int firstItemId, lastItemId;
 	QString currentDir, alphaMode, chapterId, articleId, indexMode;
 	void refreshArticle();
@@ -94,7 +100,6 @@ private:
 	QrbConfig *config;
 	QString currentCathegory;
 	QMap<QAction*, int> *zoneMapping;
-	void insertTaxoPart(QTreeWidgetItem *parent, const QDomElement &root);
 	void refreshSectionList();
 	QListWidgetItem *overviewItem;
 	QString original;

@@ -112,6 +112,9 @@ int main(int argc, char **argv) {
 	QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), logic, SLOT(treeItemSelected(QTreeWidgetItem *)));
 	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemDoubleClicked(QListWidgetItem*)), logic, SLOT(listItemSelected(QListWidgetItem *)));
 
+	QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemPressed(QTreeWidgetItem*, int)), logic, SLOT(treeItemHighlighted(QTreeWidgetItem *)));
+	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemPressed(QListWidgetItem*)), logic, SLOT(listItemHighlighted(QListWidgetItem *)));
+
 	QObject::connect(redBook->findChild<QPushButton*>("backToListsButton"), SIGNAL(clicked()), logic, SLOT(up()));
 	QObject::connect(redBook->findChild<QPushButton*>("prevButton"), SIGNAL(clicked()), logic, SLOT(prevSpecies()));
 	QObject::connect(redBook->findChild<QPushButton*>("nextButton"), SIGNAL(clicked()), logic, SLOT(nextSpecies()));
