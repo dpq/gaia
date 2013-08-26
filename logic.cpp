@@ -34,81 +34,78 @@
 #include "logic.h"
 
 Logic::Logic(QrbConfig *config, QWidget *parent) : QObject(parent) {
-	core = new GaiaCore();
-	this->config = config;
-	core->openTaxonomyFile(":/species.xml");
-	core->openZoneFile(":/zones.xml");
+    core = new GaiaCore();
+    core->readTaxonomyFile(":/species.xml");
+    core->readZoneFile(":/zones.xml");
+    this->config = config;
 	
-	initChapterRoots();
-	chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
+    initChapterRoots();
+    chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
 	
-	pageColor = new QMap<int, QString>();
-	labelColor = new QMap<int, QString>();
-	commentColor = new QMap<int, QString>();
+    pageColor = new QMap<int, QString>();
+    labelColor = new QMap<int, QString>();
+    commentColor = new QMap<int, QString>();
 
-	zoneMapping = new QMap<QAction*, int>();
-	articleId = "";
-	chapterId = "radioc0";
-	lang = "rus";
-	editMode = false;
-	zoneId = 1;
-	taxoSpecies = new QList<QTreeWidgetItem*>();
-	currentCathegory =  "";
+    zoneMapping = new QMap<QAction*, int>();
+    articleId = "";
+    chapterId = "radioc0";
+    lang = "rus";
+    oppositeLang["lat"] = "rus";
+    oppositeLang["rus"] = "lat";
+    zoneId = 1;
+    speciesId = -1;
+    taxoSpecies = new QList<QTreeWidgetItem*>();
+    currentCathegory =  "";
 
-	this->parent = parent;
-	stack = parent->findChild<QStackedWidget*>("stackedWidget");
-	indexList = parent->findChild<QListWidget*>("indexList");
-	indexLabel = parent->findChild<QLabel*>("indexLabel");
-	docViewer = parent->findChild<QTextBrowser*>("docViewer");
-	articleBrowser = parent->findChild<QTextBrowser*>("articleBrowser");
-	docTitleLabel = parent->findChild<QLabel*>("docTitleLabel");
-	chapterCombo = parent->findChild<QComboBox*>("chapterCombo");
-	editAction = parent->findChild<QAction*>("editAction");
-	saveAction = parent->findChild<QAction*>("saveAction");
-	cancelAction = parent->findChild<QAction*>("cancelAction");
-	specMenu = parent->findChild<QMenu*>("specMenu")->menuAction();
-	fontMenu = parent->findChild<QMenu*>("fontMenu")->menuAction();
-	alphaList = parent->findChild<QListWidget*>("alphaList");
-	taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
-	photoLabel = parent->findChild<QLabel*>("photoLabel");
-	arealLabel = parent->findChild<QLabel*>("arealLabel");
-	logoLabel = parent->findChild<QLabel*>("logoLabel");
-	speciesLabel = parent->findChild<QLabel*>("speciesLabel");
-	commentLabel = parent->findChild<QLabel*>("commentLabel");
-	sectionList = parent->findChild<QListWidget*>("sectionList");
-	colorPage = parent->findChild<QWidget*>("colorPage");
-	printButton = parent->findChild<QPushButton*>("printButton");
-	backButton = parent->findChild<QPushButton*>("backToListsButton");
+    this->parent = parent;
+    stack = parent->findChild<QStackedWidget*>("stackedWidget");
+
+    zoneMenu = parent->findChild<QMenu*>("zoneMenu")->menuAction();
+    fontMenu = parent->findChild<QMenu*>("fontMenu")->menuAction();
+
+    docViewer = parent->findChild<QTextBrowser*>("docViewer");
+    docTitleLabel = parent->findChild<QLabel*>("docTitleLabel");
+    chapterCombo = parent->findChild<QComboBox*>("chapterCombo");
+    docPrintButton = parent->findChild<QPushButton*>("docPrintButton");
+
+    articleBrowser = parent->findChild<QTextBrowser*>("articleBrowser");
+    alphaList = parent->findChild<QListWidget*>("alphaList");
+    taxoTree = parent->findChild<QTreeWidget*>("taxoTree");
+    photoLabel = parent->findChild<QLabel*>("photoLabel");
+    arealLabel = parent->findChild<QLabel*>("arealLabel");
+    logoLabel = parent->findChild<QLabel*>("logoLabel");
+    speciesLabel = parent->findChild<QLabel*>("speciesLabel");
+    commentLabel = parent->findChild<QLabel*>("commentLabel");
+    colorPage = parent->findChild<QWidget*>("colorPage");
+    articlePrintButton = parent->findChild<QPushButton*>("articlePrintButton");
 	
-	indexSections[""] = "Index";
-	indexSections["p6"] = "Chapters";
-	indexSections["p7"] = "Appendix";
+    indexSections[""] = "Index";
+    indexSections["p6"] = "Chapters";
+    indexSections["p7"] = "Appendix";
 
-	oppositeLang["rus"] = "lat";
-	oppositeLang["lat"] = "rus";
+    oppositeLang["rus"] = "lat";
+    oppositeLang["lat"] = "rus";
 
-	labelColor->insert(0, "#ffffff");
-	labelColor->insert(1, "#ffff00");
-	labelColor->insert(2, "#008000");
-	labelColor->insert(3, "#008000");
-	labelColor->insert(4, "#008000");
-	labelColor->insert(5, "#00ff00");
+    labelColor->insert(0, "#ffffff");
+    labelColor->insert(1, "#ffff00");
+    labelColor->insert(2, "#008000");
+    labelColor->insert(3, "#008000");
+    labelColor->insert(4, "#008000");
+    labelColor->insert(5, "#00ff00");
 
-	commentColor->insert(0, "#ffffff");
-	commentColor->insert(1, "#ffffff");
-	commentColor->insert(2, "#000000");
-	commentColor->insert(3, "#000000");
-	commentColor->insert(4, "#000000");
-	commentColor->insert(5, "#ffffff");
+    commentColor->insert(0, "#ffffff");
+    commentColor->insert(1, "#ffffff");
+    commentColor->insert(2, "#000000");
+    commentColor->insert(3, "#000000");
+    commentColor->insert(4, "#000000");
+    commentColor->insert(5, "#ffffff");
 	
-	pageColor->insert(0, "#000000");
-	pageColor->insert(1, "#ff0000");
-	pageColor->insert(2, "#ffffa0");
-	pageColor->insert(3, "#ffffff");
-	pageColor->insert(4, "#cccccc");
-	pageColor->insert(5, "#008000");
-
-	initIndex();
+    pageColor->insert(0, "#000000");
+    pageColor->insert(1, "#ff0000");
+    pageColor->insert(2, "#ffffa0");
+    pageColor->insert(3, "#ffffff");
+    pageColor->insert(4, "#cccccc");
+    pageColor->insert(5, "#008000");
 }
 
 Logic::~Logic() {
@@ -123,31 +120,23 @@ Logic::~Logic() {
 	delete zoneMapping;
 }
 
+void Logic::chapterSelected(bool isChecked) {
+    if (!isChecked) {
+        return;
+    }
+    chapterId = qobject_cast<QRadioButton*>(sender())->objectName();
+    populateAlphaList();
+    populateSystematics();
+}
+
 void Logic::initChapterRoots() {
 	chapterRoots = new QMap<QString, QList<int> >();
-	QList<int> idList;
 	foreach (const QString &chapter, config->parameters("ChapterRoots")) {
-		idList.clear();
-		foreach (const QString &id, config->value("ChapterRoots", chapter).toString().split(" ")) {
+        QList<int> idList;
+        foreach (const QString &id, config->value("ChapterRoots", chapter).toString().split(" ")) {
 			idList.append(id.toInt());
 		}
 		chapterRoots->insert(chapter, idList);
-	}
-}
-
-void Logic::initIndex(const QString &section) {
-	indexList->clear();
-	if (section == "") {
-		indexLabel->setText(config->value("Labels", "index").toString());
-	}
-	else if (section == "p6" || section == "p7") {
-		indexLabel->setText(config->value("Index", section).toString());
-		indexList->addItem(config->value("Labels", "back").toString());
-	}
-	foreach (const QString &param, config->parameters(indexSections[section])) {
-		QListWidgetItem *item = new QListWidgetItem(config->value(indexSections[section], param).toString());
-		item->setData(Qt::UserRole, param);
-		indexList->addItem(item);
 	}
 }
 
@@ -157,10 +146,7 @@ void Logic::viewSingleDoc(const QString &docId, const QString &docName) {
 	docViewer->setHtml(QString::fromUtf8(file.readAll()));
 	file.close();
 	docTitleLabel->setText(docName);
-	editAction->setVisible(false);
-	saveAction->setVisible(false);
-	cancelAction->setVisible(false);
-	specMenu->setVisible(false);
+    zoneMenu->setVisible(false);
 	fontMenu->setVisible(true);
 	chapterCombo->clear();
 	chapterCombo->hide();
@@ -184,10 +170,7 @@ void Logic::viewMultiDoc(const QString &id, const QString &item) {
 	else {
 		chapterCombo->setCurrentIndex(chapterCombo->findText(item));
 	}
-	editAction->setVisible(false);
-	saveAction->setVisible(false);
-	cancelAction->setVisible(false);
-	specMenu->setVisible(false);
+    zoneMenu->setVisible(false);
 	fontMenu->setVisible(true);
 	stack->setCurrentIndex(1);
 }
@@ -201,41 +184,19 @@ void Logic::viewMultiDocChapter(const QString &chapter) {
 	file.close();
 }
 
-void Logic::indexWidgetClicked(QListWidgetItem *item) {
-	QString text = item->text();
-	QString id = item->data(Qt::UserRole).toString();
-	if (id == "p6" || id == "p7") {
-		multiDocDir = id;
-		initIndex(id);
-	}
-	else if (id == "") {
-		initIndex();
-	}
-	else if (id == "p5") {
-		viewSpeciesLists();
-	}
-	else if (id[0] != QChar('p')) {
-		viewMultiDoc(multiDocDir, text);
-	}
-	else {
-		initIndex();
-		viewSingleDoc(id, text);
-	}
-}
-
 void Logic::indexMenuClicked() {
 	QString text = qobject_cast<QAction*>(sender())->text();
 	QString id = qobject_cast<QAction*>(sender())->data().toString();
 	if (id == "p6" || id == "p7") {
-		initIndex(id);
+        //initIndex(id);
 		viewMultiDoc(id);
 	}
-	else if (id == "p5") {
-		initIndex();
-		viewSpeciesLists();
-	}
-	else {
-		initIndex();
+    else if (id == "p5") {
+        //initIndex();
+        viewSpeciesLists();
+    }
+    else {
+        //initIndex();
 		viewSingleDoc(id, text);
 	}
 }
@@ -243,32 +204,11 @@ void Logic::indexMenuClicked() {
 void Logic::viewSpeciesLists() {
 	parent->findChild<QRadioButton*>(chapterId)->setChecked(true);
 	populateAlphaList();
-	editAction->setVisible(false);
-	saveAction->setVisible(false);
-	cancelAction->setVisible(false);
-	specMenu->setVisible(false);
+    zoneMenu->setVisible(false);
 	fontMenu->setVisible(false);
 	taxoTree->clearSelection();
 	alphaList->clearSelection();
 	stack->setCurrentIndex(2);
-}
-
-void Logic::showIndex() {
-	initIndex();
-	editAction->setVisible(false);
-	saveAction->setVisible(false);
-	cancelAction->setVisible(false);
-	specMenu->setVisible(false);
-	fontMenu->setVisible(false);
-	stack->setCurrentIndex(0);
-}
-
-void Logic::chapterSelected(bool isChecked) {
-	if (!isChecked)
-		return;
-	chapterId = qobject_cast<QRadioButton*>(sender())->objectName();
-	populateAlphaList();
-	populateSystematics();
 }
 
 void Logic::populateSystematics() {
@@ -284,6 +224,14 @@ void Logic::populateSystematics() {
 		taxoTree->addTopLevelItem(item);
 	}
 	taxoTree->expandAll();
+    if (speciesId != -1) {
+        foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
+            if (treeItem->data(0, Qt::UserRole).toInt() == speciesId) {
+                taxoTree->setCurrentItem(treeItem);
+                break;
+            }
+        }
+    }
 }
 
 void Logic::populateSystematicsBranch(QTreeWidgetItem *parent, const QDomElement &root) {
@@ -309,91 +257,97 @@ void Logic::populateSystematicsBranch(QTreeWidgetItem *parent, const QDomElement
 }
 
 void Logic::populateAlphaList() {
-	alphaList->clear();
-	QMap<QString, QString> text;
-	foreach (int taxonomyId, chapterRoots->value(chapterId)) {
-		QList<QDomElement> speciesList = core->taxonomyElementsByTagName("species", core->taxonomyEntry(taxonomyId));
-		for (QList<QDomElement>::iterator i = speciesList.begin(); i != speciesList.end(); i++) {
+    alphaList->clear();
+    QMap<QString, QString> text;
+    foreach (int taxonomyId, chapterRoots->value(chapterId)) {
+        QList<int> speciesList = core->taxonomyElements("species", core->taxonomyEntry(taxonomyId));
+        for (int i = 0; i < speciesList.size(); i++) {
 			QListWidgetItem *item = new QListWidgetItem();
-			text["lat"] = (*i).attribute("lat");
-			text["rus"] = (*i).attribute("rus") + ((*i).attribute("comment") == QString() ? "" : " [" + (*i).attribute("comment") + "]");
-			item->setText(text[lang]);
-			item->setToolTip("<font color=\"red\"><pre>" + text[oppositeLang[lang]] + "</pre></font>");
-			item->setData(Qt::UserRole, (*i).attribute("id"));
+            text["lat"] = core->entryLatName(speciesList.at(i));
+            text["rus"] = core->entryRusName(speciesList.at(i));
+            QString comment = core->speciesComment(speciesList.at(i));
+            if (comment.length() > 0) {
+                text["rus"] = QString("%1 [%2]").arg(text["rus"]).arg(comment);
+            }
+            item->setText(text[lang]);
+            item->setToolTip("<font color=\"red\"><pre>" + text[oppositeLang[lang]] + "</pre></font>");
+            item->setData(Qt::UserRole, speciesList.at(i));
 			alphaList->addItem(item);
 		}
 	}
-	this->lang = lang;
-	alphaList->sortItems();
+    alphaList->sortItems();
+    if (speciesId == -1) {
+        alphaList->setCurrentItem(alphaList->itemAt(0, 0));
+    }
+    else {
+        foreach (QListWidgetItem *listItem, alphaList->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard)) {
+            if (listItem->data(Qt::UserRole).toInt() == speciesId) {
+                alphaList->setCurrentItem(listItem);
+                break;
+            }
+        }
+    }
 }
 
 void Logic::latAlpha() {
 	lang = "lat";
-	populateAlphaList();
+    populateAlphaList();
+    alphaList->show();
+    taxoTree->hide();
 }
 
 void Logic::rusAlpha() {
 	lang = "rus";
-	populateAlphaList();
+    populateAlphaList();
+    alphaList->show();
+    taxoTree->hide();
+}
+
+void Logic::sysList() {
+    populateSystematics();
+    alphaList->hide();
+    taxoTree->show();
 }
 
 void Logic::treeItemHighlighted(QTreeWidgetItem *item) {
-	if (taxoSpecies->indexOf(item) == -1)
-		return;
-	speciesId = item->data(0, Qt::UserRole).toInt();
-	foreach (QListWidgetItem *listItem, alphaList->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard)) {
-		if (listItem->data(Qt::UserRole).toInt() == speciesId) {
-			alphaList->setCurrentItem(listItem);
-			break;
-		}
-	}
+    if (taxoSpecies->indexOf(item) == -1) {
+        return;
+    }
+    speciesId = item->data(0, Qt::UserRole).toInt();
+    foreach (QListWidgetItem *listItem, alphaList->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard)) {
+        if (listItem->data(Qt::UserRole).toInt() == speciesId) {
+            alphaList->setCurrentItem(listItem);
+            break;
+        }
+    }
+    viewSpeciesArticle();
 }
 
-void Logic::listItemHighlighted(QListWidgetItem *item) {
-	speciesId = item->data(Qt::UserRole).toInt();
-	foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
-		if (treeItem->data(0, Qt::UserRole).toInt() == speciesId) {
-			taxoTree->setCurrentItem(treeItem);
-			break;
-		}
-	}
-}
-
-void Logic::treeItemSelected(QTreeWidgetItem *item) {
-	if (taxoSpecies->indexOf(item) == -1)
-		return;
-	speciesId = item->data(0, Qt::UserRole).toInt();
-	foreach (QListWidgetItem *listItem, alphaList->findItems(QString("*"), Qt::MatchWrap | Qt::MatchWildcard)) {
-		if (listItem->data(Qt::UserRole).toInt() == speciesId) {
-			alphaList->setCurrentItem(listItem);
-			break;
-		}
-	}
-	viewSpeciesArticle();
-}
-
-void Logic::listItemSelected(QListWidgetItem *item) {
-	speciesId = item->data(Qt::UserRole).toInt();
-	foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
-		if (treeItem->data(0, Qt::UserRole).toInt() == speciesId) {
-			taxoTree->setCurrentItem(treeItem);
-			break;
-		}
-	}
-	viewSpeciesArticle();
+void Logic::listItemHighlighted(QListWidgetItem *item, QListWidgetItem *prevItem) {
+    if (item) {
+        speciesId = item->data(Qt::UserRole).toInt();
+        foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
+            if (treeItem->data(0, Qt::UserRole).toInt() == speciesId) {
+                taxoTree->setCurrentItem(treeItem);
+                break;
+            }
+        }
+        viewSpeciesArticle();
+    }
 }
 
 void Logic::viewSpeciesArticle() {
-	photoLabel->setPixmap(core->entryPicture(speciesId));
+    photoLabel->setPixmap(core->speciesPicture(speciesId, zoneId));
 	arealLabel->setPixmap(core->speciesAreal(speciesId, zoneId));
 	
 	QString speciesText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "name").toString());
-	QString line1 = speciesText.split("\n")[0].toUpper();
-	QString line2 = speciesText.split("\n")[1];
-	speciesText = speciesText.split("\n")[2] + "\n" + speciesText.split("\n")[3] + "\n";
+    QStringList lines = speciesText.split("\n");
+    QString line1 = lines[0].toUpper();
+    QString line2 = lines[1];
+    speciesText = lines[2] + "\n" + lines[3] + "\n";
 	
 	QStringList litText = core->speciesChapter(speciesId, zoneId, config->value("Labels", "lit").toString()).split("\n", QString::SkipEmptyParts);
-	
+
 	QString compilers = "";
 	for (int i = litText.size() - 1; i >= 0; i--) {
 		if (litText[i].trimmed().length() > 0) {
@@ -402,46 +356,39 @@ void Logic::viewSpeciesArticle() {
 		}
 	}
 	
-	QList<int> cat = core->speciesStatus(speciesId, zoneId);
+    QList<int> cat = core->speciesStatus(speciesId, zoneId);
 	QString cathegory = "";
 	for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
 		cathegory += QString::number(*i) + ", ";
 	}
-	
-	cathegory = cathegory.left(cathegory.length() - 2);
+    cathegory = cathegory.left(cathegory.length() - 2);
 	cathegory += " " + config->value("Labels", "cathegory").toString().toLower();
 	speciesLabel->setWordWrap(true);
 	speciesLabel->setText("<div style=\"whitespace:pre-wrap\">" + line1 + "<br />" + line2 + "</div>");
 	commentLabel->setText(speciesText.trimmed() + "\n" + cathegory + "\n" + compilers);
-	bool selectionFound = false;
-	sectionList->clear();
-	sectionList->addItem(config->value("Labels", "full").toString());
-	overviewItem = sectionList->item(0);
-	if (editMode) {
-		overviewItem->setHidden(true);
-	}
+    bool selectionFound = false;
 	QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
 	QList<QString> keys = parameters.values();
 	qSort(keys);
 		
-	for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
-		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
-			continue;
+    for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
+//        if (!QFile().exists(core->zoneFilePath() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
+//			continue;
 		QListWidgetItem *item = new QListWidgetItem(parameters.key(*i));
 		item->setData(Qt::UserRole, *i);
-		sectionList->addItem(item);
+        //sectionList->addItem(item);
 		if (parameters.key(*i) == articleId) {
-			sectionList->setCurrentItem(item);
+            //sectionList->setCurrentItem(item);
 			selectionFound = true;
 		}
 	}
 	if (! selectionFound) {
-		sectionList->setCurrentRow(0);
+        //sectionList->setCurrentRow(0);
 		articleId = "";
 	}
 	
 	refreshArticle();
-	
+
 	/* Colorizing */
 	if (currentCathegory != cathegory) {
 		if (cat.size() > 1) {
@@ -468,48 +415,39 @@ void Logic::viewSpeciesArticle() {
 		}
 		speciesLabel->setStyleSheet("#speciesLabel {" + specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc + "}");
 		commentLabel->setStyleSheet("#commentLabel {" + specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc + "}");
-		if (specialBackground != "") {
-			sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc + "} #sectionList::item::selected { border: 1px solid black }");
-		}
-		else {
-			sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:" + bc + "; selection-color:" + lc + "}");
-		}
-		currentCathegory = cathegory;
+//		if (specialBackground != "") {
+//			sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:#ffffff; selection-color:" + lc + "} #sectionList::item::selected { border: 1px solid black }");
+//		}
+//		else {
+//			sectionList->setStyleSheet("#sectionList { background-color: rgb(255, 255, 255); color: rgb(0, 0, 0); selection-background-color:" + bc + "; selection-color:" + lc + "}");
+//		}
+        currentCathegory = cathegory;
 	}
 	
-	if (editMode) {
-		editAction->setVisible(false);
-		saveAction->setVisible(true);
-		cancelAction->setVisible(true);
-	}
-	else {
-		editAction->setVisible(true);
-		saveAction->setVisible(false);
-		cancelAction->setVisible(false);
-	}
 	/* Check the Core to see if this species exists in other zones as well */
 	QList<int> speciesZones = core->speciesZones(speciesId);
-	specMenu->menu()->clear();
+
+    zoneMenu->menu()->clear();
 	zoneMapping->clear();
 	if (speciesZones.size() > 1) {
 		foreach (int zoneId, speciesZones) {
-			QAction *zoneAction = specMenu->menu()->addAction(core->zoneName(zoneId));
+            QAction *zoneAction = zoneMenu->menu()->addAction(core->zoneName(zoneId));
 			zoneMapping->insert(zoneAction, zoneId);
-			QObject::connect(specMenu->menu(), SIGNAL(triggered(QAction*)), this, SLOT(setZone(QAction*)));
+            QObject::connect(zoneMenu->menu(), SIGNAL(triggered(QAction*)), this, SLOT(setZone(QAction*)));
 		}
-		specMenu->setVisible(true);
+        zoneMenu->setVisible(true);
 	}
 	else {
-		specMenu->setVisible(false);
+        zoneMenu->setVisible(false);
 	}
 	fontMenu->setVisible(true);
-	
-	stack->setCurrentIndex(3);
+
+    //stack->setCurrentIndex(3);
 }
 
-void Logic::setZone(QAction *action) {
+/*void Logic::setZone(QAction *action) {
 	bool isHidden = overviewItem->isHidden();
-	checkModification();
+    checkModification();
 	zoneId = zoneMapping->value(action);
 	delete chapterArticles;
 	chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
@@ -521,30 +459,28 @@ void Logic::setZone(QAction *action) {
 		this->setArticle(sectionList->currentItem());
 	}
 	refreshArticle();
-}
+}*/
 
 void Logic::refreshSectionList() {
 	bool selectionFound = false;
-	sectionList->clear();
-	sectionList->addItem(config->value("Labels", "full").toString());
 	QMap<QString, QString> parameters = core->chapterLayout(zoneId, true);
 	QList<QString> keys = parameters.values();
 	qSort(keys);
 	
 	for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
-		if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
-			continue;
+//        if (!QFile().exists(core->zoneFilePath() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
+//			continue;
 		QListWidgetItem *item = new QListWidgetItem(parameters.key(*i));
 		item->setData(Qt::UserRole, *i);
-		sectionList->addItem(item);
+        //sectionList->addItem(item);
 		if (parameters.key(*i) == articleId) {
-			sectionList->setCurrentItem(item);
+            //sectionList->setCurrentItem(item);
 			selectionFound = true;
 		}
 	}
 
 	if (! selectionFound) {
-		sectionList->setCurrentRow(0);
+        //sectionList->setCurrentRow(0);
 		articleId = "";
 	}
 }
@@ -556,8 +492,8 @@ void Logic::refreshArticle() {
 		QList<QString> keys = parameters.values();
 		qSort(keys);
 		for (QList<QString>::iterator i = keys.begin(); i != keys.end(); i++) {
-			if (!QFile().exists(core->zoneUrl() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
-				continue;
+//            if (!QFile().exists(core->zoneFilePath() + "/" + QString::number(zoneId)  + "/" + QString::number(speciesId)  + "/" + *i))
+//				continue;
 			all += "\t" + parameters.key(*i) + "\n";
 			all += core->speciesChapter(speciesId, zoneId, parameters.key(*i)) + "\n\n";
 		}
@@ -565,77 +501,12 @@ void Logic::refreshArticle() {
 	}
 	else
 		articleBrowser->setText(core->speciesChapter(speciesId, zoneId, articleId));
-	if (editMode) {
-		original = articleBrowser->toPlainText();
-		prevArtRow = sectionList->currentRow();
-	}
-}
 
-bool Logic::checkModification() {
-	if (editMode && original != articleBrowser->toPlainText()) {
-		QMessageBox msgBox;
-		msgBox.setText(config->value("Labels", "DocModified").toString());
-		msgBox.setInformativeText(config->value("Labels", "DocSave").toString());
-		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
-		msgBox.setDefaultButton(QMessageBox::Save);
-		int ret = msgBox.exec();
-		if (ret == QMessageBox::Cancel) {
-			sectionList->setCurrentRow(prevArtRow);
-			return false;
-		}
-		if (ret == QMessageBox::Save) {
-			core->setSpeciesChapter(speciesId, zoneId, articleId, articleBrowser->toPlainText());
-		}
-		else if (ret == QMessageBox::Discard) {
-			articleBrowser->setText(original);
-		}
-	}
-	return true;
 }
 
 void Logic::setArticle(QListWidgetItem *item) {
 	articleId = (item->data(Qt::UserRole).toString() == "" ? "" : item->text());
 	refreshArticle();
-}
-
-void Logic::nextSpecies() {
-	if (!checkModification())
-		return;
-	if (zoneId != 1) {
-		zoneId = 1;
-		delete chapterArticles;
-		chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
-		refreshSectionList();
-	}
-	if (taxoSpecies->indexOf(taxoTree->currentItem()) < taxoSpecies->count() - 1) {
-		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) + 1));
-	}
-	else {
-		taxoTree->setCurrentItem(taxoSpecies->first());
-	}
-	treeItemSelected(taxoTree->currentItem());
-	if (editMode)
-		original = articleBrowser->toPlainText();
-}
-
-void Logic::prevSpecies() {
-	if (!checkModification())
-		return;
-	if (zoneId != 1) {
-		zoneId = 1;
-		delete chapterArticles;
-		chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
-		refreshSectionList();
-	}
-	if (taxoSpecies->indexOf(taxoTree->currentItem()) > 0) {
-		taxoTree->setCurrentItem(taxoSpecies->at(taxoSpecies->indexOf(taxoTree->currentItem()) - 1));
-	}
-	else {
-		taxoTree->setCurrentItem(taxoSpecies->last());
-	}
-	treeItemSelected(taxoTree->currentItem());
-	if (editMode)
-		original = articleBrowser->toPlainText();
 }
 
 void Logic::changeFocus(QWidget *old, QWidget *now) {
@@ -646,55 +517,7 @@ void Logic::changeFocus(QWidget *old, QWidget *now) {
 		alphaList->clearSelection();
 	}
 }
-
-void Logic::up() {
-	taxoTree->clearSelection();
-	alphaList->clearSelection();
-	stack->setCurrentIndex(2);
-}
-
-void Logic::saveEdit() {
-	core->setSpeciesChapter(speciesId, zoneId, articleId, articleBrowser->toPlainText());
-	articleBrowser->setReadOnly(true);
-	editMode = false;
-	editAction->setVisible(true);
-	saveAction->setVisible(false);
-	cancelAction->setVisible(false);
-	printButton->setEnabled(true);
-	backButton->setEnabled(true);
-	overviewItem->setHidden(false);
-}
-
-void Logic::cancelEdit() {
-	articleBrowser->setText(original);
-	articleBrowser->setReadOnly(true);
-	editMode = false;
-	editAction->setVisible(true);
-	saveAction->setVisible(false);
-	cancelAction->setVisible(false);
-	printButton->setEnabled(true);
-	backButton->setEnabled(true);
-	overviewItem->setHidden(false);
-}
-
-void Logic::edit() {
-	original = articleBrowser->toPlainText();
-	articleBrowser->setReadOnly(false);
-	editMode = true;
-	editAction->setVisible(false);
-	saveAction->setVisible(true);
-	cancelAction->setVisible(true);
-	printButton->setEnabled(false);
-	backButton->setEnabled(false);
-	overviewItem->setHidden(true);
-	if (articleId == "") {
-		sectionList->setCurrentItem(sectionList->item(1));
-		if (checkModification())
-			this->setArticle(sectionList->currentItem());
-	}
-	prevArtRow = sectionList->currentRow();
-	articleBrowser->setFocus();
-}
+/*
 
 void Logic::showHelp() {
 	QDialog *helpDialog = new QDialog(qApp->activeWindow());
@@ -718,7 +541,7 @@ void Logic::showHelp() {
 	connect(closeButton, SIGNAL(clicked()), helpDialog, SLOT(accept()));
 	helpDialog->exec();
 	delete helpDialog;
-}
+}*/
 
 void Logic::printDocument() {
 	QPrinter printer;

@@ -10,6 +10,7 @@
 #include <QtGui/QSplashScreen>
 #include <QtUiTools/QUiLoader>
 #include <QtCore/QFile>
+#include <QtCore/QTime>
 
 #include <QtGui/QComboBox>
 #include <QtGui/QTreeWidget>
@@ -20,20 +21,20 @@
 
 #include <QtGui/QMenuBar>
 
-#define OPERATOR
-
 #include "logic.h"
 #include "config.h"
+
+void delay(int secs) {
+    QTime dieTime= QTime::currentTime().addSecs(secs);
+    while( QTime::currentTime() < dieTime )
+    QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+}
 
 int main(int argc, char **argv) {
 	/* Initiate the application */
 	QApplication app(argc, argv);
 	QApplication::setWindowIcon(QIcon(":/icon.png"));
 
-	/* Load and display the splash screen */
-	QPixmap pic(":/splash.png");
-	QSplashScreen splash(pic);
-	splash.show();
 	app.processEvents();
 
 	/* Load the user interface file */
@@ -46,98 +47,57 @@ int main(int argc, char **argv) {
 	/* Load the configuration file */
 	QrbConfig *config = new QrbConfig(":/redbook.conf");
 
-	/* Populate the menu bar */
+    /* Populate the menu bar */
 	QMenuBar *menuBar = redBook->findChild<QMenuBar*>("menuBar");
-
-#ifdef OPERATOR
-	QAction *editAction = menuBar->addAction(config->value("Labels", "edit").toString());
-	editAction->setObjectName("editAction");
-	QAction *saveAction = menuBar->addAction(config->value("Labels", "save").toString());
-	saveAction->setObjectName("saveAction");
-	QAction *cancelAction = menuBar->addAction(config->value("Labels", "cancel").toString());
-	cancelAction->setObjectName("cancelAction");
-	menuBar->addSeparator();
-	editAction->setVisible(false);
-	saveAction->setVisible(false);
-	cancelAction->setVisible(false);
-#endif
-
 	QMenu *indexMenu = menuBar->addMenu(config->value("Labels", "index").toString());
 	indexMenu->setObjectName("indexMenu");
-
-	QMenu *specMenu = menuBar->addMenu(config->value("Labels", "spec").toString());
-	specMenu->setObjectName("specMenu");
-	specMenu->menuAction()->setVisible(false);
-
+    QMenu *zoneMenu = menuBar->addMenu(config->value("Labels", "spec").toString());
+    zoneMenu->setObjectName("zoneMenu");
 	QMenu *fontMenu = menuBar->addMenu(config->value("Labels", "font").toString());
 	fontMenu->setObjectName("fontMenu");
-	fontMenu->menuAction()->setVisible(false);
-	QAction *lgAction = fontMenu->addAction(config->value("Labels", "font1").toString());
+    QAction *lgAction = fontMenu->addAction(config->value("Labels", "font1").toString());
 	QAction *smAction = fontMenu->addAction(config->value("Labels", "font0").toString());
 
-	QAction *helpAction = menuBar->addAction(config->value("Labels", "help").toString());
-	helpAction->setObjectName("helpAction");
+    /* Initiate program logic */
+    Logic *logic = new Logic(config, redBook);
 
-	/* Construct the main index widget */
-	QListWidget *indexList = redBook->findChild<QListWidget*>("indexList");
-	indexList->setCursor(Qt::PointingHandCursor);
-	indexList->setSelectionMode(QAbstractItemView::NoSelection);
+    foreach (const QString &param, config->parameters("Index")) {
+        QAction *action = indexMenu->addAction(config->value("Index", param).toString());
+        action->setData(param);
+        QObject::connect(action, SIGNAL(triggered()), logic, SLOT(indexMenuClicked()));
+    }
 
-	/* Initiate program logic */
-	Logic *logic = new Logic(config, redBook);
-	QObject::connect(editAction, SIGNAL(activated()), logic, SLOT(edit()));
-	QObject::connect(saveAction, SIGNAL(activated()), logic, SLOT(saveEdit()));
-	QObject::connect(cancelAction, SIGNAL(activated()), logic, SLOT(cancelEdit()));
-	QObject::connect(smAction, SIGNAL(activated()), logic, SLOT(smallerFont()));
-	QObject::connect(lgAction, SIGNAL(activated()), logic, SLOT(largerFont()));
-	QObject::connect(helpAction, SIGNAL(activated()), logic, SLOT(showHelp()));
+    QObject::connect(smAction, SIGNAL(activated()), logic, SLOT(smallerFont()));
+    QObject::connect(lgAction, SIGNAL(activated()), logic, SLOT(largerFont()));
 
-	QObject::connect(redBook->findChild<QPushButton*>("docPrintButton"), SIGNAL(clicked()), logic, SLOT(printDocument()));
-	QObject::connect(redBook->findChild<QPushButton*>("docBackButton"), SIGNAL(clicked()), logic, SLOT(showIndex()));
-	QObject::connect(redBook->findChild<QComboBox*>("chapterCombo"), SIGNAL(currentIndexChanged(const QString &)), logic, SLOT(viewMultiDocChapter(const QString &)));
+    QObject::connect(redBook->findChild<QRadioButton*>("radioc0"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+    QObject::connect(redBook->findChild<QRadioButton*>("radioc1"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+    QObject::connect(redBook->findChild<QRadioButton*>("radioc2"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+    QObject::connect(redBook->findChild<QRadioButton*>("radioc3"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+    QObject::connect(redBook->findChild<QRadioButton*>("radioc4"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+    QObject::connect(redBook->findChild<QRadioButton*>("radioc5"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+    QObject::connect(redBook->findChild<QRadioButton*>("radioc6"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+    QObject::connect(redBook->findChild<QRadioButton*>("radioc7"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
 
-	QObject::connect(redBook->findChild<QPushButton*>("speciesBackButton"), SIGNAL(clicked()), logic, SLOT(showIndex()));
-	QObject::connect(redBook->findChild<QPushButton*>("latButton"), SIGNAL(clicked()), logic, SLOT(latAlpha()));
-	QObject::connect(redBook->findChild<QPushButton*>("rusButton"), SIGNAL(clicked()), logic, SLOT(rusAlpha()));
+    QObject::connect(redBook->findChild<QPushButton*>("latButton"), SIGNAL(clicked()), logic, SLOT(latAlpha()));
+    QObject::connect(redBook->findChild<QPushButton*>("rusButton"), SIGNAL(clicked()), logic, SLOT(rusAlpha()));
+    QObject::connect(redBook->findChild<QPushButton*>("sysButton"), SIGNAL(clicked()), logic, SLOT(sysList()));
 
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc0"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc1"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc2"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc3"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc4"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc5"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc6"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
-	QObject::connect(redBook->findChild<QRadioButton*>("radioc7"), SIGNAL(toggled(bool)), logic, SLOT(chapterSelected(bool)));
+    QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemClicked(QTreeWidgetItem*, int)), logic, SLOT(treeItemHighlighted(QTreeWidgetItem *)));
+    QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(currentItemChanged(QListWidgetItem*, QListWidgetItem*)), logic, SLOT(listItemHighlighted(QListWidgetItem *, QListWidgetItem *)));
 
-	QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemDoubleClicked(QTreeWidgetItem*, int)), logic, SLOT(treeItemSelected(QTreeWidgetItem *)));
-	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemDoubleClicked(QListWidgetItem*)), logic, SLOT(listItemSelected(QListWidgetItem *)));
+    QObject::connect(redBook->findChild<QPushButton*>("articlePrintButton"), SIGNAL(clicked()), logic, SLOT(printSpecies()));
 
-	QObject::connect(redBook->findChild<QTreeWidget*>("taxoTree"), SIGNAL(itemPressed(QTreeWidgetItem*, int)), logic, SLOT(treeItemHighlighted(QTreeWidgetItem *)));
-	QObject::connect(redBook->findChild<QListWidget*>("alphaList"), SIGNAL(itemPressed(QListWidgetItem*)), logic, SLOT(listItemHighlighted(QListWidgetItem *)));
+    QObject::connect(redBook->findChild<QPushButton*>("docPrintButton"), SIGNAL(clicked()), logic, SLOT(printDocument()));
+    QObject::connect(redBook->findChild<QComboBox*>("chapterCombo"), SIGNAL(currentIndexChanged(const QString &)), logic, SLOT(viewMultiDocChapter(const QString &)));
 
-	QObject::connect(redBook->findChild<QPushButton*>("backToListsButton"), SIGNAL(clicked()), logic, SLOT(up()));
-	QObject::connect(redBook->findChild<QPushButton*>("prevButton"), SIGNAL(clicked()), logic, SLOT(prevSpecies()));
-	QObject::connect(redBook->findChild<QPushButton*>("nextButton"), SIGNAL(clicked()), logic, SLOT(nextSpecies()));
-	QObject::connect(redBook->findChild<QPushButton*>("printButton"), SIGNAL(clicked()), logic, SLOT(printSpecies()));
-	QObject::connect(redBook->findChild<QListWidget*>("sectionList"), SIGNAL(itemClicked(QListWidgetItem*)), logic, SLOT(setArticle(QListWidgetItem*)));
+    QObject::connect(&app, SIGNAL(focusChanged(QWidget*, QWidget*)), logic, SLOT(changeFocus(QWidget*, QWidget*)));
 
-	QObject::connect(&app, SIGNAL(focusChanged(QWidget*, QWidget*)), logic, SLOT(changeFocus(QWidget*, QWidget*)));
-
-	QObject::connect(indexList, SIGNAL(itemClicked(QListWidgetItem*)), logic, SLOT(indexWidgetClicked(QListWidgetItem*)));
-
-	/* Populate the index */
-	foreach (const QString &param, config->parameters("Index")) {
-		QAction *action = indexMenu->addAction(config->value("Index", param).toString());
-		action->setData(param);
-		QObject::connect(action, SIGNAL(triggered()), logic, SLOT(indexMenuClicked()));
-	}
-
-	/* Set advanced style information */
 	app.setStyleSheet("QRadioButton::indicator::checked { image: url(\":/radio.png\") } QListWidget#indexList::item::hover { background: qlineargradient(spread:pad, x1:0, y1:1,  x2:0, y2:0, stop:0 rgba(255, 255, 255, 255), stop:0.0157895 rgba(255, 197, 166, 255), stop:0.647368 rgba(255, 255, 255, 255), stop:0.757895 rgba(255, 255, 255, 255), stop:1 rgba(255, 220, 197, 255)); }");
 
-	/* Hide the splash screen and show the main program interface */
-	sleep(2);
-	redBook->show();
-	splash.finish(redBook);
-	return app.exec();
+    redBook->show();
+    redBook->findChild<QRadioButton*>("radioc0")->toggle();
+    logic->rusAlpha();
+    //redBook->findChild<QListWidget*>("alphaList")->setCurrentItem(redBook->findChild<QListWidget*>("alphaList")->itemAt(0, 0));
+    return app.exec();
 }

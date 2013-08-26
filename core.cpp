@@ -14,362 +14,145 @@
 #include <QtCore/QString>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
-
-GaiaCore::GaiaCore() : QObject() {
-	maxZoneId = -1;
-	maxTaxonomyId = -1;
-	zoneHash = new QHash<int, QDomElement>();
-	taxonomyHash = new QHash<int, QDomElement>();
-}
+#include <QtDebug>
 
 GaiaCore::~GaiaCore() {
 	delete zoneHash;
 	delete taxonomyHash;
+    delete zoneDoc;
+    delete taxonomyDoc;
+    qDeleteAll(statusHash->values());
+    delete statusHash;
 }
 
-QDomElement GaiaCore::taxonomyDocumentElement() {
-	return taxonomyDoc.documentElement();
+QList<int> GaiaCore::taxonomyElements(const QString &tagName, const QDomElement &parent) {
+    QDomNodeList res = (parent == QDomElement() ? taxonomyDoc->documentElement() : parent).elementsByTagName(tagName);
+    QList<int> ids;
+    for (int i=0; i < res.size(); i++) {
+        ids.append(res.at(i).toElement().attribute("id").toInt());
+    }
+    return ids;
 }
 
-QList<QDomElement> GaiaCore::taxonomyElementsByTagName(const QString &tagName, const QDomElement &parent) {
-	return allElements((parent == QDomElement() ? taxonomyDoc.documentElement() : parent), tagName);
-}
-/*
-QDomElement GaiaCore::taxonomyElementById(const QString &id) {
-	return elementById(taxonomyDoc.documentElement(), id);
-}*/
-
-QDomElement GaiaCore::zoneDocumentElement() {
-	return zoneDoc.documentElement();
+QDomNodeList GaiaCore::zoneElements(const QString &tagName, const QDomElement &parent) {
+    return (parent == QDomElement() ? zoneDoc->documentElement() : parent).elementsByTagName(tagName);
 }
 
-QList<QDomElement> GaiaCore::zoneElementsByTagName(const QString &tagName, const QDomElement &parent) {
-	return allElements((parent == QDomElement() ? zoneDoc.documentElement() : parent), tagName);
+void GaiaCore::readZoneFile(const QString &path) {
+    readXML(path, "zoneDocument", "", &zoneDoc, &zoneHash);
+    statusHash = new QHash<int, QHash<int, QString> *>();
+    foreach (int zoneId, zoneHash->keys()) {
+        QHash<int, QString> *h = new QHash<int, QString>();
+        statusHash->insert(zoneId, h);
+        QDomNodeList species = zoneElements("species", zoneEntry(zoneId));
+        for (int i=0; i < species.size(); i++) {
+            QDomElement element = species.at(i).toElement();
+            h->insert(element.attribute("id").toInt(), element.attribute("status"));
+        }
+    }
 }
 
-/*
-QDomElement GaiaCore::zoneElementById(const QString &id) {
-	return elementById(zoneDoc.documentElement(), id);
-}
-*/
-
-void GaiaCore::deleteDirectory(const QString &path) {
-	QDir dir(path);
-	QList<QString> entries = dir.entryList(QDir::Files);
-	for (QList<QString>::iterator i = entries.begin(); i != entries.end(); i++) {
-		QString currentPath = QString("%1/%2").arg(path).arg(*i);
-		QFileInfo info(currentPath);
-		if (info.isDir())
-			deleteDirectory(path + "/" + *i);
-		else
-			QFile::remove(path + "/" + *i);
-	}
-	dir.rmdir(path);
+void GaiaCore::readTaxonomyFile(const QString &path) {
+    readXML(path, "taxonomyDocument", "", &taxonomyDoc, &taxonomyHash);
 }
 
-void GaiaCore::openZoneFile(const QString &path) {
-	zoneDoc = QDomDocument("zoneDocument");
-	zoneHash->clear();
-	maxZoneId = -1;
-	QFile file(path);
-	QString xml = "";
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return;
-        for (QString line = file.readLine(); !file.atEnd(); line = QString::fromUtf8(file.readLine()))
-                xml.append(line);
-	file.close();
-	zoneDoc.setContent(xml);
-	QDomNodeList zones = zoneDoc.elementsByTagName("zone");
-	for (int i = 0; i< zones.size(); i++) {
-		int zoneId = zones.at(i).toElement().attribute("id").toInt();
-		maxZoneId = zoneId > maxZoneId ? zoneId : maxZoneId;
-		zoneHash->insert(zoneId, zones.at(i).toElement());
-	}
+void GaiaCore::readXML(const QString &path, const QString &rootName, const QString &tagName, QDomDocument **xmlDoc, QHash<int, QDomElement> **xmlHash) {
+    *xmlDoc = new QDomDocument(rootName);
+    *xmlHash = new QHash<int, QDomElement>();
+    QFile file(path);
+    QString xml = "";
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return;
+    }
+    for (QString line = file.readLine(); !file.atEnd(); line = QString::fromUtf8(file.readLine())) {
+        xml.append(line);
+    }
+    file.close();
+    (*xmlDoc)->setContent(xml);
+    QList<QDomElement> entries = allDescendants((*xmlDoc)->documentElement(), tagName);
+    for (int i = 0; i < entries.size(); i++) {
+        int entryId = entries.at(i).attribute("id").toInt();
+        (*xmlHash)->insert(entryId, entries.at(i));
+    }
 }
 
-#ifdef OPERATOR
-void GaiaCore::saveZoneFile(const QString &path) {
-	QFile file(path);
-	if (!file.open(QIODevice::WriteOnly))
-		return;
-	file.write(zoneDoc.toString().toUtf8());
-	file.close();
-}
-#endif
-
-QString GaiaCore::zoneUrl() const {
-	return qApp->applicationDirPath() + "/" + zoneDoc.documentElement().attribute("url");
-}
-
-#ifdef OPERATOR
-void GaiaCore::setZoneUrl(const QString &url) {
-	zoneDoc.documentElement().setAttribute("url", url);
-}
-#endif
-
-QDomElement GaiaCore::zone(int zoneId) const {
+QDomElement GaiaCore::zoneEntry(int zoneId) const {
 	return zoneHash->value(zoneId);
 }
 
-#ifdef OPERATOR
-QDomElement GaiaCore::createZone(const QString &name) {
-	QDomElement zone = zoneDoc.createElement("zone");
-	zone.setAttribute("id", QString::number(++maxZoneId));
-	zone.setAttribute("name", name);
-	QDir dir(zoneUrl());
-	dir.mkdir(zone.attribute("id"));
-	if (dir.exists(zone.attribute("id")))
-		zoneHash->insert(zone.attribute("id").toInt(), zone);
-		return zone;
-	maxZoneId--;
-	return QDomElement();
+QDomElement GaiaCore::taxonomyEntry(int entryId) const {
+    return taxonomyHash->value(entryId);
 }
-
-void GaiaCore::mountZone(const QDomElement &zone, int parentId) {
-	if (this->zone(parentId) != QDomElement())
-		this->zone(parentId).appendChild(zone);
-}
-
-void GaiaCore::deleteZone(int zoneId) {
-	if (this->zone(zoneId) == QDomElement())
-		return;
-	QDomElement zone = this->zone(zoneId);
-	QDomElement parent = zone.parentNode().toElement();
-	parent.removeChild(zone);
-	deleteDirectory(QString("%1/%2").arg(zoneUrl()).arg(zoneId));
-}
-#endif
-
-QString GaiaCore::zoneName(int zoneId) const {
-	if (zone(zoneId) == QDomElement())
-		return QString();
-	return zone(zoneId).attribute("name");
-}
-
-QMap<QString, QString> GaiaCore::chapterLayout(int zoneId, bool listedOnly) const {
-	if (this->zone(zoneId) == QDomElement())
-		return QMap<QString, QString>();
-	QDomElement zone = this->zone(zoneId);
-	QMap<QString, QString> res;
-	res.clear();
-	QDomNodeList chapters = zone.childNodes();
-	for (int i = 0; i< chapters.size(); i++) {
-		QDomElement chapter = chapters.at(i).toElement();
-		if (chapter.tagName() == "chapter")
-			if (listedOnly == false || chapter.attribute("listed") != "false")
-				res.insert(chapter.attribute("name"), chapter.attribute("file"));
-	}
-	return res;
-}
-
-#ifdef OPERATOR
-void GaiaCore::setZoneName(int zoneId, const QString &name) {
-	if (zone(zoneId) == QDomElement())
-		return;
-	zone(zoneId).setAttribute("name", name);
-}
-
-void GaiaCore::setChapterLayout(int zoneId, const QMap<QString, QString> &layout) {
-	if (this->zone(zoneId) == QDomElement())
-		return;
-	QDomElement zone = this->zone(zoneId);
-	int size = zone.childNodes().size();
-	for (int i = 0; i < size; i++) {
-		if (zone.childNodes().at(i).toElement().tagName() == "chapter") {
-			zone.removeChild(zone.childNodes().at(i));
-			size--;
-		}
-	}
-	for (QMap<QString, QString>::const_iterator i = layout.begin(); i != layout.end(); i++) {
-		QDomElement chapter = zoneDoc.createElement("chapter");
-		chapter.setAttribute("name", i.key());
-		chapter.setAttribute("file", i.value());
-		zone.appendChild(chapter);
-	}
-}
-#endif
 
 const QString GaiaCore::taxonomyLevels[] = { "species", "genus", "family", "order", "class", "phylum", "kingdom", "domain" };
 
-void GaiaCore::openTaxonomyFile(const QString &path) {
-	taxonomyDoc = QDomDocument("taxonomyDocument");
-	taxonomyHash->clear();
-	maxTaxonomyId = -1;
-	QFile file(path);
-	QString taxonomy = "";
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return;
-        for (QString line = file.readLine(); !file.atEnd(); line = QString::fromUtf8(file.readLine()))
-                taxonomy.append(line);
-	file.close();
-	taxonomyDoc.setContent(taxonomy);
-	QList<QDomElement> entries = allElements(taxonomyDoc.documentElement());
-	for (QList<QDomElement>::iterator i = entries.begin(); i != entries.end(); i++) {
-		int entryId = (*i).toElement().attribute("id").toInt();
-		maxTaxonomyId = entryId > maxTaxonomyId ? entryId : maxTaxonomyId;
-		taxonomyHash->insert(entryId, (*i).toElement());
-	}
-}
-
-#ifdef OPERATOR
-void GaiaCore::saveTaxonomyFile(const QString &path) {
-	QFile file(path);
-	if (!file.open(QIODevice::WriteOnly))
-		return;
-	file.write(taxonomyDoc.toString().toUtf8());
-	file.close();
-}
-#endif
-
-QString GaiaCore::taxonomyUrl() const {
-	return qApp->applicationDirPath() + "/" + taxonomyDoc.documentElement().attribute("url");
-}
-
-#ifdef OPERATOR
-void GaiaCore::setTaxonomyUrl(const QString &url) {
-	taxonomyDoc.documentElement().setAttribute("url", url);
-}
-#endif
-
-QDomElement GaiaCore::taxonomyEntry(int entryId) const {
-	return taxonomyHash->value(entryId);
-}
-
-#ifdef OPERATOR
-QDomElement GaiaCore::createTaxonomyEntry(Taxonomy level, const QString &rus, const QString &lat, const QString &picturePath) {
-	QDomElement entry = taxonomyDoc.createElement(taxonomyLevels[level]);
-	entry.setAttribute("id", QString::number(++maxTaxonomyId));
-	entry.setAttribute("rus", rus);
-	entry.setAttribute("lat", lat);
-	if (QFile::copy(picturePath, QString("%1/%2.png").arg(taxonomyUrl()).arg(entry.attribute("id"))) || QFile::exists(QString("%1/%2.png").arg(taxonomyUrl()).arg(entry.attribute("id"))))
-		return entry;
-	maxTaxonomyId--;
-	return QDomElement();
-}
-
-void GaiaCore::mountTaxonomyEntry(const QDomElement &entry, int parentId) {
-	if (taxonomyEntry(parentId) == QDomElement())
-		return;
-	taxonomyEntry(parentId).appendChild(entry);
-}
-
-void GaiaCore::deleteTaxonomyEntry(int entryId) {
-	if (taxonomyEntry(entryId) == QDomElement())
-		return;
-	QDomElement entry = taxonomyEntry(entryId);
-	QDomElement parent = entry.parentNode().toElement();
-	parent.removeChild(entry);
-	QFile::remove(QString("%1/%2.png").arg(taxonomyUrl()).arg(entryId));
-	QDir dir(zoneUrl());
-	QList<QString> zoneDirs = dir.entryList(QDir::Dirs);
-	for (QList<QString>::iterator i = zoneDirs.begin(); i != zoneDirs.end(); i++) {
-		deleteDirectory(QString("%1/%2/%3").arg(zoneUrl()).arg(*i).arg(entryId));
-	}
-}
-#endif
-
 QString GaiaCore::entryLatName(int entryId) const {
-	if (taxonomyEntry(entryId) == QDomElement())
-		return QString();
-	return taxonomyEntry(entryId).attribute("lat");
+    return this->entryAttribute(entryId, QString("lat"));
 }
 
 QString GaiaCore::entryRusName(int entryId) const {
-	if (taxonomyEntry(entryId) == QDomElement())
-		return QString();
-	return taxonomyEntry(entryId).attribute("rus");
+    return this->entryAttribute(entryId, QString("rus"));
 }
 
-QPixmap GaiaCore::entryPicture(int entryId) const {
-	if (taxonomyEntry(entryId) == QDomElement())
-		return QPixmap();
-	return QPixmap(QString("%1/%2.png").arg(taxonomyUrl()).arg(entryId));
+QString GaiaCore::speciesAuthor(int entryId) const {
+    return this->entryAttribute(entryId, QString("author"));
 }
 
-QString GaiaCore::entryAuthor(int entryId) const {
-	if (taxonomyEntry(entryId) == QDomElement())
-		return QString();
-	return taxonomyEntry(entryId).attribute("author");
+QString GaiaCore::speciesComment(int entryId) const {
+    return this->entryAttribute(entryId, QString("comment"));
 }
 
-QString GaiaCore::entryYear(int entryId) const {
-	if (taxonomyEntry(entryId) == QDomElement())
-		return QString();
-	return taxonomyEntry(entryId).attribute("year");
+QString GaiaCore::speciesYear(int entryId) const {
+    return this->entryAttribute(entryId, QString("year"));
 }
 
-#ifdef OPERATOR
-void GaiaCore::setEntryLatName(int entryId, const QString &name) {
-	if (taxonomyEntry(entryId) == QDomElement())
-		return;
-	taxonomyEntry(entryId).setAttribute("lat", name);
+QString GaiaCore::entryAttribute(int entryId, const QString &attribute) const {
+    if (taxonomyEntry(entryId) == QDomElement()) {
+        return QString();
+    }
+    return taxonomyEntry(entryId).attribute(attribute);
 }
 
-void GaiaCore::setEntryRusName(int entryId, const QString &name) {
-	if (taxonomyEntry(entryId) == QDomElement())
-		return;
-	taxonomyEntry(entryId).setAttribute("rus", name);
+QString GaiaCore::zoneName(int zoneId) const {
+    if (zoneEntry(zoneId) == QDomElement()) {
+        return QString();
+    }
+    return zoneEntry(zoneId).attribute("name");
 }
 
-void GaiaCore::setEntryPicture(int entryId, const QString &picturePath) {
-	if (taxonomyEntry(entryId) == QDomElement())
-		return;
-	QFile::copy(picturePath, QString("%1/%2.png").arg(taxonomyUrl()).arg(entryId));
+QPixmap GaiaCore::speciesPicture(int entryId, int zoneId) const {
+    return this->speciesPixmap(entryId, zoneId, "picture");
 }
-#endif
 
-/* QList<int> GaiaCore::speciesReferences(int speciesId, int zoneId) const {
-	QList<int> res;
-	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
-		return QList<int>();
-	QString referencesPath = QString("%1/%2/%3/lit.txt").arg(zoneUrl()).arg(zoneId).arg(speciesId);
-	QFile file(referencesPath);
-	if (!file.open(QIODevice::ReadOnly))
-		return QList<int>();
-	QString str = file.readAll();
-	file.close();
-	QList<QString> splitted = str.split(",");
-	foreach(QString status, splitted) {
-		res.append(status.toInt());
-	}
+QPixmap GaiaCore::speciesAreal(int entryId, int zoneId) const {
+    return this->speciesPixmap(entryId, zoneId, "areal");
+}
+
+QPixmap GaiaCore::speciesPixmap(int entryId, int zoneId, const QString &filename) const {
+    if (taxonomyEntry(entryId) == QDomElement()) {
+        return QPixmap();
+    }
+    return QPixmap(QString("%1/species/%2/%3/%4.png").arg(qApp->applicationDirPath()).arg(zoneId).arg(entryId).arg(filename));
+}
+
+QList<int> GaiaCore::speciesZones(int entryId) {
+    QList<int> res;
+    QDomNodeList zoneList = zoneElements("zone", QDomElement());
+    for (int i = 0; i < zoneList.size(); i++) {
+        QString zoneId = zoneList.at(i).toElement().attribute("id");
+        if (QFile::exists(QString("%1/species/%2/%3").arg(qApp->applicationDirPath()).arg(zoneId).arg(entryId))) {
+                    res.append(zoneId.toInt());
+                }
+    }
 	return res;
-} */
-
-QList<int> GaiaCore::speciesZones(int speciesId) {
-	/* Scroll through all zones */
-	QList<int> res;
-	res.clear();
-	QList<QDomElement> zoneList = zoneElementsByTagName("zone", QDomElement());
-	foreach (const QDomElement &zone, zoneList) {
-		QString zoneId = zone.attribute("id");
-		if (QFile::exists(QString("%1/%2/%3/").arg(zoneUrl()).arg(zoneId).arg(speciesId))) {
-			res.append(zoneId.toInt());
-		}
-	}
-	return res;
-}
-
-bool GaiaCore::speciesEnabled(int speciesId, int zoneId) const {
-	return !QFile::exists(QString("%1/%2/%3/disabled").arg(zoneUrl()).arg(zoneId).arg(speciesId));
-}
-
-QPixmap GaiaCore::speciesAreal(int speciesId, int zoneId) const {
-	return QPixmap(zoneUrl() + "/" + QString::number(zoneId) + "/" + QString::number(speciesId) + "/areal.png");
 }
 
 QList<int> GaiaCore::speciesStatus(int speciesId, int zoneId) const {
 	QList<int> res;
-	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
+    if (taxonomyEntry(speciesId) == QDomElement() || zoneEntry(zoneId) == QDomElement()) {
 		return QList<int>();
-	/*QString statusPath = QString("%1/%2/%3/status.txt").arg(zoneUrl()).arg(zoneId).arg(speciesId);
-	if (!QFile::exists(statusPath))
-		return QList<int>();
-	QFile file(statusPath);
-	if (!file.open(QIODevice::ReadOnly))
-		return QList<int>();
-	QString str = file.readAll();
-	file.close();*/
-	QString str = taxonomyEntry(speciesId).attribute("status");
+    }
+    QString str = statusHash->value(zoneId)->value(speciesId);
 	QList<QString> splitted = str.split(",");
 	foreach(QString status, splitted) {
 		res.append(status.toInt());
@@ -378,107 +161,43 @@ QList<int> GaiaCore::speciesStatus(int speciesId, int zoneId) const {
 }
 
 QString GaiaCore::speciesChapter(int speciesId, int zoneId, const QString &chapterName) const {
-	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
+    if (taxonomyEntry(speciesId) == QDomElement() || zoneEntry(zoneId) == QDomElement()) {
 		return QString();
-	QFile file(QString("%1/%2/%3/%4").arg(zoneUrl()).arg(zoneId).arg(speciesId).arg(chapterLayout(zoneId).value(chapterName)));
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
-		return QString();
+    }
+    QFile file(QString("%1/species/%2/%3/%4").arg(qApp->applicationDirPath())\
+               .arg(zoneId).arg(speciesId).arg(chapterLayout(zoneId).value(chapterName)));
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        return QString();
+    }
 	QString res = QString::fromUtf8(file.readAll());
 	file.close();
 	return res;
 }
 
-#ifdef OPERATOR
-/* void GaiaCore::setSpeciesReferences(int speciesId, int zoneId, const QList<int> &references) {
-	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
-		return;
-	QDir dir(QString("%1/%2").arg(zoneUrl()).arg(zoneId));
-	if (!dir.exists(QString::number(speciesId))) {
-		if (!dir.mkdir(QString::number(speciesId)))
-			return;
-	}
-	QFile file(QString("%1/%2/%3/lit.txt").arg(zoneUrl()).arg(zoneId).arg(speciesId));
-	if (!file.open(QIODevice::WriteOnly))
-		return;
-	for (int i = 0; i < references.size() - 1; i++)
-		file.write(QString("%1,").arg(references.at(i)).toUtf8());
-	file.write(QString::number(references.last()).toUtf8());
-	file.close();
-} */
-
-void GaiaCore::setSpeciesEnabled(int speciesId, int zoneId, bool isEnabled) {
-	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
-		return;
-	if (isEnabled) {
-		QFile::remove(QString("%1/%2/%3/disabled").arg(zoneUrl()).arg(zoneId).arg(speciesId));
-	}
-	else {
-		QFile file(QString("%1/%2/%3/disabled").arg(zoneUrl()).arg(zoneId).arg(speciesId));
-		if (!file.open(QIODevice::WriteOnly))
-			return;
-		file.write("1");
-		file.close();
-	}
+QMap<QString, QString> GaiaCore::chapterLayout(int zoneId, bool listedOnly) const {
+    if (this->zoneEntry(zoneId) == QDomElement()) {
+        return QMap<QString, QString>();
+    }
+    QDomElement zone = this->zoneEntry(zoneId);
+    QMap<QString, QString> res;
+    QDomNodeList chapters = zone.childNodes();
+    for (int i = 0; i< chapters.size(); i++) {
+        QDomElement chapter = chapters.at(i).toElement();
+        if (chapter.tagName() == "chapter") {
+            if (listedOnly == false || chapter.attribute("listed") != "false") {
+                res.insert(chapter.attribute("name"), chapter.attribute("file"));
+            }
+        }
+    }
+    return res;
 }
 
-void GaiaCore::setSpeciesAreal(int speciesId, int zoneId, const QString &path) {
-	if (taxonomyEntry(speciesId) == QDomElement() || zone(zoneId) == QDomElement())
-		return;
-	QDir dir(QString("%1/%2").arg(zoneUrl()).arg(zoneId));
-	if (!dir.exists(QString::number(speciesId))) {
-		if (!dir.mkdir(QString::number(speciesId)))
-			return;
-	}
-	QString arealPath = QString("%1/%2/%3/areal.png").arg(zoneUrl()).arg(zoneId).arg(speciesId);
-	if (QFile::exists(arealPath))
-		QFile::remove(arealPath);
-	QFile::copy(path, arealPath);
-}
-
-void GaiaCore::setSpeciesChapter(int speciesId, int zoneId, const QString &chapterName, const QString &chapterHtml) {
-	QDir dir(QString("%1/%2").arg(zoneUrl()).arg(zoneId));
-	if (!dir.exists(QString::number(speciesId)))
-		if (!dir.mkdir(QString::number(speciesId)))
-			return;
-	QFile file(QString("%1/%2/%3/%4").arg(zoneUrl()).arg(zoneId).arg(speciesId).arg(chapterLayout(zoneId).value(chapterName)));
-	if (!file.open(QIODevice::WriteOnly))
-		return;
-	file.write(chapterHtml.toUtf8());
-	file.close();
-}
-
-void GaiaCore::setSpeciesStatus(int speciesId, int zoneId, const QList<int> &status) {
-	QDir dir(QString("%1/%2").arg(zoneUrl()).arg(zoneId));
-	if (!dir.exists(QString::number(speciesId)))
-		if (!dir.mkdir(QString::number(speciesId)))
-			return;
-	QFile file(QString("%1/%2/%3/status.txt").arg(zoneUrl()).arg(zoneId).arg(speciesId));
-	if (!file.open(QIODevice::WriteOnly))
-		return;
-	for (int i = 0; i < status.size() - 1; i++) {
-		file.write(QString(QString::number(status.at(i)) + ",").toUtf8());
-	}
-	file.write(QString::number(status.last()).toUtf8());
-	file.close();
-
-}
-
-#endif
-
-QDomElement GaiaCore::elementById(const QDomElement &element, const QString &id) {
-	QList<QDomElement> res = allElements(element);
-	for (QList<QDomElement>::iterator i = res.begin(); i != res.end(); i++)
-		if ((*i).attribute("id") == id)
-			return *i;
-	return QDomElement();
-}
-
-QList<QDomElement> GaiaCore::allElements(const QDomElement &element, const QString &tagName) {
-	QList<QDomElement> res = QList<QDomElement>();
-	if (tagName == "" || element.tagName() == tagName)
-		res.append(element);
-	for (int i = 0; i < element.childNodes().size(); i++) {
-		res << allElements(element.childNodes().at(i).toElement(), tagName);
-	}
-	return res;
+QList<QDomElement> GaiaCore::allDescendants(const QDomElement &element, const QString &tagName) {
+    QList<QDomElement> res = QList<QDomElement>();
+    if (tagName == "" || element.tagName() == tagName)
+        res.append(element);
+    for (int i = 0; i < element.childNodes().size(); i++) {
+        res << allDescendants(element.childNodes().at(i).toElement(), tagName);
+    }
+    return res;
 }

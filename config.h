@@ -20,18 +20,17 @@ class QrbConfig {
 
 public:
 	enum Error { Ok, NotFound, Forbidden, NoSuchSection, NoSuchParameter, BadSyntax };
-	QrbConfig(const QString &path = "");
+    QrbConfig(const QString &path);
 	~QrbConfig();
-	void setFile(const QString &path);
 
 	QList<QString> sections() const;
 	QList<QString> parameters(const QString &section) const;
 	QVariant value(const QString &section, const QString &parameter) const;
 
-	void error(Error *code, int *line);
+    void error(Error *code, int *line);
 
 private:
-	void setValue(const QString &section, const QString &parameter, const QString &value);
+    void initValue(const QString &section, const QString &parameter, const QString &value);
 	mutable Error error_code;
 	mutable int error_line;
 	QHash<QPoint, QVariant> *c_values;

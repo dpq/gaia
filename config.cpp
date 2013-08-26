@@ -18,8 +18,67 @@ QrbConfig::QrbConfig(const QString &path) {
 	c_values = new QHash<QPoint, QVariant>();
 	c_sections = new QList<QString>();
 	c_parameters = new QList<QString>();
-	if (path != "")
-		setFile(path);
+    QFile file(path);
+    QString c_section ="", c_param="", c_value="";
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        if (file.error() & (QFile::ReadError | QFile::FatalError | QFile::TimeOutError | QFile::OpenError | QFile::UnspecifiedError)) {
+            error_code = NotFound;
+            error_line = -1;
+            return;
+        }
+        else if (file.error() & QFile::PermissionsError) {
+            error_code = Forbidden;
+            error_line = -1;
+            return;
+        }
+    }
+
+    error_code = Ok;
+    error_line = -1;
+    for (QString line = file.readLine(); ; line = QString::fromUtf8(file.readLine())) {
+        error_line++;
+        line = line.simplified();
+
+        if (line.contains(";")) {
+            line = line.section(';', 0, 0).trimmed();
+        }
+
+        if (line.isEmpty()) {
+            continue;
+        }
+
+        if (line.startsWith("[") && line.endsWith("]")) {
+            c_section = line.mid(1, line.length() - 2).trimmed();
+            if (c_section.contains(QRegExp("\\W")) || c_section == "") {
+                error_code = BadSyntax;
+                return;
+            }
+            else {
+                continue;
+            }
+        }
+
+        if (!line.contains('=')) {
+            error_code = BadSyntax;
+            return;
+        }
+
+        c_param = line.section('=', 0, 0).trimmed();
+        c_value = line.section('=', 1, 1).trimmed();
+
+        if (c_param.contains(QRegExp("\\W"))) {
+            error_code = BadSyntax;
+            return;
+        }
+
+        initValue(c_section, c_param, c_value);
+
+        if (file.atEnd()) {
+            break;
+        }
+    }
+    error_code = Ok;
+    file.close();
 }
 
 QrbConfig::~QrbConfig() {
@@ -41,8 +100,9 @@ QList<QString> QrbConfig::parameters(const QString &section) const {
 	int sectionIndex = c_sections->indexOf(section);
 	QList<int> indices;
 	foreach (QPoint p, c_values->keys()) {
-		if (p.x() == sectionIndex)
+        if (p.x() == sectionIndex) {
 			indices.append(p.y());
+        }
 	}
 	qSort(indices);
 	QList<QString> res;
@@ -71,84 +131,25 @@ QVariant QrbConfig::value(const QString &section, const QString &parameter) cons
 	return c_values->value(QPoint(sectionIndex, parameterIndex));
 }
 
-void QrbConfig::setValue(const QString &section, const QString &parameter, const QString &value) {
+void QrbConfig::initValue(const QString &section, const QString &parameter, const QString &value) {
 	if (c_values->contains(QPoint(c_sections->indexOf(section), c_parameters->indexOf(parameter)))) {
 		(*c_values)[QPoint(c_sections->indexOf(section), c_parameters->indexOf(parameter))] = value;
 		return;
 	}
 
-	if (!c_sections->contains(section))
+    if (!c_sections->contains(section)) {
 		c_sections->append(section);
-	if (!c_parameters->contains(parameter))
+    }
+    if (!c_parameters->contains(parameter)) {
 		c_parameters->append(parameter);
+    }
 
 	c_values->insert(QPoint(c_sections->indexOf(section), c_parameters->indexOf(parameter)), value);
 }
 
 void QrbConfig::error(QrbConfig::Error *code, int *line) {
-	*code = error_code;
-	*line = error_line;
-}
-
-void QrbConfig::setFile(const QString &path) {
-	QFile file(path);
-	QString c_section ="", c_param="", c_value="";
-	if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-		if (file.error() & (QFile::ReadError | QFile::FatalError | QFile::TimeOutError | QFile::OpenError | QFile::UnspecifiedError)) {
-			error_code = NotFound;
-			error_line = -1;
-			return;
-		}
-		else if (file.error() & QFile::PermissionsError) {
-			error_code = Forbidden;
-			error_line = -1;
-			return;
-		}
-	}
-	
-	error_code = Ok;
-	error_line = -1;
-	for (QString line = file.readLine(); ; line = QString::fromUtf8(file.readLine())) {
-		error_line++;
-		line = line.simplified();
-	
-		if (line.contains(";"))
-			line = line.section(';', 0, 0).trimmed();
-
-		if (line.isEmpty())
-			continue;
-
-		if (line.startsWith("[") && line.endsWith("]")) {
-			c_section = line.mid(1, line.length() - 2).trimmed();
-			if (c_section.contains(QRegExp("\\W")) || c_section == "") {
-				error_code = BadSyntax;
-				return;
-			}
-			else
-				continue;
-		}
-
-		if (!line.contains('=')) {
-			error_code = BadSyntax;
-			return;
-		}
-
-		c_param = line.section('=', 0, 0).trimmed();
-		c_value = line.section('=', 1, 1).trimmed();
-
-		if (c_param.contains(QRegExp("\\W"))) {
-			error_code = BadSyntax;
-			return;
-		}
-
-		setValue(c_section, c_param, c_value);
-
-		if (file.atEnd())
-			break;
-	}
-	error_code = Ok;
-	file.close();
-	return;
+    *code = error_code;
+    *line = error_line;
 }
 
 inline uint qHash(const QPoint &key) {

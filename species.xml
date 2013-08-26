@@ -2,585 +2,585 @@
 <bio version="1.0" url="species">
 	<class id="1" lat="Mammalia" rus="Млекопитающие">
 		<order id="2" lat="Insectivora" rus="Насекомоядные">
-			<species author="Sundevall" id="3" lat="Mesechinus dauuricus" oldid="351" rus="Даурский еж" status="4" year="1842"/>
-			<species author="Linnaeus" id="4" lat="Desmana moschata" oldid="352" rus="Русская выхухоль" status="2" year="1758"/>
-			<species author="Temminck" id="5" lat="Mogera wogura" oldid="353" rus="Японская могера" status="3" year="1842"/>
-			<species author="Ognev" id="6" lat="Sorex mirabilis" oldid="354" rus="Гигантская бурозубка" status="3" year="1937"/>
+			<species author="Sundevall" id="3" lat="Mesechinus dauuricus" printid="351" rus="Даурский еж" year="1842"/>
+			<species author="Linnaeus" id="4" lat="Desmana moschata" printid="352" rus="Русская выхухоль" year="1758"/>
+			<species author="Temminck" id="5" lat="Mogera wogura" printid="353" rus="Японская могера" year="1842"/>
+			<species author="Ognev" id="6" lat="Sorex mirabilis" printid="354" rus="Гигантская бурозубка" year="1937"/>
 		</order>
 		<order id="7" lat="Chiroptera" rus="Рукокрылые">
-			<species author="Bechstein" id="8" lat="Rhinolophus hipposideros" oldid="355" rus="Малый подковонос" status="3" year="1800"/>
-			<species author="Matschie" id="9" lat="Rhinolophus mehelyi" oldid="356" rus="Подковонос Мегели" status="2" year="1901"/>
-			<species author="Schreber" id="10" lat="Rhinolophus ferrumequinum" oldid="357" rus="Большой подковонос" status="3" year="1775"/>
-			<species author="Tomes" id="11" lat="Myotis blythi" oldid="358" rus="Остроухая ночница" status="2" year="1857"/>
-			<species author="Geoffroy" id="12" lat="Myotis emarginatus" oldid="359" rus="Трехцветная ночница" status="2" year="1806"/>
-			<species author="Schreber" id="13" lat="Myctalus lasiopterus" oldid="360" rus="Гигантская вечерница" status="3" year="1787"/>
-			<species author="Kuhl" id="14" lat="Miniopterus schreibersi" oldid="361" rus="Обыкновенный длиннокрыл" status="1" year="1819"/>
+			<species author="Bechstein" id="8" lat="Rhinolophus hipposideros" printid="355" rus="Малый подковонос" year="1800"/>
+			<species author="Matschie" id="9" lat="Rhinolophus mehelyi" printid="356" rus="Подковонос Мегели" year="1901"/>
+			<species author="Schreber" id="10" lat="Rhinolophus ferrumequinum" printid="357" rus="Большой подковонос" year="1775"/>
+			<species author="Tomes" id="11" lat="Myotis blythi" printid="358" rus="Остроухая ночница" year="1857"/>
+			<species author="Geoffroy" id="12" lat="Myotis emarginatus" printid="359" rus="Трехцветная ночница" year="1806"/>
+			<species author="Schreber" id="13" lat="Myctalus lasiopterus" printid="360" rus="Гигантская вечерница" year="1787"/>
+			<species author="Kuhl" id="14" lat="Miniopterus schreibersi" printid="361" rus="Обыкновенный длиннокрыл" year="1819"/>
 		</order>
 		<order id="15" lat="Rodentia" rus="Грызуны">
-			<species author="Radde" comment="монгольский сурок" id="16" lat="Marmota sibirica" oldid="362" rus="Тарбаган" status="1" year="1862"/>
-			<species author="Birula" comment="прибайкальский" id="17" lat="Marmota camtschatica doppelmayeri" oldid="363(1)" rus="Черношапочный сурок" status="1" year="1922"/>
-			<species author="Serebrennikov" comment="западносибирский подвид" id="18" lat="Castor fiber pohlei" oldid="364(1)" rus="Речной бобр" status="1" year="1929"/>
-			<species author="Lavrov" comment="тувинский подвид" id="19" lat="Castor fiber tuvinicus" oldid="364(2)" rus="Речной бобр" status="1" year="1969"/>
-			<species author="Nehring" id="20" lat="Spalax giganteus" oldid="365" rus="Гигантский слепыш" status="3" year="1898"/>
-			<species author="Thomas" comment="манчжурский" id="21" lat="Myospalax psilurus espilanus" oldid="366(1)" rus="Цокор" status="2" year="1907"/>
-			<species author="Eversmann" id="22" lat="Eolagurus luteus" oldid="367" rus="Желтая пеструшка" status="1" year="1840"/>
+			<species author="Radde" comment="монгольский сурок" id="16" lat="Marmota sibirica" printid="362" rus="Тарбаган" year="1862"/>
+			<species author="Birula" comment="прибайкальский" id="17" lat="Marmota camtschatica doppelmayeri" printid="363(1)" rus="Черношапочный сурок" year="1922"/>
+			<species author="Serebrennikov" comment="западносибирский подвид" id="18" lat="Castor fiber pohlei" printid="364(1)" rus="Речной бобр" year="1929"/>
+			<species author="Lavrov" comment="тувинский подвид" id="19" lat="Castor fiber tuvinicus" printid="364(2)" rus="Речной бобр" year="1969"/>
+			<species author="Nehring" id="20" lat="Spalax giganteus" printid="365" rus="Гигантский слепыш" year="1898"/>
+			<species author="Thomas" comment="манчжурский" id="21" lat="Myospalax psilurus espilanus" printid="366(1)" rus="Цокор" year="1907"/>
+			<species author="Eversmann" id="22" lat="Eolagurus luteus" printid="367" rus="Желтая пеструшка" year="1840"/>
 		</order>
 		<order id="23" lat="Carnivora" rus="Хищные">
-			<species author="Ognev" comment="медновский голубой" id="24" lat="Alopex lagopus semenovi" oldid="368(1)" rus="Песец" status="1" year="1931"/>
-			<species author="Pallas" id="25" lat="Cuon alpinus" oldid="369" rus="Красный волк" status="1" year="1811"/>
-			<species author="Phipps" id="26" lat="Ursus maritimus" oldid="370" rus="Белый медведь" status="3,4,5" year="1774"/>
-			<species author="Ognev" comment="дальневосточная популяция" id="27" lat="Mustela altaica raddei" oldid="371(1)" rus="Солонгой" status="2" year="1928"/>
-			<species author="Ognev" comment="амурский" id="28" lat="Mustela eversmanni amurensis" oldid="372(1)" rus="Степной хорь" status="2" year="1930"/>
-			<species author="Kusnetsov" comment="кавказская" id="29" lat="Mustela lutreola turovi" oldid="373(1)" rus="Европейская норка" status="1" year="1939"/>
-			<species author="Guldenstadt" id="30" lat="Vormela peregusna" oldid="374" rus="Перевязка" status="1" year="1770"/>
-			<species author="Ognev" comment="кавказская" id="31" lat="Lutra lutra meridionalis" oldid="375(1)" rus="Выдра" status="3" year="1931"/>
-			<species author="Linnaeus" id="32" lat="Enhydra lutris" oldid="376" rus="Калан" status="5" year="1758"/>
-			<species author="Satunin" comment="кавказская" id="33" lat="Felis silvestris caucasica" oldid="377(1)" rus="Лесная кошка" status="3" year="1905"/>
-			<species author="Guldenstadt" comment="кавказский" id="34" lat="Felis chaus chaus" oldid="378(1)" rus="Камышовый кот" status="2" year="1776"/>
-			<species author="Pallas" id="35" lat="Felis manul" oldid="379" rus="Манул" status="3" year="1776"/>
-			<species author="Temminck" id="36" lat="Panthera tigris altaica" oldid="380" rus="Амурский тигр" status="2" year="1844"/>
-			<species author="Linnaeus" id="37" lat="Panthera pardus" oldid="381" rus="Леопард" status="1" year="1758"/>
-			<species author="Schreber" id="38" lat="Uncia uncia" oldid="382" rus="Снежный барс" status="1" year="1776"/>
+			<species author="Ognev" comment="медновский голубой" id="24" lat="Alopex lagopus semenovi" printid="368(1)" rus="Песец" year="1931"/>
+			<species author="Pallas" id="25" lat="Cuon alpinus" printid="369" rus="Красный волк" year="1811"/>
+			<species author="Phipps" id="26" lat="Ursus maritimus" printid="370" rus="Белый медведь" year="1774"/>
+			<species author="Ognev" comment="дальневосточная популяция" id="27" lat="Mustela altaica raddei" printid="371(1)" rus="Солонгой" year="1928"/>
+			<species author="Ognev" comment="амурский" id="28" lat="Mustela eversmanni amurensis" printid="372(1)" rus="Степной хорь" year="1930"/>
+			<species author="Kusnetsov" comment="кавказская" id="29" lat="Mustela lutreola turovi" printid="373(1)" rus="Европейская норка" year="1939"/>
+			<species author="Guldenstadt" id="30" lat="Vormela peregusna" printid="374" rus="Перевязка" year="1770"/>
+			<species author="Ognev" comment="кавказская" id="31" lat="Lutra lutra meridionalis" printid="375(1)" rus="Выдра" year="1931"/>
+			<species author="Linnaeus" id="32" lat="Enhydra lutris" printid="376" rus="Калан" year="1758"/>
+			<species author="Satunin" comment="кавказская" id="33" lat="Felis silvestris caucasica" printid="377(1)" rus="Лесная кошка" year="1905"/>
+			<species author="Guldenstadt" comment="кавказский" id="34" lat="Felis chaus chaus" printid="378(1)" rus="Камышовый кот" year="1776"/>
+			<species author="Pallas" id="35" lat="Felis manul" printid="379" rus="Манул" year="1776"/>
+			<species author="Temminck" id="36" lat="Panthera tigris altaica" printid="380" rus="Амурский тигр" year="1844"/>
+			<species author="Linnaeus" id="37" lat="Panthera pardus" printid="381" rus="Леопард" year="1758"/>
+			<species author="Schreber" id="38" lat="Uncia uncia" printid="382" rus="Снежный барс" year="1776"/>
 		</order>
 		<order id="39" lat="Pinnipedia" rus="Ластоногие">
-			<species author="Schreber" comment="северный морской лев" id="40" lat="Eumetopias jubatus" oldid="383" rus="Сивуч" status="2" year="1776"/>
-			<species author="Linnaeus" comment="атлантический подвид" id="41" lat="Odobenus rosmarus rosmarus" oldid="384(1)" rus="Морж" status="2" year="1758"/>
-			<species author="Tchapski" comment="лаптевский подвид" id="42" lat="Odobenus rosmarus laptevi" oldid="384(2)" rus="Морж" status="3" year="1940"/>
-			<species author="Linnaeus" comment="европейский подвид-баренцевоморская и балтийская популяции" id="43" lat="Phoca vitulina vitulina" oldid="385(1)" rus="Обыкновенный тюлень" status="1,3" year="1758"/>
-			<species author="Allen" comment="курильский подвид-тюлень Стейнегера" id="44" lat="Phoca vitulina stejnegeri" oldid="385(3)" rus="Обыкновенный тюлень" status="3" year="1902"/>
-			<species author="Gmelin" comment="балтийский подвид" id="45" lat="Phoca hispida botnica" oldid="386(1)" rus="Кольчатая нерпа" status="2" year="1788"/>
-			<species author="Nordquist" comment="ладожский подвид" id="46" lat="Phoca hispida ladogensis" oldid="386(2)" rus="Кольчатая нерпа" status="3" year="1899"/>
-			<species author="Hornschush et Schilling" comment="балтийский подвид" id="47" lat="Halichoerus grypus macrorhynchus" oldid="387(1)" rus="Серый тюлень" status="1" year="1850"/>
-			<species author="Fabricius" comment="атлантический подвид-тевяк" id="48" lat="Halichoerus grypus grypus" oldid="387(2)" rus="Серый тюлень" status="3" year="1791"/>
+			<species author="Schreber" comment="северный морской лев" id="40" lat="Eumetopias jubatus" printid="383" rus="Сивуч" year="1776"/>
+			<species author="Linnaeus" comment="атлантический подвид" id="41" lat="Odobenus rosmarus rosmarus" printid="384(1)" rus="Морж" year="1758"/>
+			<species author="Tchapski" comment="лаптевский подвид" id="42" lat="Odobenus rosmarus laptevi" printid="384(2)" rus="Морж" year="1940"/>
+			<species author="Linnaeus" comment="европейский подвид-баренцевоморская и балтийская популяции" id="43" lat="Phoca vitulina vitulina" printid="385(1)" rus="Обыкновенный тюлень" year="1758"/>
+			<species author="Allen" comment="курильский подвид-тюлень Стейнегера" id="44" lat="Phoca vitulina stejnegeri" printid="385(3)" rus="Обыкновенный тюлень" year="1902"/>
+			<species author="Gmelin" comment="балтийский подвид" id="45" lat="Phoca hispida botnica" printid="386(1)" rus="Кольчатая нерпа" year="1788"/>
+			<species author="Nordquist" comment="ладожский подвид" id="46" lat="Phoca hispida ladogensis" printid="386(2)" rus="Кольчатая нерпа" year="1899"/>
+			<species author="Hornschush et Schilling" comment="балтийский подвид" id="47" lat="Halichoerus grypus macrorhynchus" printid="387(1)" rus="Серый тюлень" year="1850"/>
+			<species author="Fabricius" comment="атлантический подвид-тевяк" id="48" lat="Halichoerus grypus grypus" printid="387(2)" rus="Серый тюлень" year="1791"/>
 		</order>
 		<order id="49" lat="Cetacea" rus="Китообразные">
-			<species author="Gray" id="50" lat="Lagenorhynchus acutus" oldid="388" rus="Атлантический белобокий дельфин" status="4" year="1828"/>
-			<species author="Gray" id="51" lat="Lagenorhynchus albirostris" oldid="389" rus="Беломордый дельфин" status="3" year="1846"/>
-			<species author="Barabasch-Nikiforov" comment="черноморская" id="52" lat="Tursiops truncatus ponticus" oldid="390(1)" rus="Афалина" status="3" year="1935"/>
-			<species author="G. Cuvier" id="53" lat="Grampus griseus" oldid="391" rus="Серый дельфин" status="4" year="1812"/>
-			<species author="Linnaeus" comment="североатлантический подвид" id="54" lat="Phocoena phocoena phocoena" oldid="392(1)" rus="Морская свинья" status="4" year="1758"/>
-			<species author="Abel" comment="черноморский подвид" id="55" lat="Phocoena phocoena relicta" oldid="392(2)" rus="Морская свинья" status="3" year="1905"/>
-			<species author="Gill" comment="северотихоокеанский подвид" id="56" lat="Phocoena phocoena vomerina" oldid="392(3)" rus="Морская свинья" status="4" year="1865"/>
-			<species author="Oven" id="57" lat="Pseudorca crassidens" oldid="393" rus="Малая косатка" status="4" year="1846"/>
-			<species author="Linnaeus" comment="единорог" id="58" lat="Monodon monoceros" oldid="394" rus="Нарвал" status="3" year="1758"/>
-			<species author="Forster" id="59" lat="Hyperoodon ampullatus" oldid="395" rus="Высоколобый бутылконос" status="1" year="1770"/>
-			<species author="G. Cuvier" id="60" lat="Ziphius cavirostris" oldid="396" rus="Клюворыл" status="3" year="1823"/>
-			<species author="True" id="61" lat="Mesoplodon stejnegeri" oldid="397" rus="Командорский ремнезуб" status="4" year="1885"/>
-			<species author="Erxleben" comment="охотско-корейская и чукотско-калифорнийская популяция" id="62" lat="Eschrichtius gibbosus" oldid="398" rus="Серый кит" status="1,5" year="1777"/>
-			<species author="Linnaeus" comment="северо-атлантическая, берингово-чукотская и охотоморская популяции" id="63" lat="Balaena mysticetus" oldid="399" rus="Гренландский кит" status="1,3" year="1758"/>
-			<species author="Lacepede" id="64" lat="Eubalaena glacialis japonica" oldid="400(1)" rus="Японский кит" status="1" year="1818"/>
-			<species author="Borowski" id="65" lat="Megaptera novaeangliae" oldid="401" rus="Горбач" status="1" year="1781"/>
-			<species author="Linnaeus" comment="северный" id="66" lat="Balaenoptera musculus musculus" oldid="402(1)" rus="Синий кит" status="1" year="1758"/>
-			<species author="Linnaeus" comment="северный, сельдяной кит" id="67" lat="Balaenoptera physalus physalus" oldid="403(1)" rus="Финвал" status="2" year="1758"/>
-			<species author="Lesson" comment="ивасевый кит" id="68" lat="Balaenoptera borealis borealis" oldid="404(1)" rus="Сейвал" status="3" year="1828"/>
+			<species author="Gray" id="50" lat="Lagenorhynchus acutus" printid="388" rus="Атлантический белобокий дельфин" year="1828"/>
+			<species author="Gray" id="51" lat="Lagenorhynchus albirostris" printid="389" rus="Беломордый дельфин" year="1846"/>
+			<species author="Barabasch-Nikiforov" comment="черноморская" id="52" lat="Tursiops truncatus ponticus" printid="390(1)" rus="Афалина" year="1935"/>
+			<species author="G. Cuvier" id="53" lat="Grampus griseus" printid="391" rus="Серый дельфин" year="1812"/>
+			<species author="Linnaeus" comment="североатлантический подвид" id="54" lat="Phocoena phocoena phocoena" printid="392(1)" rus="Морская свинья" year="1758"/>
+			<species author="Abel" comment="черноморский подвид" id="55" lat="Phocoena phocoena relicta" printid="392(2)" rus="Морская свинья" year="1905"/>
+			<species author="Gill" comment="северотихоокеанский подвид" id="56" lat="Phocoena phocoena vomerina" printid="392(3)" rus="Морская свинья" year="1865"/>
+			<species author="Oven" id="57" lat="Pseudorca crassidens" printid="393" rus="Малая косатка" year="1846"/>
+			<species author="Linnaeus" comment="единорог" id="58" lat="Monodon monoceros" printid="394" rus="Нарвал" year="1758"/>
+			<species author="Forster" id="59" lat="Hyperoodon ampullatus" printid="395" rus="Высоколобый бутылконос" year="1770"/>
+			<species author="G. Cuvier" id="60" lat="Ziphius cavirostris" printid="396" rus="Клюворыл" year="1823"/>
+			<species author="True" id="61" lat="Mesoplodon stejnegeri" printid="397" rus="Командорский ремнезуб" year="1885"/>
+			<species author="Erxleben" comment="охотско-корейская и чукотско-калифорнийская популяция" id="62" lat="Eschrichtius gibbosus" printid="398" rus="Серый кит" year="1777"/>
+			<species author="Linnaeus" comment="северо-атлантическая, берингово-чукотская и охотоморская популяции" id="63" lat="Balaena mysticetus" printid="399" rus="Гренландский кит" year="1758"/>
+			<species author="Lacepede" id="64" lat="Eubalaena glacialis japonica" printid="400(1)" rus="Японский кит" year="1818"/>
+			<species author="Borowski" id="65" lat="Megaptera novaeangliae" printid="401" rus="Горбач" year="1781"/>
+			<species author="Linnaeus" comment="северный" id="66" lat="Balaenoptera musculus musculus" printid="402(1)" rus="Синий кит" year="1758"/>
+			<species author="Linnaeus" comment="северный, сельдяной кит" id="67" lat="Balaenoptera physalus physalus" printid="403(1)" rus="Финвал" year="1758"/>
+			<species author="Lesson" comment="ивасевый кит" id="68" lat="Balaenoptera borealis borealis" printid="404(1)" rus="Сейвал" year="1828"/>
 		</order>
 		<order id="69" lat="Perissodactyla" rus="Непарнокопытные">
-			<species author="Poljakov" id="70" lat="Equus przewalskii" oldid="405" rus="Лошадь Пржевальского" status="0" year="1881"/>
-			<species author="Pallas" id="71" lat="Equus hemionus" oldid="406" rus="Кулан" status="0" year="1775"/>
+			<species author="Poljakov" id="70" lat="Equus przewalskii" printid="405" rus="Лошадь Пржевальского" year="1881"/>
+			<species author="Pallas" id="71" lat="Equus hemionus" printid="406" rus="Кулан" year="1775"/>
 		</order>
 		<order id="72" lat="Artiodactyla" rus="Парнокопытные">
-			<species author="Flerov" comment="сахалинская" id="73" lat="Moschus moschiferus sachalinensis" oldid="407(1)" rus="Кабарга" status="1" year="1929"/>
-			<species author="Swinhoe" comment="уссурийский-аборигенные популяции" id="74" lat="Cervus nippon hortulorum" oldid="408(1)" rus="Пятнистый олень" status="2" year="1864"/>
-			<species author="Flerov" comment="лесной подвид-алтае-саянская популяция" id="75" lat="Rangifer tarandus angustifrons" oldid="409(1)" rus="Северный олень" status="3" year="1932"/>
-			<species author="Lydekker" comment="новоземельский подвид" id="76" lat="Rangifer tarandus pearsoni" oldid="409(2)" rus="Северный олень" status="5" year="1903"/>
-			<species author="Linnaeus" comment="беловежский подвид и внутривидовые гибридные формы" id="77" lat="Bison bonasus bonasus" oldid="410" rus="Зубр" status="1" year="1758"/>
-			<species author="Pallas" id="78" lat="Procapra gutturosa" oldid="411" rus="Дзерен" status="1" year="1777"/>
-			<species author="Heude" comment="амурский" id="79" lat="Nemorhaedus caudatus raddeanus" oldid="412(1)" rus="Горал" status="1" year="1894"/>
-			<species author="Erxleben" id="80" lat="Capra aegagrus" oldid="413" rus="Безоаровый козел" status="2" year="1777"/>
-			<species author="Linnaeus" comment="алтайский" id="81" lat="Ovis ammon ammon" oldid="414(1)" rus="Горный баран" status="1" year="1758"/>
-			<species author="Severtzov" comment="путоранский подвид" id="82" lat="Ovis nivicola borealis" oldid="415(1)" rus="Снежный баран" status="4" year="1873"/>
-			<species author="Kowarzik" comment="якутский подвид-чукотская популяция" id="83" lat="Ovis nivicola lidekkeri" oldid="415(2)" rus="Снежный баран" status="3" year="1913"/>
+			<species author="Flerov" comment="сахалинская" id="73" lat="Moschus moschiferus sachalinensis" printid="407(1)" rus="Кабарга" year="1929"/>
+			<species author="Swinhoe" comment="уссурийский-аборигенные популяции" id="74" lat="Cervus nippon hortulorum" printid="408(1)" rus="Пятнистый олень" year="1864"/>
+			<species author="Flerov" comment="лесной подвид-алтае-саянская популяция" id="75" lat="Rangifer tarandus angustifrons" printid="409(1)" rus="Северный олень" year="1932"/>
+			<species author="Lydekker" comment="новоземельский подвид" id="76" lat="Rangifer tarandus pearsoni" printid="409(2)" rus="Северный олень" year="1903"/>
+			<species author="Linnaeus" comment="беловежский подвид и внутривидовые гибридные формы" id="77" lat="Bison bonasus bonasus" printid="410" rus="Зубр" year="1758"/>
+			<species author="Pallas" id="78" lat="Procapra gutturosa" printid="411" rus="Дзерен" year="1777"/>
+			<species author="Heude" comment="амурский" id="79" lat="Nemorhaedus caudatus raddeanus" printid="412(1)" rus="Горал" year="1894"/>
+			<species author="Erxleben" id="80" lat="Capra aegagrus" printid="413" rus="Безоаровый козел" year="1777"/>
+			<species author="Linnaeus" comment="алтайский" id="81" lat="Ovis ammon ammon" printid="414(1)" rus="Горный баран" year="1758"/>
+			<species author="Severtzov" comment="путоранский подвид" id="82" lat="Ovis nivicola borealis" printid="415(1)" rus="Снежный баран" year="1873"/>
+			<species author="Kowarzik" comment="якутский подвид-чукотская популяция" id="83" lat="Ovis nivicola lidekkeri" printid="415(2)" rus="Снежный баран" year="1913"/>
 		</order>
 	</class>
 	<class id="84" lat="Aves" rus="Птицы">
 		<order id="85" lat="Gaviiformes" rus="Гагарообразные">
-			<species author="Linnaeus" comment="центрально-европейская популяция" id="86" lat="Gavia arctica arctica" oldid="228" rus="Европейская чернозобая гагара" status="2" year="1758"/>
-			<species author="Gray" id="87" lat="Gavia adamsiii" oldid="229" rus="Белоклювая гагара" status="3" year="1859"/>
+			<species author="Linnaeus" comment="центрально-европейская популяция" id="86" lat="Gavia arctica arctica" printid="228" rus="Европейская чернозобая гагара" year="1758"/>
+			<species author="Gray" id="87" lat="Gavia adamsiii" printid="229" rus="Белоклювая гагара" year="1859"/>
 		</order>
 		<order id="88" lat="Procellariformes" rus="Трубконосые">
-			<species author="Pallas" id="89" lat="Diomedea albatrus" oldid="230" rus="Белоспинный альбатрос" status="1" year="1769"/>
-			<species author="Temminck" id="90" lat="Calonectris leucomelas" oldid="231" rus="Пестролицый буревестник" status="3" year="1835"/>
-			<species author="Swinhoe" id="91" lat="Oceanodroma monorhis" oldid="232" rus="Малая качурка" status="3" year="1867"/>
+			<species author="Pallas" id="89" lat="Diomedea albatrus" printid="230" rus="Белоспинный альбатрос" year="1769"/>
+			<species author="Temminck" id="90" lat="Calonectris leucomelas" printid="231" rus="Пестролицый буревестник" year="1835"/>
+			<species author="Swinhoe" id="91" lat="Oceanodroma monorhis" printid="232" rus="Малая качурка" year="1867"/>
 		</order>
 		<order id="92" lat="Ordo pelecaniformis" rus="Веслоногие">
-			<species author="Linnaeus" id="93" lat="Pelecanus onocrotalus" oldid="233" rus="Розовый пеликан" status="1" year="1758"/>
-			<species author="Bruch" id="94" lat="Pelecanus crispus" oldid="234" rus="Кудрявый пеликан" status="2" year="1832"/>
-			<species author="Linnaeus" id="95" lat="Phalacrocorax aristotelis" oldid="235" rus="Хохлатый баклан" status="3" year="1761"/>
-			<species author="Pallas" id="96" lat="Phalacrocorax pygmaeus" oldid="236" rus="Малый баклан" status="2" year="1773"/>
+			<species author="Linnaeus" id="93" lat="Pelecanus onocrotalus" printid="233" rus="Розовый пеликан" year="1758"/>
+			<species author="Bruch" id="94" lat="Pelecanus crispus" printid="234" rus="Кудрявый пеликан" year="1832"/>
+			<species author="Linnaeus" id="95" lat="Phalacrocorax aristotelis" printid="235" rus="Хохлатый баклан" year="1761"/>
+			<species author="Pallas" id="96" lat="Phalacrocorax pygmaeus" printid="236" rus="Малый баклан" year="1773"/>
 		</order>
 		<order id="97" lat="Ciconiiformes" rus="Аистообразные">
-			<species author="Linnaeus" id="98" lat="Bubuicus ibis" oldid="237" rus="Египетская цапля" status="3" year="1758"/>
-			<species author="Wagler" id="99" lat="Egretta intermedia" oldid="238" rus="Средняя беля цапля" status="3" year="1829"/>
-			<species author="Swinhoe" id="100" lat="Egretta eulophotes" oldid="239" rus="Желтоклювая цапля" status="1" year="1860"/>
-			<species author="Linnaeus" id="101" lat="Platalea leucorodia" oldid="240" rus="Колпица" status="2" year="1758"/>
-			<species author="Linnaeus" id="102" lat="Plegadis falcinellus" oldid="241" rus="Каравайка" status="3" year="1766"/>
-			<species author="Temminck" id="103" lat="Nipponia nippon" oldid="242" rus="Красноногий ибис" status="1" year="1835"/>
-			<species author="Swinhoe" id="104" lat="Ciconia boyciana" oldid="243" rus="Дальневосточный аист" status="1" year="1873"/>
-			<species author="Linnaeus" id="105" lat="Ciconia nigra" oldid="244" rus="Черный аист" status="3" year="1758"/>
+			<species author="Linnaeus" id="98" lat="Bubuicus ibis" printid="237" rus="Египетская цапля" year="1758"/>
+			<species author="Wagler" id="99" lat="Egretta intermedia" printid="238" rus="Средняя беля цапля" year="1829"/>
+			<species author="Swinhoe" id="100" lat="Egretta eulophotes" printid="239" rus="Желтоклювая цапля" year="1860"/>
+			<species author="Linnaeus" id="101" lat="Platalea leucorodia" printid="240" rus="Колпица" year="1758"/>
+			<species author="Linnaeus" id="102" lat="Plegadis falcinellus" printid="241" rus="Каравайка" year="1766"/>
+			<species author="Temminck" id="103" lat="Nipponia nippon" printid="242" rus="Красноногий ибис" year="1835"/>
+			<species author="Swinhoe" id="104" lat="Ciconia boyciana" printid="243" rus="Дальневосточный аист" year="1873"/>
+			<species author="Linnaeus" id="105" lat="Ciconia nigra" printid="244" rus="Черный аист" year="1758"/>
 		</order>
 		<order id="106" lat="Phoenicopteriformes" rus="Фламингообразные">
-			<species author="Pallas" id="107" lat="Phoenicopterus roseus" oldid="245" rus="Обыкновенный фламинго" status="3" year="1811"/>
+			<species author="Pallas" id="107" lat="Phoenicopterus roseus" printid="245" rus="Обыкновенный фламинго" year="1811"/>
 		</order>
 		<order id="108" lat="Anseriformes" rus="Гусеобразные">
-			<species author="Brandt" id="109" lat="Branta canadensis leucopareia" oldid="246" rus="Алеутская канадская казарка" status="4" year="1836"/>
-			<species author="Muller" id="110" lat="Branta bernicla hrota" oldid="247" rus="Атлантическая черная казарка" status="3" year="1776"/>
-			<species author="Lawrence" id="111" lat="Branta nigricans" oldid="248" rus="Американская казарка" status="3" year="1846"/>
-			<species author="Pallas" id="112" lat="Rufibrenta ruficollis" oldid="249" rus="Краснозобая казарка" status="3" year="1769"/>
-			<species author="Linnaeus" id="113" lat="Anser erythropus" oldid="250" rus="Пискулька" status="2" year="1758"/>
-			<species author="Sewastianov" id="114" lat="Philacte canagica" oldid="251" rus="Белошей" status="2" year="1802"/>
-			<species author="Latham" id="115" lat="Eulabeia indica" oldid="252" rus="Горный гусь" status="1" year="1790"/>
-			<species author="Linnaeus" id="116" lat="Cygnopsis cygnoides" oldid="253" rus="Сухонос" status="1" year="1758"/>
-			<species author="Yarrell" id="117" lat="Cygnus bewickii" oldid="254" rus="Малый лебедь" status="5" year="1830"/>
-			<species author="Ord" id="118" lat="Cygnus columbianus" oldid="255" rus="Американский лебедь" status="3" year="1815"/>
-			<species author="Kuroda" id="119" lat="Tadorna cristata" oldid="256" rus="Хохлатая пеганка" status="1" year="1917"/>
-			<species author="Georgi" id="120" lat="Anas formosa" oldid="257" rus="Клоктун" status="2" year="1775"/>
-			<species author="Menetries" id="121" lat="Anas angustirostris" oldid="258" rus="Мраморный чирок" status="1" year="1832"/>
-			<species author="Linnaeus" id="122" lat="Aix galericulata" oldid="259" rus="Мандаринка" status="3" year="1758"/>
-			<species author="Radde" comment="чернеть" id="123" lat="Aythya baeri" oldid="260" rus="Нырок  Бэра" status="3" year="1863"/>
-			<species author="Guldenstadt" comment="чернеть" id="124" lat="Aythya nyroca" oldid="261" rus="Белоглазый нырок" status="2" year="1770"/>
-			<species author="Scopoli" id="125" lat="Oxyura leucocephala" oldid="262" rus="Савка" status="1" year="1769"/>
-			<species author="Gould" id="126" lat="Mergus squamatus" oldid="263" rus="Чешуйчатый крохаль" status="3" year="1864"/>
+			<species author="Brandt" id="109" lat="Branta canadensis leucopareia" printid="246" rus="Алеутская канадская казарка" year="1836"/>
+			<species author="Muller" id="110" lat="Branta bernicla hrota" printid="247" rus="Атлантическая черная казарка" year="1776"/>
+			<species author="Lawrence" id="111" lat="Branta nigricans" printid="248" rus="Американская казарка" year="1846"/>
+			<species author="Pallas" id="112" lat="Rufibrenta ruficollis" printid="249" rus="Краснозобая казарка" year="1769"/>
+			<species author="Linnaeus" id="113" lat="Anser erythropus" printid="250" rus="Пискулька" year="1758"/>
+			<species author="Sewastianov" id="114" lat="Philacte canagica" printid="251" rus="Белошей" year="1802"/>
+			<species author="Latham" id="115" lat="Eulabeia indica" printid="252" rus="Горный гусь" year="1790"/>
+			<species author="Linnaeus" id="116" lat="Cygnopsis cygnoides" printid="253" rus="Сухонос" year="1758"/>
+			<species author="Yarrell" id="117" lat="Cygnus bewickii" printid="254" rus="Малый лебедь" year="1830"/>
+			<species author="Ord" id="118" lat="Cygnus columbianus" printid="255" rus="Американский лебедь" year="1815"/>
+			<species author="Kuroda" id="119" lat="Tadorna cristata" printid="256" rus="Хохлатая пеганка" year="1917"/>
+			<species author="Georgi" id="120" lat="Anas formosa" printid="257" rus="Клоктун" year="1775"/>
+			<species author="Menetries" id="121" lat="Anas angustirostris" printid="258" rus="Мраморный чирок" year="1832"/>
+			<species author="Linnaeus" id="122" lat="Aix galericulata" printid="259" rus="Мандаринка" year="1758"/>
+			<species author="Radde" comment="чернеть" id="123" lat="Aythya baeri" printid="260" rus="Нырок  Бэра" year="1863"/>
+			<species author="Guldenstadt" comment="чернеть" id="124" lat="Aythya nyroca" printid="261" rus="Белоглазый нырок" year="1770"/>
+			<species author="Scopoli" id="125" lat="Oxyura leucocephala" printid="262" rus="Савка" year="1769"/>
+			<species author="Gould" id="126" lat="Mergus squamatus" printid="263" rus="Чешуйчатый крохаль" year="1864"/>
 		</order>
 		<order id="127" lat="Falconiformes" rus="Соколообразные">
-			<species author="Linnaeus" id="128" lat="Pandion haliaetus" oldid="264" rus="Скопа" status="3" year="1758"/>
-			<species author="Linnaeus" id="129" lat="Milvus milvus" oldid="265" rus="Красный коршун" status="1" year="1758"/>
-			<species author="S.G. Gmelin" id="130" lat="Circus macrourus" oldid="266" rus="Степной лунь" status="2" year="1771"/>
-			<species author="Severtzov" id="131" lat="Accipiter brevipes" oldid="267" rus="Европейский тювик" status="3" year="1850"/>
-			<species author="Cretzschmar" id="132" lat="Buteo rufinus" oldid="268" rus="Курганник" status="3" year="1827"/>
-			<species author="Gmelin" id="133" lat="Butastur indicus" oldid="269" rus="Ястребиный сарыч" status="2" year="1788"/>
-			<species author="Gmelin" id="134" lat="Circaetus gallicus" oldid="270" rus="Змееяд" status="2" year="1788"/>
-			<species author="Hodgson" id="135" lat="Spizaetus nipalensis" oldid="271" rus="Хохлатый орел" status="3" year="1836"/>
-			<species author="Temminck" id="136" lat="Aquila rapax" oldid="272" rus="Степной орел" status="3" year="1828"/>
-			<species author="Pallas" id="137" lat="Aquila clanga" oldid="273" rus="Большой подорлик" status="2" year="1811"/>
-			<species author="C.L. Brehm" id="138" lat="Aquila pomarina" oldid="274" rus="Малый подорлик" status="3" year="1831"/>
-			<species author="Savigny" id="139" lat="Aquila heliaca" oldid="275" rus="Могильник" status="2" year="1809"/>
-			<species author="Linnaeus" id="140" lat="Aquila chrysaetos" oldid="276" rus="Беркут" status="3" year="1758"/>
-			<species author="Pallas" id="141" lat="Haliaeetus leucoryphus" oldid="277" rus="Орлан-долгохвост" status="1" year="1771"/>
-			<species author="Linnaeus" id="142" lat="Haliaeetus albicilla" oldid="278" rus="Орлан-белохвост" status="3" year="1758"/>
-			<species author="Linnaeus" id="143" lat="Haliaeetus leucocephalus" oldid="279" rus="Белоголовый орлан" status="4" year="1766"/>
-			<species author="Pallas" id="144" lat="Haliaeetus pelagicus" oldid="280" rus="Белоплечий орлан" status="3" year="1811"/>
-			<species author="Linnaeus" id="145" lat="Gypaetus barbatus" oldid="281" rus="Бородач" status="3" year="1758"/>
-			<species author="Linnaeus" id="146" lat="Neophron percnopterus" oldid="282" rus="Стервятник" status="3" year="1758"/>
-			<species author="Linnaeus" id="147" lat="Aegypius monachus" oldid="283" rus="Черный гриф" status="3" year="1766"/>
-			<species author="Hablizl" id="148" lat="Gyps fulvus" oldid="284" rus="Белоголовый сип" status="3" year="1783"/>
-			<species author="Linnaeus" id="149" lat="Falco rusticolus" oldid="285" rus="Кречет" status="2" year="1758"/>
-			<species author="Gray" id="150" lat="Falco cherrug" oldid="286" rus="Балобан" status="2" year="1834"/>
-			<species author="Tunstall" id="151" lat="Falco peregrinus" oldid="287" rus="Сапсан" status="2" year="1771"/>
-			<species author="Fleischer" id="152" lat="Falco naumanni" oldid="288" rus="Степная пустельга" status="1" year="1818"/>
+			<species author="Linnaeus" id="128" lat="Pandion haliaetus" printid="264" rus="Скопа" year="1758"/>
+			<species author="Linnaeus" id="129" lat="Milvus milvus" printid="265" rus="Красный коршун" year="1758"/>
+			<species author="S.G. Gmelin" id="130" lat="Circus macrourus" printid="266" rus="Степной лунь" year="1771"/>
+			<species author="Severtzov" id="131" lat="Accipiter brevipes" printid="267" rus="Европейский тювик" year="1850"/>
+			<species author="Cretzschmar" id="132" lat="Buteo rufinus" printid="268" rus="Курганник" year="1827"/>
+			<species author="Gmelin" id="133" lat="Butastur indicus" printid="269" rus="Ястребиный сарыч" year="1788"/>
+			<species author="Gmelin" id="134" lat="Circaetus gallicus" printid="270" rus="Змееяд" year="1788"/>
+			<species author="Hodgson" id="135" lat="Spizaetus nipalensis" printid="271" rus="Хохлатый орел" year="1836"/>
+			<species author="Temminck" id="136" lat="Aquila rapax" printid="272" rus="Степной орел" year="1828"/>
+			<species author="Pallas" id="137" lat="Aquila clanga" printid="273" rus="Большой подорлик" year="1811"/>
+			<species author="C.L. Brehm" id="138" lat="Aquila pomarina" printid="274" rus="Малый подорлик" year="1831"/>
+			<species author="Savigny" id="139" lat="Aquila heliaca" printid="275" rus="Могильник" year="1809"/>
+			<species author="Linnaeus" id="140" lat="Aquila chrysaetos" printid="276" rus="Беркут" year="1758"/>
+			<species author="Pallas" id="141" lat="Haliaeetus leucoryphus" printid="277" rus="Орлан-долгохвост" year="1771"/>
+			<species author="Linnaeus" id="142" lat="Haliaeetus albicilla" printid="278" rus="Орлан-белохвост" year="1758"/>
+			<species author="Linnaeus" id="143" lat="Haliaeetus leucocephalus" printid="279" rus="Белоголовый орлан" year="1766"/>
+			<species author="Pallas" id="144" lat="Haliaeetus pelagicus" printid="280" rus="Белоплечий орлан" year="1811"/>
+			<species author="Linnaeus" id="145" lat="Gypaetus barbatus" printid="281" rus="Бородач" year="1758"/>
+			<species author="Linnaeus" id="146" lat="Neophron percnopterus" printid="282" rus="Стервятник" year="1758"/>
+			<species author="Linnaeus" id="147" lat="Aegypius monachus" printid="283" rus="Черный гриф" year="1766"/>
+			<species author="Hablizl" id="148" lat="Gyps fulvus" printid="284" rus="Белоголовый сип" year="1783"/>
+			<species author="Linnaeus" id="149" lat="Falco rusticolus" printid="285" rus="Кречет" year="1758"/>
+			<species author="Gray" id="150" lat="Falco cherrug" printid="286" rus="Балобан" year="1834"/>
+			<species author="Tunstall" id="151" lat="Falco peregrinus" printid="287" rus="Сапсан" year="1771"/>
+			<species author="Fleischer" id="152" lat="Falco naumanni" printid="288" rus="Степная пустельга" year="1818"/>
 		</order>
 		<order id="153" lat="Galliformes" rus="Курообразные">
-			<species author="Serebrowsky" id="154" lat="Lagopus lagpus rossicus" oldid="289" rus="Среднерусская белая куропатка" status="2" year="1926"/>
-			<species author="Taczanowski" id="155" lat="Lyrurus mlokosiewiczi" oldid="290" rus="Кавказский тетерев" status="3" year="1875"/>
-			<species author="Hartlaub" id="156" lat="Falcipennis falcipennis" oldid="291" rus="Дикуша" status="2" year="1855"/>
-			<species author="Poliakov" id="157" lat="Pedix dauurica suschkini" oldid="292" rus="Манчжурская бородатая куропатка" status="1" year="1915"/>
+			<species author="Serebrowsky" id="154" lat="Lagopus lagpus rossicus" printid="289" rus="Среднерусская белая куропатка" year="1926"/>
+			<species author="Taczanowski" id="155" lat="Lyrurus mlokosiewiczi" printid="290" rus="Кавказский тетерев" year="1875"/>
+			<species author="Hartlaub" id="156" lat="Falcipennis falcipennis" printid="291" rus="Дикуша" year="1855"/>
+			<species author="Poliakov" id="157" lat="Pedix dauurica suschkini" printid="292" rus="Манчжурская бородатая куропатка" year="1915"/>
 		</order>
 		<order id="158" lat="Gruiformes" rus="Журавлеобразные">
-			<species author="P.L.S. Muller" comment="уссурийский" id="159" lat="Grus japonensis" oldid="293" rus="Японский  журавль" status="1" year="1776"/>
-			<species author="Pallas" id="160" lat="Grus leuogeranus" oldid="294" rus="Стерх" status="1" year="1773"/>
-			<species author="Pallas" id="161" lat="Grus vipio" oldid="295" rus="Даурский журавль" status="1" year="1811"/>
-			<species author="Temminck" id="162" lat="Grus monacha" oldid="296" rus="Черный журавль" status="3" year="1835"/>
-			<species author="Linnaeus" id="163" lat="Anthropoides virgo" oldid="297" rus="Красавка" status="5" year="1758"/>
-			<species author="Linnaeus" id="164" lat="Porzana fusca" oldid="298" rus="Красноногий погоныш" status="3" year="1766"/>
-			<species author="Swinhoe" id="165" lat="Porzana exquisita" oldid="299" rus="Белокрылый погоныш" status="1" year="1873"/>
-			<species author="Gmelin" id="166" lat="Gallicrex cinerea" oldid="300" rus="Рогатая камышница" status="4" year="1789"/>
-			<species author="Linnaeus" id="167" lat="Porphyrio porphyrio" oldid="301" rus="Султанка" status="3" year="1758"/>
-			<species author="Linnaeus" id="168" lat="Otis tarda tarda" oldid="302(1)" rus="Дрофа" comment="европейский подвид" status="3" year="1758"/>
-			<species author="Taczanowski" id="169" lat="Otis tarda dybowskii" oldid="302(2)" rus="Дрофа" comment="восточно-сибирский подвид" status="2" year="1874"/>
-			<species author="Linnaeus" id="170" lat="Tetrax tetrax" oldid="303" rus="Стрепет" status="3" year="1758"/>
-			<species author="Jacquin" id="171" lat="Clamydotis undulata" oldid="304" rus="Джек" status="1" year="1784"/>
+			<species author="P.L.S. Muller" comment="уссурийский" id="159" lat="Grus japonensis" printid="293" rus="Японский  журавль" year="1776"/>
+			<species author="Pallas" id="160" lat="Grus leuogeranus" printid="294" rus="Стерх" year="1773"/>
+			<species author="Pallas" id="161" lat="Grus vipio" printid="295" rus="Даурский журавль" year="1811"/>
+			<species author="Temminck" id="162" lat="Grus monacha" printid="296" rus="Черный журавль" year="1835"/>
+			<species author="Linnaeus" id="163" lat="Anthropoides virgo" printid="297" rus="Красавка" year="1758"/>
+			<species author="Linnaeus" id="164" lat="Porzana fusca" printid="298" rus="Красноногий погоныш" year="1766"/>
+			<species author="Swinhoe" id="165" lat="Porzana exquisita" printid="299" rus="Белокрылый погоныш" year="1873"/>
+			<species author="Gmelin" id="166" lat="Gallicrex cinerea" printid="300" rus="Рогатая камышница" year="1789"/>
+			<species author="Linnaeus" id="167" lat="Porphyrio porphyrio" printid="301" rus="Султанка" year="1758"/>
+			<species author="Linnaeus" id="168" lat="Otis tarda tarda" printid="302(1)" rus="Дрофа" comment="европейский подвид" year="1758"/>
+			<species author="Taczanowski" id="169" lat="Otis tarda dybowskii" printid="302(2)" rus="Дрофа" comment="восточно-сибирский подвид" year="1874"/>
+			<species author="Linnaeus" id="170" lat="Tetrax tetrax" printid="303" rus="Стрепет" year="1758"/>
+			<species author="Jacquin" id="171" lat="Clamydotis undulata" printid="304" rus="Джек" year="1784"/>
 		</order>
 		<order id="172" lat="Charadriiformes" rus="Ржанкообразные">
-			<species author="Linnaeus" id="173" lat="Burhinus oedicnemus" oldid="305" rus="Авдотка" status="4" year="1758"/>
-			<species author="Linnaeus" id="174" lat="Pluvialis apricaria apricaria" oldid="306" rus="Южная золотистая ржанка" status="3" year="1758"/>
-			<species author="J.E. et G.R. Gray" id="175" lat="Charadrius placidus" oldid="307" rus="Уссурийский зуек" status="3" year="1863"/>
-			<species author="Pallas" id="176" lat="Charadrius asiaticus" oldid="308" rus="Каспийский зуек" status="3" year="1773"/>
-			<species author="Pallas" id="177" lat="Chettusia gregaria" oldid="309" rus="Кречетка" status="1" year="1771"/>
-			<species author="Linnaeus" id="178" lat="Himantopus himantopus" oldid="310" rus="Ходулочник" status="3" year="1758"/>
-			<species author="Linnaeus" id="179" lat="Recurvirostra avosetta" oldid="311" rus="Шилоклювка" status="3" year="1758"/>
-			<species author="Buturlin" comment="материковый подвид" id="180" lat="Haematopus ostralegus longipes" oldid="312(1)" rus="Кулик-сорока" status="3" year="1910"/>
-			<species author="Swinhoe" comment="дальневосточный подвид" id="181" lat="Haematopus ostralegus osculans" oldid="312(2)" rus="Кулик-сорока" status="4" year="1871"/>
-			<species author="Nordmann" id="182" lat="Tringa guttier" oldid="313" rus="Охотский улит" status="1" year="1835"/>
-			<species author="Linnaeus" id="183" lat="Eurynorhynchus pygmeus" oldid="314" rus="Лопатень" status="3" year="1758"/>
-			<species author="C.L. Brehm" id="184" lat="Calidris alpina schinzii" oldid="315(1)" rus="Чернозобик" comment="балтийский подвид" status="1" year="1822"/>
-			<species author="Nechaev et Tomkovich" id="185" lat="Calidris alpina actilis" oldid="315(2)" rus="Чернозобик" comment="сахалинский подвид" status="1" year="1987"/>
-			<species author="Yamashina" id="186" lat="Calidris ptilochnemis kurilensis" oldid="316" rus="Южнокамчатский берингийский песочник" status="1" year="1929"/>
-			<species author="Vieillot" id="187" lat="Tryngites subruficollis" oldid="317" rus="Желтозобик" status="3" year="1819"/>
-			<species author="Gray" id="188" lat="Gallinago hardwickii" oldid="318" rus="Японский бекас" status="3" year="1831"/>
-			<species author="Vieillot" id="189" lat="Numenius tenuirostris" oldid="319" rus="Тонкоклювый кроншнеп" status="1" year="1817"/>
-			<species author="Linnaeus" comment="популяции южной и средней полосы европейской части России" id="190" lat="Numenius arguata" oldid="320(1)" rus="Большой кроншнеп" status="2" year="1758"/>
-			<species author="Linnaeus" id="191" lat="Numenius madagascariensis" oldid="321" rus="Дальневосточный кроншнеп" status="2" year="1766"/>
-			<species author="Blyth" id="192" lat="Limnodromus semipalmatus" oldid="322" rus="Азиатский бекасовидный веретенник" status="3" year="1848"/>
-			<species author="Nordmann" id="193" lat="Glareola nordmanni" oldid="323" rus="Степная тиркушка" status="2" year="1842"/>
-			<species author="Pallas" id="194" lat="Larus ichthyaetus" oldid="324" rus="Черноголовый хохотун" status="5" year="1773"/>
-			<species author="Lonnberg" id="195" lat="Larus relictus" oldid="325" rus="Реликтовая чайка" status="1" year="1931"/>
-			<species author="Swinhoe" id="196" lat="Larus saundersi" oldid="326" rus="Китайская чайка" status="4" year="1871"/>
-			<species author="Bruch" id="197" lat="Rissa brevirostris" oldid="327" rus="Красноногая говорушка" status="3" year="1853"/>
-			<species author="Phipps" id="198" lat="Pagophila eburnea" oldid="328" rus="Белая чайка" status="3" year="1774"/>
-			<species author="Pallas" id="199" lat="Hydroprogne caspia" oldid="329" rus="Чеграва" status="3" year="1770"/>
-			<species author="Baird" comment="камчатская" id="200" lat="Sterna aleutica" oldid="330" rus="Алеутская  крачка" status="3" year="1869"/>
-			<species author="Pallas" id="201" lat="Sterna albifrons" oldid="331" rus="Малая крачка" status="2" year="1764"/>
-			<species author="Pallas" id="202" lat="Brachyramphus marmoratus perdix" oldid="332" rus="Азиатский длинноклювый пыжик" status="3" year="1811"/>
-			<species author="Vigors" id="203" lat="Brachyramphus brevirostris" oldid="333" rus="Короткоклювый пыжик" status="3" year="1829"/>
-			<species author="Temminck" id="204" lat="Synthliboramphus wumizusume" oldid="334" rus="Хохлатый старик" status="1" year="1835"/>
+			<species author="Linnaeus" id="173" lat="Burhinus oedicnemus" printid="305" rus="Авдотка" year="1758"/>
+			<species author="Linnaeus" id="174" lat="Pluvialis apricaria apricaria" printid="306" rus="Южная золотистая ржанка" year="1758"/>
+			<species author="J.E. et G.R. Gray" id="175" lat="Charadrius placidus" printid="307" rus="Уссурийский зуек" year="1863"/>
+			<species author="Pallas" id="176" lat="Charadrius asiaticus" printid="308" rus="Каспийский зуек" year="1773"/>
+			<species author="Pallas" id="177" lat="Chettusia gregaria" printid="309" rus="Кречетка" year="1771"/>
+			<species author="Linnaeus" id="178" lat="Himantopus himantopus" printid="310" rus="Ходулочник" year="1758"/>
+			<species author="Linnaeus" id="179" lat="Recurvirostra avosetta" printid="311" rus="Шилоклювка" year="1758"/>
+			<species author="Buturlin" comment="материковый подвид" id="180" lat="Haematopus ostralegus longipes" printid="312(1)" rus="Кулик-сорока" year="1910"/>
+			<species author="Swinhoe" comment="дальневосточный подвид" id="181" lat="Haematopus ostralegus osculans" printid="312(2)" rus="Кулик-сорока" year="1871"/>
+			<species author="Nordmann" id="182" lat="Tringa guttier" printid="313" rus="Охотский улит" year="1835"/>
+			<species author="Linnaeus" id="183" lat="Eurynorhynchus pygmeus" printid="314" rus="Лопатень" year="1758"/>
+			<species author="C.L. Brehm" id="184" lat="Calidris alpina schinzii" printid="315(1)" rus="Чернозобик" comment="балтийский подвид" year="1822"/>
+			<species author="Nechaev et Tomkovich" id="185" lat="Calidris alpina actilis" printid="315(2)" rus="Чернозобик" comment="сахалинский подвид" year="1987"/>
+			<species author="Yamashina" id="186" lat="Calidris ptilochnemis kurilensis" printid="316" rus="Южнокамчатский берингийский песочник" year="1929"/>
+			<species author="Vieillot" id="187" lat="Tryngites subruficollis" printid="317" rus="Желтозобик" year="1819"/>
+			<species author="Gray" id="188" lat="Gallinago hardwickii" printid="318" rus="Японский бекас" year="1831"/>
+			<species author="Vieillot" id="189" lat="Numenius tenuirostris" printid="319" rus="Тонкоклювый кроншнеп" year="1817"/>
+			<species author="Linnaeus" comment="популяции южной и средней полосы европейской части России" id="190" lat="Numenius arguata" printid="320(1)" rus="Большой кроншнеп" year="1758"/>
+			<species author="Linnaeus" id="191" lat="Numenius madagascariensis" printid="321" rus="Дальневосточный кроншнеп" year="1766"/>
+			<species author="Blyth" id="192" lat="Limnodromus semipalmatus" printid="322" rus="Азиатский бекасовидный веретенник" year="1848"/>
+			<species author="Nordmann" id="193" lat="Glareola nordmanni" printid="323" rus="Степная тиркушка" year="1842"/>
+			<species author="Pallas" id="194" lat="Larus ichthyaetus" printid="324" rus="Черноголовый хохотун" year="1773"/>
+			<species author="Lonnberg" id="195" lat="Larus relictus" printid="325" rus="Реликтовая чайка" year="1931"/>
+			<species author="Swinhoe" id="196" lat="Larus saundersi" printid="326" rus="Китайская чайка" year="1871"/>
+			<species author="Bruch" id="197" lat="Rissa brevirostris" printid="327" rus="Красноногая говорушка" year="1853"/>
+			<species author="Phipps" id="198" lat="Pagophila eburnea" printid="328" rus="Белая чайка" year="1774"/>
+			<species author="Pallas" id="199" lat="Hydroprogne caspia" printid="329" rus="Чеграва" year="1770"/>
+			<species author="Baird" comment="камчатская" id="200" lat="Sterna aleutica" printid="330" rus="Алеутская  крачка" year="1869"/>
+			<species author="Pallas" id="201" lat="Sterna albifrons" printid="331" rus="Малая крачка" year="1764"/>
+			<species author="Pallas" id="202" lat="Brachyramphus marmoratus perdix" printid="332" rus="Азиатский длинноклювый пыжик" year="1811"/>
+			<species author="Vigors" id="203" lat="Brachyramphus brevirostris" printid="333" rus="Короткоклювый пыжик" year="1829"/>
+			<species author="Temminck" id="204" lat="Synthliboramphus wumizusume" printid="334" rus="Хохлатый старик" year="1835"/>
 		</order>
 		<order id="205" lat="Strigiformes" rus="Совообразные">
-			<species author="Linnaeus" id="206" lat="Bubo bubo" oldid="335" rus="Филин" status="2" year="1758"/>
-			<species author="Seebohm" id="207" lat="Ketupa blakistoni" oldid="336" rus="Рыбный филин" status="1" year="1884"/>
+			<species author="Linnaeus" id="206" lat="Bubo bubo" printid="335" rus="Филин" year="1758"/>
+			<species author="Seebohm" id="207" lat="Ketupa blakistoni" printid="336" rus="Рыбный филин" year="1884"/>
 		</order>
 		<order id="208" lat="Coraciiformes" rus="Ракшеобразные">
-			<species author="Temminck" id="209" lat="Ceryle lugubris" oldid="337" rus="Большой пегий зимородок" status="3" year="1834"/>
-			<species author="Boddaert" id="210" lat="Halcyon pileata" oldid="338" rus="Ошейниковый зимородок" status="3" year="1783"/>
+			<species author="Temminck" id="209" lat="Ceryle lugubris" printid="337" rus="Большой пегий зимородок" year="1834"/>
+			<species author="Boddaert" id="210" lat="Halcyon pileata" printid="338" rus="Ошейниковый зимородок" year="1783"/>
 		</order>
 		<order id="211" lat="Piciformes" rus="Дятлообразные">
-			<species author="Linnaeus" id="212" lat="Dendrocopus medius medius" oldid="339" rus="Европейский средний дятел" status="2" year="1758"/>
-			<species author="Vigors" id="213" lat="Dendrocopus hyperythrus" oldid="340" rus="Рыжебрюхий дятел" status="4" year="1831"/>
+			<species author="Linnaeus" id="212" lat="Dendrocopus medius medius" printid="339" rus="Европейский средний дятел" year="1758"/>
+			<species author="Vigors" id="213" lat="Dendrocopus hyperythrus" printid="340" rus="Рыжебрюхий дятел" year="1831"/>
 		</order>
 		<order id="214" lat="Passeriformes" rus="Воробьинообразные">
-			<species author="Pallas" id="215" lat="Melanocorypha mongoica" oldid="341" rus="Монгольский жаворонок" status="2" year="1776"/>
-			<species author="Linnaeus" id="216" lat="Lanius excubitor excubitor" oldid="342" rus="Обыкновенный серый сорокопут" status="3" year="1758"/>
-			<species author="Seebohm" id="217" lat="Megalurus pryeri" oldid="343" rus="Японская камышевка" status="4" year="1884"/>
-			<species author="Vieillot" id="218" lat="Acrocephalus paludicola" oldid="344" rus="Вертлявая камышевка" status="4" year="1817"/>
-			<species author="Linnaeus" id="219" lat="Terpsiphone paradisi" oldid="345" rus="Райская мухоловка" status="3" year="1758"/>
-			<species author="Gray" id="220" lat="Saxicola insignis" oldid="346" rus="Большой чекан" status="1" year="1846"/>
-			<species author="Stepanyan" id="221" lat="Paradoxornis polivanovi" oldid="347" rus="Тростниковая сутора" status="3" year="1974"/>
-			<species author="Pallas" id="222" lat="Parus cyanus cyanus" oldid="348" rus="Европейская белая лазоревка" status="4" year="1770"/>
-			<species author="Verreaux" id="223" lat="Sitta villosa" oldid="349" rus="Косматый поползень" status="2" year="1865"/>
-			<species author="Taczanowski" id="224" lat="Emberiza jankowskii" oldid="350" rus="Овсянка Янковского" status="1" year="1888"/>
+			<species author="Pallas" id="215" lat="Melanocorypha mongoica" printid="341" rus="Монгольский жаворонок" year="1776"/>
+			<species author="Linnaeus" id="216" lat="Lanius excubitor excubitor" printid="342" rus="Обыкновенный серый сорокопут" year="1758"/>
+			<species author="Seebohm" id="217" lat="Megalurus pryeri" printid="343" rus="Японская камышевка" year="1884"/>
+			<species author="Vieillot" id="218" lat="Acrocephalus paludicola" printid="344" rus="Вертлявая камышевка" year="1817"/>
+			<species author="Linnaeus" id="219" lat="Terpsiphone paradisi" printid="345" rus="Райская мухоловка" year="1758"/>
+			<species author="Gray" id="220" lat="Saxicola insignis" printid="346" rus="Большой чекан" year="1846"/>
+			<species author="Stepanyan" id="221" lat="Paradoxornis polivanovi" printid="347" rus="Тростниковая сутора" year="1974"/>
+			<species author="Pallas" id="222" lat="Parus cyanus cyanus" printid="348" rus="Европейская белая лазоревка" year="1770"/>
+			<species author="Verreaux" id="223" lat="Sitta villosa" printid="349" rus="Косматый поползень" year="1865"/>
+			<species author="Taczanowski" id="224" lat="Emberiza jankowskii" printid="350" rus="Овсянка Янковского" year="1888"/>
 		</order>
 	</class>
 	<class id="225" lat="Amphibia" rus="Земноводные">
 		<order id="226" lat="Caudata" rus="Хвостатые">
-			<species author="Berthold" id="227" lat="Triturus vittatus" oldid="199" rus="Малоазиатский тритон" status="3" year="1846"/>
-			<species author="Strauch" id="228" lat="Triturus karelinii" oldid="200" rus="Тритон Карелина" status="4" year="1870"/>
-			<species author="Wolterstorff" id="229" lat="Triturus vulgatus lantzi" oldid="201" rus="Обыкновенный тритон Ланца" status="2" year="1914"/>
-			<species author="Boulenger" id="230" lat="Onychodactylus fisheri" oldid="202" rus="Уссурийский когтистый тритон" status="2" year="1886"/>
+			<species author="Berthold" id="227" lat="Triturus vittatus" printid="199" rus="Малоазиатский тритон" year="1846"/>
+			<species author="Strauch" id="228" lat="Triturus karelinii" printid="200" rus="Тритон Карелина" year="1870"/>
+			<species author="Wolterstorff" id="229" lat="Triturus vulgatus lantzi" printid="201" rus="Обыкновенный тритон Ланца" year="1914"/>
+			<species author="Boulenger" id="230" lat="Onychodactylus fisheri" printid="202" rus="Уссурийский когтистый тритон" year="1886"/>
 		</order>
 		<order id="231" lat="Anura" rus="Бесхвостые">
-			<species author="Boulenger" id="232" lat="Pelodytes caucasicus" oldid="203" rus="Кавказская крестовка" status="2" year="1838"/>
-			<species author="Pallas" id="233" lat="Bufo verrucosissimus" oldid="204" rus="Кавказская жаба" status="2" year="1814"/>
-			<species author="Laurenti" id="234" lat="Bufo calamita" oldid="205" rus="Камышовая жаба" status="2" year="1768"/>
-			<species author="Boettger" id="235" lat="Pelobates syriacus" oldid="206" rus="Сирийская чесночница" status="3" year="1889"/>
+			<species author="Boulenger" id="232" lat="Pelodytes caucasicus" printid="203" rus="Кавказская крестовка" year="1838"/>
+			<species author="Pallas" id="233" lat="Bufo verrucosissimus" printid="204" rus="Кавказская жаба" year="1814"/>
+			<species author="Laurenti" id="234" lat="Bufo calamita" printid="205" rus="Камышовая жаба" year="1768"/>
+			<species author="Boettger" id="235" lat="Pelobates syriacus" printid="206" rus="Сирийская чесночница" year="1889"/>
 		</order>
 	</class>
 	<class id="236" lat="Reptilia" rus="Пресмыкающиеся">
 		<order id="237" lat="Testudines" rus="Черепахи">
-			<species author="Wiegmann" id="238" lat="Trionyx sinensis" oldid="207" rus="Дальневосточная черепаха" status="2" year="1834"/>
-			<species author="Linnaeus" id="239" lat="Testudo graeca" oldid="208" rus="Средиземноморская черепаха" status="1" year="1758"/>
+			<species author="Wiegmann" id="238" lat="Trionyx sinensis" printid="207" rus="Дальневосточная черепаха" year="1834"/>
+			<species author="Linnaeus" id="239" lat="Testudo graeca" printid="208" rus="Средиземноморская черепаха" year="1758"/>
 		</order>
 		<order id="240" lat="Sauria" rus="Ящерицы">
-			<species author="Pallas" id="241" lat="Alsophylax pipiens" oldid="209" rus="Пискливый геккончик" status="3" year="1814"/>
-			<species author="Strauch" id="242" lat="Cyptopodion russowi" oldid="210" rus="Серый геккон" status="1" year="1887"/>
-			<species author="Schmidt" id="243" lat="Eremias argus barbouri" oldid="211" rus="Ящурка Барбура" status="4" year="1925"/>
-			<species author="Szczerbak" id="244" lat="Eremias przewalskii tuvensis" oldid="212" rus="Ящурка Пржевальского" status="3" year="1970"/>
-			<species author="Lantz et Cyren" id="245" lat="Lacerta media" oldid="213" rus="Средняя ящерица" status="3" year="1920"/>
-			<species author="Hallowell" id="246" lat="Eumeces latisculatus" oldid="214" rus="Дальневосточный сцинк" status="3" year="1860"/>
+			<species author="Pallas" id="241" lat="Alsophylax pipiens" printid="209" rus="Пискливый геккончик" year="1814"/>
+			<species author="Strauch" id="242" lat="Cyptopodion russowi" printid="210" rus="Серый геккон" year="1887"/>
+			<species author="Schmidt" id="243" lat="Eremias argus barbouri" printid="211" rus="Ящурка Барбура" year="1925"/>
+			<species author="Szczerbak" id="244" lat="Eremias przewalskii tuvensis" printid="212" rus="Ящурка Пржевальского" year="1970"/>
+			<species author="Lantz et Cyren" id="245" lat="Lacerta media" printid="213" rus="Средняя ящерица" year="1920"/>
+			<species author="Hallowell" id="246" lat="Eumeces latisculatus" printid="214" rus="Дальневосточный сцинк" year="1860"/>
 		</order>
 		<order id="247" lat="Serpentes" rus="Змеи">
-			<species author="Linnaeus" id="248" lat="Eryx jaculus" oldid="215" rus="Западный удавчик" status="3" year="1758"/>
-			<species author="Maki" id="249" lat="Elaphe japonica" oldid="216" rus="Японский полоз" status="3" year="1931"/>
-			<species author="Laurenti" id="250" lat="Elaphe longissima" oldid="217" rus="Эскулапов полоз" status="2" year="1768"/>
-			<species author="Strauch" id="251" lat="Elaphe hohenackeri" oldid="218" rus="Закавказский полоз" status="3" year="1873"/>
-			<species author="Cope" id="252" lat="Elaphe taeniura" oldid="219" rus="Тонкохвостый полоз" status="0" year="1861"/>
-			<species author="Peters" id="253" lat="Coluber spinalis" oldid="220" rus="Полосатый полоз" status="3" year="1866"/>
-			<species author="Cantor" id="254" lat="Dinodon rufozonatum" oldid="221" rus="Краснопоясный динодон" status="3" year="1840"/>
-			<species author="Hildendorf" id="255" lat="Dinodon orientale" oldid="222" rus="Восточный динодон" status="0" year="1880"/>
-			<species author="Fleischmann" id="256" lat="Telescopus fallax" oldid="223" rus="Кошачья змея" status="3" year="1831"/>
-			<species author="Nikolsky" id="257" lat="Vipera dinniki" oldid="224" rus="Гадюка Динника" status="2" year="1913"/>
-			<species author="Nikolsky" id="258" lat="Vipera kaznakovi" oldid="225" rus="Гадюка Казнакова" status="2" year="1909"/>
-			<species author="Vedmederja, Grubant et Rudaeva" id="259" lat="Vipera nikolskii" oldid="226" rus="Гадюка Никольского" status="4" year="1986"/>
-			<species author="Linnaeus" id="260" lat="Vipera lebetina" oldid="227" rus="Гюрза" status="2" year="1758"/>
+			<species author="Linnaeus" id="248" lat="Eryx jaculus" printid="215" rus="Западный удавчик" year="1758"/>
+			<species author="Maki" id="249" lat="Elaphe japonica" printid="216" rus="Японский полоз" year="1931"/>
+			<species author="Laurenti" id="250" lat="Elaphe longissima" printid="217" rus="Эскулапов полоз" year="1768"/>
+			<species author="Strauch" id="251" lat="Elaphe hohenackeri" printid="218" rus="Закавказский полоз" year="1873"/>
+			<species author="Cope" id="252" lat="Elaphe taeniura" printid="219" rus="Тонкохвостый полоз" year="1861"/>
+			<species author="Peters" id="253" lat="Coluber spinalis" printid="220" rus="Полосатый полоз" year="1866"/>
+			<species author="Cantor" id="254" lat="Dinodon rufozonatum" printid="221" rus="Краснопоясный динодон" year="1840"/>
+			<species author="Hildendorf" id="255" lat="Dinodon orientale" printid="222" rus="Восточный динодон" year="1880"/>
+			<species author="Fleischmann" id="256" lat="Telescopus fallax" printid="223" rus="Кошачья змея" year="1831"/>
+			<species author="Nikolsky" id="257" lat="Vipera dinniki" printid="224" rus="Гадюка Динника" year="1913"/>
+			<species author="Nikolsky" id="258" lat="Vipera kaznakovi" printid="225" rus="Гадюка Казнакова" year="1909"/>
+			<species author="Vedmederja, Grubant et Rudaeva" id="259" lat="Vipera nikolskii" printid="226" rus="Гадюка Никольского" year="1986"/>
+			<species author="Linnaeus" id="260" lat="Vipera lebetina" printid="227" rus="Гюрза" year="1758"/>
 		</order>
 	</class>
 	<class id="261" lat="Cyclostomata" rus="Круглоротые">
 		<order id="262" lat="Petromyzontiformes" rus="Миногообразные">
-			<species author="Linnaeus" id="263" lat="Petromyson marinus" oldid="156" rus="Морская минога" status="1" year="1758"/>
-			<species author="Kessler" id="264" lat="Caspiomyson wagneri" oldid="157" rus="Каспийская минога" status="2" year="1870"/>
-			<species author="Berg" id="265" lat="Eudontomyson mariae" oldid="159" rus="Украинская минога" status="2" year="1931"/>
+			<species author="Linnaeus" id="263" lat="Petromyson marinus" printid="156" rus="Морская минога" year="1758"/>
+			<species author="Kessler" id="264" lat="Caspiomyson wagneri" printid="157" rus="Каспийская минога" year="1870"/>
+			<species author="Berg" id="265" lat="Eudontomyson mariae" printid="159" rus="Украинская минога" year="1931"/>
 		</order>
 	</class>
 	<class id="266" lat="Osteichthyes" rus="Костные рыбы">
 		<order id="267" lat="Acipenseriformes" rus="Осетрообразные">
-			<species author="Georgi" comment="зейско-буреинская популяция" id="268" lat="Huso dauricus" oldid="160" rus="Калуга" status="1" year="1775"/>
-			<species author="Salnikov et Maliatskij" id="269" lat="Huso huso maeoticus" oldid="161" rus="Азовская белуга" status="1" year="1934"/>
-			<species author="Linnaeus" id="270" lat="Acipenser sturio" oldid="162" rus="Атлантический осетр" status="0" year="1758"/>
-			<species author="Ayres" id="271" lat="Acipenser medirostris" oldid="163" rus="Сахалинский осетр" status="1" year="1854"/>
-			<species author="Brandt" comment="зейско-буреинская популяция" id="272" lat="Acipenser schrencki" oldid="164" rus="Амурский осетр" status="1" year="1869"/>
-			<species author="Brandt" comment="обский осетр, западно-сибирский подвид" id="273" lat="Acipenser baerii baerii" oldid="165(1)" rus="Сибирский осетр" status="2" year="1869"/>
-			<species author="A. Nikolski" comment="байкальский осетр, байкальский подвид" id="274" lat="Acipenser baerii baicalensis" oldid="165(2)" rus="Сибирский осетр" status="2" year="1896"/>
-			<species author="Lovetzky" id="275" lat="Acipenser nudiventris" oldid="166" rus="Шип" status="1" year="1828"/>
-			<species author="Linnaeus" comment="популяции бас. р. Днепр, Дон, Кубань, Урал, Сура, Верхняя и Средняя Кама" id="276" lat="Acipenser ruthenicus" oldid="167" rus="Стерлядь" status="1" year="1758"/>
+			<species author="Georgi" comment="зейско-буреинская популяция" id="268" lat="Huso dauricus" printid="160" rus="Калуга" year="1775"/>
+			<species author="Salnikov et Maliatskij" id="269" lat="Huso huso maeoticus" printid="161" rus="Азовская белуга" year="1934"/>
+			<species author="Linnaeus" id="270" lat="Acipenser sturio" printid="162" rus="Атлантический осетр" year="1758"/>
+			<species author="Ayres" id="271" lat="Acipenser medirostris" printid="163" rus="Сахалинский осетр" year="1854"/>
+			<species author="Brandt" comment="зейско-буреинская популяция" id="272" lat="Acipenser schrencki" printid="164" rus="Амурский осетр" year="1869"/>
+			<species author="Brandt" comment="обский осетр, западно-сибирский подвид" id="273" lat="Acipenser baerii baerii" printid="165(1)" rus="Сибирский осетр" year="1869"/>
+			<species author="A. Nikolski" comment="байкальский осетр, байкальский подвид" id="274" lat="Acipenser baerii baicalensis" printid="165(2)" rus="Сибирский осетр" year="1896"/>
+			<species author="Lovetzky" id="275" lat="Acipenser nudiventris" printid="166" rus="Шип" year="1828"/>
+			<species author="Linnaeus" comment="популяции бас. р. Днепр, Дон, Кубань, Урал, Сура, Верхняя и Средняя Кама" id="276" lat="Acipenser ruthenicus" printid="167" rus="Стерлядь" year="1758"/>
 		</order>
 		<order id="277" lat="Clupeiformes" rus="Сельдеобразные">
-			<species author="Berg" id="278" lat="Alosa kessleri volgensis" oldid="168" rus="Волжская сельдь" status="2" year="1913"/>
-			<species author="Lacepede" comment="бассейн Балтийского моря" id="279" lat="Alosa fallax fallax" oldid="169" rus="Атлантическая финта" status="4" year="1803"/>
-			<species author="Maliatskij" id="280" lat="Clupeonella abrau" oldid="170" rus="Абрауская тюлька" status="4" year="1930"/>
+			<species author="Berg" id="278" lat="Alosa kessleri volgensis" printid="168" rus="Волжская сельдь" year="1913"/>
+			<species author="Lacepede" comment="бассейн Балтийского моря" id="279" lat="Alosa fallax fallax" printid="169" rus="Атлантическая финта" year="1803"/>
+			<species author="Maliatskij" id="280" lat="Clupeonella abrau" printid="170" rus="Абрауская тюлька" year="1930"/>
 		</order>
 		<order id="281" lat="Salmoniformes" rus="Лососеобразные">
-			<species author="Girard" id="282" lat="Salmo salar morpha sebago" oldid="171" rus="Озерный лосось" status="2" year="1853"/>
-			<species author="Linnaeus" comment="бассейн Балтийского моря; проходная форма; северная форель-morpha lacustris, ручьевая форель-morpha fario, беломоро-балтийский подвид" id="283" lat="Salmo trutta trutta" oldid="172(1)" rus="Кумжа" status="1" year="1758"/>
-			<species author="Kessler" comment="проходная форма, каспийский подвид" id="284" lat="Salmo trutta caspius" oldid="172(2)" rus="Кумжа" status="2" year="1897"/>
-			<species author="Pallas" comment="черноморский подвид" id="285" lat="Salmo trutta labrax" oldid="172(3)" rus="Кумжа" status="1" year="1811"/>
-			<species author="Berg" comment="эйзенамская форель" id="286" lat="Salmo trutta ezenami" oldid="172(4)" rus="Кумжа" status="1" year="1948"/>
-			<species author="Linnaeus" comment="ручьевая форель бассейнов рек Волга и Урал" id="287" lat="Salmo trutta morpha fario" oldid="172(5)" rus="Кумжа" status="4" year="1758"/>
-			<species author="Walbaum" comment="проходная форма-камчатская семга; популяция Шантарских островов" id="288" lat="Salmo mykiss" oldid="173" rus="Микижа" status="3" year="1792"/>
-			<species author="Linnaeus" id="289" lat="Salvelinus alpinus" oldid="174" rus="Арктический голец" status="2" year="1758"/>
-			<species author="Viktorovsky et Glubokovsky" id="290" lat="Salvelinus elgyticus" oldid="175" rus="Малоротая палия" status="3" year="1981"/>
-			<species author="Chereshnev et Skopetz" id="291" lat="Salvethymus svetovidovi" oldid="176" rus="Длинноперая палия Световидова" status="3" year="1990"/>
-			<species author="Pallas" comment="Европейская часть России, Полярный и Средний Урал" id="292" lat="Hucho taimen" oldid="177" rus="Обыкновенный таймень" status="1" year="1773"/>
-			<species author="Brevoort" comment="популяция острова Сахалин" id="293" lat="Hucho perryi" oldid="178" rus="Сахалинский таймень" status="2" year="1856"/>
-			<species author="Pallas" comment="бассейн р. Оби" id="294" lat="Brachymystax lenok" oldid="179" rus="Ленок" status="1" year="1773"/>
-			<species author="Guldenstadt" comment="подвид нельмы, бассейн р. Урал" id="295" lat="Stenodus leucichthys leucichthys" oldid="180(1)" rus="Белорыбица" status="1" year="1772"/>
-			<species author="Pallas" comment="подвид нельмы, европейская часть России" id="296" lat="Stenodus leucichthys nelma" oldid="180(2)" rus="Нельма" status="1" year="1773"/>
-			<species author="Kessler" id="297" lat="Coregonus lavaretus baeri" oldid="181(1)" rus="Волховский сиг" status="2" year="1864"/>
-			<species author="Muchomedijarov" id="298" lat="Coregonus lavaretus baunti" oldid="181(2)" rus="Баунтовский сиг" status="3" year="1948"/>
-			<species author="Borisov" id="299" lat="Coregonus albula pereslavicus" oldid="182" rus="Переславская ряпушка" status="2" year="1924"/>
-			<species author="Eigenmann et Eigenmann" id="300" lat="Prosopium coulteri" oldid="183" rus="Карликовый валек" status="3" year="1892"/>
-			<species author="Linnaeus" comment="популяции бассейнов верхней р. Волги и р. Урал" id="301" lat="Thymallus thymallus" oldid="184" rus="Европейский хариус" status="2" year="1758"/>
+			<species author="Girard" id="282" lat="Salmo salar morpha sebago" printid="171" rus="Озерный лосось" year="1853"/>
+			<species author="Linnaeus" comment="бассейн Балтийского моря; проходная форма; северная форель-morpha lacustris, ручьевая форель-morpha fario, беломоро-балтийский подвид" id="283" lat="Salmo trutta trutta" printid="172(1)" rus="Кумжа" year="1758"/>
+			<species author="Kessler" comment="проходная форма, каспийский подвид" id="284" lat="Salmo trutta caspius" printid="172(2)" rus="Кумжа" year="1897"/>
+			<species author="Pallas" comment="черноморский подвид" id="285" lat="Salmo trutta labrax" printid="172(3)" rus="Кумжа" year="1811"/>
+			<species author="Berg" comment="эйзенамская форель" id="286" lat="Salmo trutta ezenami" printid="172(4)" rus="Кумжа" year="1948"/>
+			<species author="Linnaeus" comment="ручьевая форель бассейнов рек Волга и Урал" id="287" lat="Salmo trutta morpha fario" printid="172(5)" rus="Кумжа" year="1758"/>
+			<species author="Walbaum" comment="проходная форма-камчатская семга; популяция Шантарских островов" id="288" lat="Salmo mykiss" printid="173" rus="Микижа" year="1792"/>
+			<species author="Linnaeus" id="289" lat="Salvelinus alpinus" printid="174" rus="Арктический голец" year="1758"/>
+			<species author="Viktorovsky et Glubokovsky" id="290" lat="Salvelinus elgyticus" printid="175" rus="Малоротая палия" year="1981"/>
+			<species author="Chereshnev et Skopetz" id="291" lat="Salvethymus svetovidovi" printid="176" rus="Длинноперая палия Световидова" year="1990"/>
+			<species author="Pallas" comment="Европейская часть России, Полярный и Средний Урал" id="292" lat="Hucho taimen" printid="177" rus="Обыкновенный таймень" year="1773"/>
+			<species author="Brevoort" comment="популяция острова Сахалин" id="293" lat="Hucho perryi" printid="178" rus="Сахалинский таймень" year="1856"/>
+			<species author="Pallas" comment="бассейн р. Оби" id="294" lat="Brachymystax lenok" printid="179" rus="Ленок" year="1773"/>
+			<species author="Guldenstadt" comment="подвид нельмы, бассейн р. Урал" id="295" lat="Stenodus leucichthys leucichthys" printid="180(1)" rus="Белорыбица" year="1772"/>
+			<species author="Pallas" comment="подвид нельмы, европейская часть России" id="296" lat="Stenodus leucichthys nelma" printid="180(2)" rus="Нельма" year="1773"/>
+			<species author="Kessler" id="297" lat="Coregonus lavaretus baeri" printid="181(1)" rus="Волховский сиг" year="1864"/>
+			<species author="Muchomedijarov" id="298" lat="Coregonus lavaretus baunti" printid="181(2)" rus="Баунтовский сиг" year="1948"/>
+			<species author="Borisov" id="299" lat="Coregonus albula pereslavicus" printid="182" rus="Переславская ряпушка" year="1924"/>
+			<species author="Eigenmann et Eigenmann" id="300" lat="Prosopium coulteri" printid="183" rus="Карликовый валек" year="1892"/>
+			<species author="Linnaeus" comment="популяции бассейнов верхней р. Волги и р. Урал" id="301" lat="Thymallus thymallus" printid="184" rus="Европейский хариус" year="1758"/>
 		</order>
 		<order id="302" lat="Cypriniformes" rus="Карпообразные">
-			<species author="Nordman" comment="подвид вырезуба" id="303" lat="Rutilus frisii frisii" oldid="185(1)" rus="Вырезуб" status="4" year="1840"/>
-			<species author="Kamensky" comment="подвид вырезуба" id="304" lat="Rutilus frisii kutum" oldid="185(2)" rus="Кутум" status="2" year="1901"/>
-			<species author="Dybowski" id="305" lat="Barbus barbus borysthenicus" oldid="186" rus="Днепровский усач" status="1" year="1862"/>
-			<species author="Agassiz" id="306" lat="Chalcalburnus chalcoides mento" oldid="187" rus="Азово-черноморская шемая" status="2" year="1832"/>
-			<species author="Berg" id="307" lat="Alburnoides bipunctatus rossicus" oldid="188" rus="Русская быстрянка" status="2" year="1924"/>
-			<species author="Richardson" id="308" lat="Elopichthys bambusa" oldid="189" rus="Желтощек" status="1" year="1844"/>
-			<species author="Richardson" comment="аборигенная популяция" id="309" lat="Mylopharyngodon piceus" oldid="190" rus="Черный амур" status="1" year="1845"/>
-			<species author="Richardson" id="310" lat="Megalobrama terminalis" oldid="191" rus="Черный амурский лещ" status="1" year="1846"/>
-			<species author="Bleeker" id="311" lat="Plagiognathops microlepis" oldid="192" rus="Мелкочешуйный желтопер" status="1" year="1871"/>
-			<species author="Berg" id="312" lat="Sabanejevia caucasica" oldid="193" rus="Предкавказская щиповка" status="3" year="1906"/>
+			<species author="Nordman" comment="подвид вырезуба" id="303" lat="Rutilus frisii frisii" printid="185(1)" rus="Вырезуб" year="1840"/>
+			<species author="Kamensky" comment="подвид вырезуба" id="304" lat="Rutilus frisii kutum" printid="185(2)" rus="Кутум" year="1901"/>
+			<species author="Dybowski" id="305" lat="Barbus barbus borysthenicus" printid="186" rus="Днепровский усач" year="1862"/>
+			<species author="Agassiz" id="306" lat="Chalcalburnus chalcoides mento" printid="187" rus="Азово-черноморская шемая" year="1832"/>
+			<species author="Berg" id="307" lat="Alburnoides bipunctatus rossicus" printid="188" rus="Русская быстрянка" year="1924"/>
+			<species author="Richardson" id="308" lat="Elopichthys bambusa" printid="189" rus="Желтощек" year="1844"/>
+			<species author="Richardson" comment="аборигенная популяция" id="309" lat="Mylopharyngodon piceus" printid="190" rus="Черный амур" year="1845"/>
+			<species author="Richardson" id="310" lat="Megalobrama terminalis" printid="191" rus="Черный амурский лещ" year="1846"/>
+			<species author="Bleeker" id="311" lat="Plagiognathops microlepis" printid="192" rus="Мелкочешуйный желтопер" year="1871"/>
+			<species author="Berg" id="312" lat="Sabanejevia caucasica" printid="193" rus="Предкавказская щиповка" year="1906"/>
 		</order>
 		<order id="313" lat="Siluriformes" rus="Сомообразные">
-			<species author="G. Nikolsky et Soin" id="314" lat="Silurus soldatovi" oldid="194" rus="Сом Солдатова" status="2" year="1948"/>
+			<species author="G. Nikolsky et Soin" id="314" lat="Silurus soldatovi" printid="194" rus="Сом Солдатова" year="1948"/>
 		</order>
 		<order id="315" lat="Perciformes" rus="Окунеобразные">
-			<species author="Gmelin" comment="бассейн р. Урал" id="316" lat="Stizostedion volgensis" oldid="195" rus="Берш" status="3" year="1788"/>
-			<species author="Basilewsky" comment="ауха" id="317" lat="Siniperca chua-tsi" oldid="196" rus="Китайский окунь" status="2" year="1855"/>
+			<species author="Gmelin" comment="бассейн р. Урал" id="316" lat="Stizostedion volgensis" printid="195" rus="Берш" year="1788"/>
+			<species author="Basilewsky" comment="ауха" id="317" lat="Siniperca chua-tsi" printid="196" rus="Китайский окунь" year="1855"/>
 		</order>
 		<order id="318" lat="Scorpaeniformes" rus="Скорпенообразные">
-			<species author="Linnaeus" id="319" lat="Cottus gobio" oldid="197" rus="Обыкновенный подкаменщик" status="2" year="1758"/>
+			<species author="Linnaeus" id="319" lat="Cottus gobio" printid="197" rus="Обыкновенный подкаменщик" year="1758"/>
 		</order>
 		<order id="320" lat="Gadiformes" rus="Трескообразные">
-			<species author="Derjugin" id="321" lat="Gadus morhua kildinensis" oldid="198" rus="Кильдинская треска" status="1" year="1920"/>
+			<species author="Derjugin" id="321" lat="Gadus morhua kildinensis" printid="198" rus="Кильдинская треска" year="1920"/>
 		</order>
 	</class>
 	<phylum id="322" lat="Arthropoda" rus="Членистоногие">
 		<class id="323" lat="Arthropoda" rus="Ракообразные">
 			<order id="324" lat="Arthropoda" rus="Ротоногие">
-				<species author="de Haan" id="325" lat="Oratosquilla oratoria" oldid="058" rus="Рак-богомол" status="4" year="1844"/>
+				<species author="de Haan" id="325" lat="Oratosquilla oratoria" printid="058" rus="Рак-богомол" year="1844"/>
 			</order>
 			<order id="326" lat="Decapoda" rus="Десятиногие">
-				<species author="Makarov" id="327" lat="Echinocerus derjugini" oldid="059" rus="Крабоид Дерюгина" status="3" year="1934"/>
-				<species author="A. Milne-Edwards" id="328" lat="Charybdis japonica" oldid="060" rus="Японский краб" status="3" year="1861"/>
+				<species author="Makarov" id="327" lat="Echinocerus derjugini" printid="059" rus="Крабоид Дерюгина" year="1934"/>
+				<species author="A. Milne-Edwards" id="328" lat="Charybdis japonica" printid="060" rus="Японский краб" year="1861"/>
 			</order>
 		</class>
 		<class id="329" lat="Insecta" rus="Насекомые">
 			<order id="330" lat="Odonata" rus="Стрекозы">
-				<species author="Leach" id="331" lat="Anax imperator" oldid="061" rus="Дозорщик-император" status="2" year="1815"/>
+				<species author="Leach" id="331" lat="Anax imperator" printid="061" rus="Дозорщик-император" year="1815"/>
 			</order>
 			<order id="332" lat="Orthoptera" rus="Прямокрылые">
-				<species author="Fischer-Waldheim" id="333" lat="Bradyporus multituberculatus" oldid="062" rus="Многобугорчатый шароглав" status="1" year="1833"/>
-				<species author="Pallas" id="334" lat="Saga pedo" oldid="063" rus="Степная дыбка" status="2" year="1771"/>
+				<species author="Fischer-Waldheim" id="333" lat="Bradyporus multituberculatus" printid="062" rus="Многобугорчатый шароглав" year="1833"/>
+				<species author="Pallas" id="334" lat="Saga pedo" printid="063" rus="Степная дыбка" year="1771"/>
 			</order>
 			<order id="335" lat="Coleoptera" rus="Жесткокрылые">
-				<species author="Adams" id="336" lat="Carabus caucasicus" oldid="064" rus="Кавказская жужелица" status="2" year="1817"/>
-				<species author="Fischer-Waldheim" id="337" lat="Carabus gebleri" oldid="065" rus="Жужелица Геблера" status="1" year="1817"/>
-				<species author="Semenov-Tian-Shansky et Znojko" id="338" lat="Carabus avinovi" oldid="066" rus="Жужелица Авинова" status="2" year="1932"/>
-				<species author="A. Morawitz" id="339" lat="Carabus lopatini" oldid="067" rus="Жужелица Лопатина" status="2" year="1886"/>
-				<species author="Kraatz" id="340" lat="Carabus constricticollis" oldid="068" rus="Узкогрудая жужелица" status="2" year="1886"/>
-				<species author="Motschulsky" id="341" lat="Carabus rugipennis" oldid="069" rus="Морщинистокрылая жужелица" status="2" year="1861"/>
-				<species author="Oberthur" id="342" lat="Carabus jankowskii" oldid="070" rus="Жужелица Янковского" status="2" year="1883"/>
-				<species author="Starck" id="343" lat="Carabus constantinovi" oldid="071" rus="Жужелица Константинова" status="2" year="1894"/>
-				<species author="Menetries" id="344" lat="Carabus riedeli" oldid="072" rus="Жужелица Риделя" status="2" year="1832"/>
-				<species author="Fabricius" id="345" lat="Carabus hungaricus" oldid="073" rus="Венгерская жужелица" status="2" year="1792"/>
-				<species author="Hummel" id="346" lat="Carabus menetriesi" oldid="074" rus="Жужелица Ментрие" status="2" year="1827"/>
-				<species author="Zamotajlov" id="347" lat="Carabus miroshnikovi" oldid="075" rus="Жужелица Мирошникова" status="2" year="1990"/>
-				<species author="A. Morawitz" id="348" lat="Calosoma maximowiczi" oldid="076" rus="Красотел Максимовича" status="2" year="1863"/>
-				<species author="Linnaeus" id="349" lat="Calosoma sycophanta" oldid="077" rus="Пахучий красотел" status="2" year="1758"/>
-				<species author="Fabricius" id="350" lat="Callisthenes reticulatus" oldid="078" rus="Сетчатый красотел" status="1" year="1787"/>
-				<species author="Steven" id="351" lat="Alaus parreyssi" oldid="079" rus="Щелкун Паррейса" status="1" year="1830"/>
-				<species author="Lewis" id="352" lat="Ceruchus lignarius" oldid="080" rus="Черный рогачик" status="2" year="1883"/>
-				<species author="Linnaeus" id="353" lat="Lucanus cervus" oldid="081" rus="Жук-олень" status="2" year="1758"/>
-				<species author="Scopoli" id="354" lat="Osmoderma eremita" oldid="082" rus="Обыкновенный отшельник" status="2" year="1763"/>
-				<species author="Motschulsky" id="355" lat="Osmoderma barnabita" oldid="083" rus="Дальневосточный отшельник" status="2" year="1845"/>
-				<species author="Lewis" id="356" lat="Osmoderma opicum" oldid="084" rus="Японский отшельник" status="2" year="1887"/>
-				<species author="Drury" id="357" lat="Netocia aeruginosa" oldid="085" rus="Гладкая бронзовка" status="2" year="1770"/>
-				<species author="Adams" id="358" lat="Netocia speciosa" oldid="086" rus="Красивая бронзовка" status="2" year="1817"/>
-				<species author="Laxmann" id="359" lat="Aphodius bimaculatus" oldid="087" rus="Двупятнистый афодий" status="2" year="1770"/>
-				<species author="Semenov" id="360" lat="Callipogon relictus" oldid="088" rus="Реликтовый дровосек" status="2" year="1898"/>
-				<species author="Motschulsky" id="361" lat="Rhaesus serricollis" oldid="089" rus="Зубчатогрудый дровосек" status="2" year="1838"/>
-				<species author="Plavilstshikov" id="362" lat="Xylosteus caucasicola" oldid="090" rus="Кавказский дроосек" status="2" year="1936"/>
-				<species author="Germar" id="363" lat="Cerambyx nodulosus" oldid="091" rus="Узлоусый дровосек" status="2" year="1817"/>
-				<species author="Linnaeus" id="364" lat="Rosalia alpina" oldid="092" rus="Альпийский усач" status="2" year="1758"/>
-				<species author="Semenov-Tian-Shansky" id="365" lat="Rosalia coelestis" oldid="093" rus="Небесный усач" status="2" year="1911"/>
-				<species author="Jacobson" id="366" lat="Chrysolina urjanchaica" oldid="094" rus="Урянхайский листоед" status="2" year="1875"/>
-				<species author="Olivier" id="367" lat="Brachycerus sinuatus" oldid="095" rus="Волнистый брахицерус" status="1" year="1807"/>
-				<species author="Hummel" id="368" lat="Otiorhynchus rugosus" oldid="096" rus="Морщинистый скосарь" status="1" year="1827"/>
-				<species author="Steven" id="369" lat="Omias verruca" oldid="097" rus="Бородавчатый омиас" status="1" year="1829"/>
-				<species author="Boheman" id="370" lat="Euidosomus acuminatus" oldid="098" rus="Острокрылый слоник" status="2" year="1839"/>
-				<species author="Pallas" id="371" lat="Stephanocleonus tetragrammus" oldid="099" rus="Четырехпятнистый стефаноклеонус" status="2" year="1781"/>
+				<species author="Adams" id="336" lat="Carabus caucasicus" printid="064" rus="Кавказская жужелица" year="1817"/>
+				<species author="Fischer-Waldheim" id="337" lat="Carabus gebleri" printid="065" rus="Жужелица Геблера" year="1817"/>
+				<species author="Semenov-Tian-Shansky et Znojko" id="338" lat="Carabus avinovi" printid="066" rus="Жужелица Авинова" year="1932"/>
+				<species author="A. Morawitz" id="339" lat="Carabus lopatini" printid="067" rus="Жужелица Лопатина" year="1886"/>
+				<species author="Kraatz" id="340" lat="Carabus constricticollis" printid="068" rus="Узкогрудая жужелица" year="1886"/>
+				<species author="Motschulsky" id="341" lat="Carabus rugipennis" printid="069" rus="Морщинистокрылая жужелица" year="1861"/>
+				<species author="Oberthur" id="342" lat="Carabus jankowskii" printid="070" rus="Жужелица Янковского" year="1883"/>
+				<species author="Starck" id="343" lat="Carabus constantinovi" printid="071" rus="Жужелица Константинова" year="1894"/>
+				<species author="Menetries" id="344" lat="Carabus riedeli" printid="072" rus="Жужелица Риделя" year="1832"/>
+				<species author="Fabricius" id="345" lat="Carabus hungaricus" printid="073" rus="Венгерская жужелица" year="1792"/>
+				<species author="Hummel" id="346" lat="Carabus menetriesi" printid="074" rus="Жужелица Ментрие" year="1827"/>
+				<species author="Zamotajlov" id="347" lat="Carabus miroshnikovi" printid="075" rus="Жужелица Мирошникова" year="1990"/>
+				<species author="A. Morawitz" id="348" lat="Calosoma maximowiczi" printid="076" rus="Красотел Максимовича" year="1863"/>
+				<species author="Linnaeus" id="349" lat="Calosoma sycophanta" printid="077" rus="Пахучий красотел" year="1758"/>
+				<species author="Fabricius" id="350" lat="Callisthenes reticulatus" printid="078" rus="Сетчатый красотел" year="1787"/>
+				<species author="Steven" id="351" lat="Alaus parreyssi" printid="079" rus="Щелкун Паррейса" year="1830"/>
+				<species author="Lewis" id="352" lat="Ceruchus lignarius" printid="080" rus="Черный рогачик" year="1883"/>
+				<species author="Linnaeus" id="353" lat="Lucanus cervus" printid="081" rus="Жук-олень" year="1758"/>
+				<species author="Scopoli" id="354" lat="Osmoderma eremita" printid="082" rus="Обыкновенный отшельник" year="1763"/>
+				<species author="Motschulsky" id="355" lat="Osmoderma barnabita" printid="083" rus="Дальневосточный отшельник" year="1845"/>
+				<species author="Lewis" id="356" lat="Osmoderma opicum" printid="084" rus="Японский отшельник" year="1887"/>
+				<species author="Drury" id="357" lat="Netocia aeruginosa" printid="085" rus="Гладкая бронзовка" year="1770"/>
+				<species author="Adams" id="358" lat="Netocia speciosa" printid="086" rus="Красивая бронзовка" year="1817"/>
+				<species author="Laxmann" id="359" lat="Aphodius bimaculatus" printid="087" rus="Двупятнистый афодий" year="1770"/>
+				<species author="Semenov" id="360" lat="Callipogon relictus" printid="088" rus="Реликтовый дровосек" year="1898"/>
+				<species author="Motschulsky" id="361" lat="Rhaesus serricollis" printid="089" rus="Зубчатогрудый дровосек" year="1838"/>
+				<species author="Plavilstshikov" id="362" lat="Xylosteus caucasicola" printid="090" rus="Кавказский дроосек" year="1936"/>
+				<species author="Germar" id="363" lat="Cerambyx nodulosus" printid="091" rus="Узлоусый дровосек" year="1817"/>
+				<species author="Linnaeus" id="364" lat="Rosalia alpina" printid="092" rus="Альпийский усач" year="1758"/>
+				<species author="Semenov-Tian-Shansky" id="365" lat="Rosalia coelestis" printid="093" rus="Небесный усач" year="1911"/>
+				<species author="Jacobson" id="366" lat="Chrysolina urjanchaica" printid="094" rus="Урянхайский листоед" year="1875"/>
+				<species author="Olivier" id="367" lat="Brachycerus sinuatus" printid="095" rus="Волнистый брахицерус" year="1807"/>
+				<species author="Hummel" id="368" lat="Otiorhynchus rugosus" printid="096" rus="Морщинистый скосарь" year="1827"/>
+				<species author="Steven" id="369" lat="Omias verruca" printid="097" rus="Бородавчатый омиас" year="1829"/>
+				<species author="Boheman" id="370" lat="Euidosomus acuminatus" printid="098" rus="Острокрылый слоник" year="1839"/>
+				<species author="Pallas" id="371" lat="Stephanocleonus tetragrammus" printid="099" rus="Четырехпятнистый стефаноклеонус" year="1781"/>
 			</order>
 			<order id="372" lat="Hymenoptera" rus="Перепончатокрылые">
-				<species author="Hartig" id="373" lat="Pleroneura dahli" oldid="100" rus="Плероневра Даля" status="2" year="1837"/>
-				<species author="Mocsary" id="374" lat="Megaxyela gigantea" oldid="101" rus="Гигантская мегаксиела" status="2" year="1909"/>
-				<species author="Scopoli" id="375" lat="Orussus abietinus" oldid="102" rus="Паразитический оруссус" status="2" year="1763"/>
-				<species author="Dovnar-Zapolskij" id="376" lat="Characopygus modestus" oldid="103" rus="Черноногий харакопигус" status="2" year="1931"/>
-				<species author="Retzius" id="377" lat="Acantholyda flaviceps" oldid="104" rus="Желтоголовая акантолида" status="2" year="1783"/>
-				<species author="Linnaeus" id="378" lat="Caenolyda reticulata" oldid="105" rus="Сетчатая ценолида" status="2" year="1767"/>
-				<species author="Gussakovskij" id="379" lat="Pseudoclavellaria semenovi" oldid="106" rus="Псевдоклавеллария Семенова" status="2" year="1947"/>
-				<species author="Kuznetzov-Ugamskij" id="380" lat="Orientabia egregia" oldid="107" rus="Уссурийская ориентабия" status="2" year="1927"/>
-				<species author="Semenov-Tian-Shanskij" id="381" lat="Zaraea gussakovskii" oldid="108" rus="Зарея Гуссакоского" status="2" year="1935"/>
-				<species author="Gussakovskij" id="382" lat="Abia semenoviana" oldid="109" rus="Прибайкальская абия" status="2" year="1947"/>
-				<species author="Panfilov" id="383" lat="Apterogyna volgensis" oldid="110" rus="Волжская аптерогина" status="2" year="1954"/>
-				<species author="Pallas" id="384" lat="Parnopes grandior" oldid="111" rus="Крупный парнопес" status="2" year="1771"/>
-				<species author="Gerstaecker" id="385" lat="Xylocopa valga" oldid="112" rus="Пчела-плотник" status="2" year="1872"/>
-				<species author="Dalla Torre" id="386" lat="Bombus paradoxus" oldid="113" rus="Необыкновенный шмель" status="2" year="1882"/>
-				<species author="Skorikov" id="387" lat="Bombus anachoreta" oldid="114" rus="Шмель-отшельник" status="2" year="1914"/>
-				<species author="F. Morawitz" id="388" lat="Bombus unicus" oldid="115" rus="Редчайший шмель" status="2" year="1883"/>
-				<species author="Gerstaecker" id="389" lat="Bombus proteus" oldid="116" rus="Изменчивый шмель" status="2" year="1869"/>
-				<species author="Radoszkowski" id="390" lat="Bombus armeniacus" oldid="117" rus="Армянский шмель" status="2" year="1877"/>
-				<species author="Skorikov" id="391" lat="Bombus czerskii" oldid="118" rus="Шмель Черского" status="2" year="1909"/>
-				<species author="Pallas" id="392" lat="Bombus fragrans" oldid="119" rus="Степной шмель" status="2" year="1771"/>
-				<species author="Gerstaecker" id="393" lat="Bombus mastrucatus" oldid="120" rus="Тулупчатый шмель" status="2" year="1869"/>
-				<species author="Fabricius" id="394" lat="Apis cerana" oldid="121" rus="Восковая пчела" status="1" year="1793"/>
-				<species author="Karawaew" id="395" lat="Liometopum orientale" oldid="122" rus="Восточный лиометопум" status="2" year="1927"/>
+				<species author="Hartig" id="373" lat="Pleroneura dahli" printid="100" rus="Плероневра Даля" year="1837"/>
+				<species author="Mocsary" id="374" lat="Megaxyela gigantea" printid="101" rus="Гигантская мегаксиела" year="1909"/>
+				<species author="Scopoli" id="375" lat="Orussus abietinus" printid="102" rus="Паразитический оруссус" year="1763"/>
+				<species author="Dovnar-Zapolskij" id="376" lat="Characopygus modestus" printid="103" rus="Черноногий харакопигус" year="1931"/>
+				<species author="Retzius" id="377" lat="Acantholyda flaviceps" printid="104" rus="Желтоголовая акантолида" year="1783"/>
+				<species author="Linnaeus" id="378" lat="Caenolyda reticulata" printid="105" rus="Сетчатая ценолида" year="1767"/>
+				<species author="Gussakovskij" id="379" lat="Pseudoclavellaria semenovi" printid="106" rus="Псевдоклавеллария Семенова" year="1947"/>
+				<species author="Kuznetzov-Ugamskij" id="380" lat="Orientabia egregia" printid="107" rus="Уссурийская ориентабия" year="1927"/>
+				<species author="Semenov-Tian-Shanskij" id="381" lat="Zaraea gussakovskii" printid="108" rus="Зарея Гуссакоского" year="1935"/>
+				<species author="Gussakovskij" id="382" lat="Abia semenoviana" printid="109" rus="Прибайкальская абия" year="1947"/>
+				<species author="Panfilov" id="383" lat="Apterogyna volgensis" printid="110" rus="Волжская аптерогина" year="1954"/>
+				<species author="Pallas" id="384" lat="Parnopes grandior" printid="111" rus="Крупный парнопес" year="1771"/>
+				<species author="Gerstaecker" id="385" lat="Xylocopa valga" printid="112" rus="Пчела-плотник" year="1872"/>
+				<species author="Dalla Torre" id="386" lat="Bombus paradoxus" printid="113" rus="Необыкновенный шмель" year="1882"/>
+				<species author="Skorikov" id="387" lat="Bombus anachoreta" printid="114" rus="Шмель-отшельник" year="1914"/>
+				<species author="F. Morawitz" id="388" lat="Bombus unicus" printid="115" rus="Редчайший шмель" year="1883"/>
+				<species author="Gerstaecker" id="389" lat="Bombus proteus" printid="116" rus="Изменчивый шмель" year="1869"/>
+				<species author="Radoszkowski" id="390" lat="Bombus armeniacus" printid="117" rus="Армянский шмель" year="1877"/>
+				<species author="Skorikov" id="391" lat="Bombus czerskii" printid="118" rus="Шмель Черского" year="1909"/>
+				<species author="Pallas" id="392" lat="Bombus fragrans" printid="119" rus="Степной шмель" year="1771"/>
+				<species author="Gerstaecker" id="393" lat="Bombus mastrucatus" printid="120" rus="Тулупчатый шмель" year="1869"/>
+				<species author="Fabricius" id="394" lat="Apis cerana" printid="121" rus="Восковая пчела" year="1793"/>
+				<species author="Karawaew" id="395" lat="Liometopum orientale" printid="122" rus="Восточный лиометопум" year="1927"/>
 			</order>
 			<order id="396" lat="Lepidoptera" rus="Чешуекрылые">
-				<species author="Walker" id="397" lat="Camptoloma interiorata" oldid="123" rus="Уединенная каптолома" status="1" year="1864"/>
-				<species author="Alpheraky" id="398" lat="Pallarctia mongolica" oldid="124" rus="Монгольская медведица" status="1" year="1888"/>
-				<species author="Sheljuzhko" id="399" lat="Catocala kotshubeji" oldid="125" rus="Лента Кочубея" status="1" year="1927"/>
-				<species author="O. Bang-Haas" id="400" lat="Catocala moltrechti" oldid="126" rus="Лента Мольтрехта" status="1" year="1927"/>
-				<species author="Wileman" id="401" lat="Catocala nagioides" oldid="127" rus="Лента Нага" status="2" year="1924"/>
-				<species author="Guenee" id="402" lat="Arcte coerula" oldid="128" rus="Голубая аркте" status="1" year="1852"/>
-				<species author="Butler" id="403" lat="Mimeusemia persimilis" oldid="129" rus="Схожая мимевземия" status="1" year="1875"/>
-				<species author="Butler" id="404" lat="Asteropetes noctuina" oldid="130" rus="Совиная астеропетес" status="1" year="1878"/>
-				<species author="Moore" id="405" lat="Bombyx mandarina" oldid="131" rus="Дикий тутовый шелкопряд" status="1" year="1872"/>
-				<species author="Staudinger" id="406" lat="Numenes disparilis" oldid="132" rus="Непохожая волнянка" status="1" year="1887"/>
-				<species author="Leech" id="407" lat="Parocneria furva" oldid="133" rus="Мрачная волнянка" status="1" year="1889"/>
-				<species author="Oberthur" id="408" lat="Rosama ornata" oldid="134" rus="Превосходная розама" status="1" year="1884"/>
-				<species author="Bremer et Grey" id="409" lat="Sphecodina caudata" oldid="135" rus="Хвостатая сфекодина" status="1" year="1853"/>
-				<species author="Moore" id="410" lat="Clanis undulosa" oldid="136" rus="Волнистый кланис" status="1" year="1879"/>
-				<species author="Speyer" id="411" lat="Bibasis aquilina" oldid="137" rus="Орлиная бибазис" status="2" year="1879"/>
-				<species author="Oberthur" id="412" lat="Coreana raphaelis" oldid="138" rus="Кореана рафаэлис" status="2" year="1880"/>
-				<species author="Oberthur" id="413" lat="Chaetoprocta superans" oldid="139" rus="Превосходная хетопрокта" status="1" year="1914"/>
-				<species author="Dubatolov et Korshunov" id="414" lat="Chaetoprocta pacifica" oldid="140" rus="Тихоокеанская хетопрокта" status="1" year="1984"/>
-				<species author="Oberthur" id="415" lat="Neolycaena davidi" oldid="141" rus="Голубянка Давида" status="1" year="1881"/>
-				<species author="Eversmann" id="416" lat="Neolycaena rhymnus" oldid="142" rus="Голубянка римн" status="2" year="1832"/>
-				<species author="Riley" id="417" lat="Maslowskia filipjevi" oldid="143" rus="Голубянка филипьева" status="1" year="1934"/>
-				<species author="Leech" id="418" lat="Maslowskia oreas" oldid="144" rus="Голубянка ореас" status="1" year="1893"/>
-				<species author="Elwes" id="419" lat="Glaucopsyche argali" oldid="145" rus="Голубянка аргали" status="1" year="1899"/>
-				<species author="Linnaeus" id="420" lat="Hamearis lucina" oldid="146" rus="Люцина" status="2" year="1758"/>
-				<species author="Leech" id="421" lat="Argynnis zenobia" oldid="147" rus="Перламутровка зенобия" status="2" year="1890"/>
-				<species author="Moltrecht" id="422" lat="Seokia eximia" oldid="148" rus="Исключительная секия" status="2" year="1909"/>
-				<species author="Staudinger" id="423" lat="Erebia kindermanni" oldid="149" rus="Эребия Киндерманна" status="1" year="1881"/>
-				<species author="Staudinger" id="424" lat="Oeneis elwesi" oldid="150" rus="Энеис Элуэса" status="1" year="1901"/>
-				<species author="Linnaeus" id="425" lat="Parnassius mnemosyne" oldid="151" rus="Мнемозина" status="2" year="1758"/>
-				<species author="Bremer" id="426" lat="Parnassius felderi" oldid="152" rus="Аполлон Фельдера" status="1" year="1861"/>
-				<species author="Linnaeus" id="427" lat="Parnassius apollo" oldid="153" rus="Обыкновенный аполлон" status="2" year="1758"/>
-				<species author="Gray" id="428" lat="Sericinus montela" oldid="154" rus="Серицин монтела" status="2" year="1853"/>
-				<species author="Klug" id="429" lat="Atrophaneura alcinous" oldid="155" rus="Алкиной" status="1" year="1896"/>
+				<species author="Walker" id="397" lat="Camptoloma interiorata" printid="123" rus="Уединенная каптолома" year="1864"/>
+				<species author="Alpheraky" id="398" lat="Pallarctia mongolica" printid="124" rus="Монгольская медведица" year="1888"/>
+				<species author="Sheljuzhko" id="399" lat="Catocala kotshubeji" printid="125" rus="Лента Кочубея" year="1927"/>
+				<species author="O. Bang-Haas" id="400" lat="Catocala moltrechti" printid="126" rus="Лента Мольтрехта" year="1927"/>
+				<species author="Wileman" id="401" lat="Catocala nagioides" printid="127" rus="Лента Нага" year="1924"/>
+				<species author="Guenee" id="402" lat="Arcte coerula" printid="128" rus="Голубая аркте" year="1852"/>
+				<species author="Butler" id="403" lat="Mimeusemia persimilis" printid="129" rus="Схожая мимевземия" year="1875"/>
+				<species author="Butler" id="404" lat="Asteropetes noctuina" printid="130" rus="Совиная астеропетес" year="1878"/>
+				<species author="Moore" id="405" lat="Bombyx mandarina" printid="131" rus="Дикий тутовый шелкопряд" year="1872"/>
+				<species author="Staudinger" id="406" lat="Numenes disparilis" printid="132" rus="Непохожая волнянка" year="1887"/>
+				<species author="Leech" id="407" lat="Parocneria furva" printid="133" rus="Мрачная волнянка" year="1889"/>
+				<species author="Oberthur" id="408" lat="Rosama ornata" printid="134" rus="Превосходная розама" year="1884"/>
+				<species author="Bremer et Grey" id="409" lat="Sphecodina caudata" printid="135" rus="Хвостатая сфекодина" year="1853"/>
+				<species author="Moore" id="410" lat="Clanis undulosa" printid="136" rus="Волнистый кланис" year="1879"/>
+				<species author="Speyer" id="411" lat="Bibasis aquilina" printid="137" rus="Орлиная бибазис" year="1879"/>
+				<species author="Oberthur" id="412" lat="Coreana raphaelis" printid="138" rus="Кореана рафаэлис" year="1880"/>
+				<species author="Oberthur" id="413" lat="Chaetoprocta superans" printid="139" rus="Превосходная хетопрокта" year="1914"/>
+				<species author="Dubatolov et Korshunov" id="414" lat="Chaetoprocta pacifica" printid="140" rus="Тихоокеанская хетопрокта" year="1984"/>
+				<species author="Oberthur" id="415" lat="Neolycaena davidi" printid="141" rus="Голубянка Давида" year="1881"/>
+				<species author="Eversmann" id="416" lat="Neolycaena rhymnus" printid="142" rus="Голубянка римн" year="1832"/>
+				<species author="Riley" id="417" lat="Maslowskia filipjevi" printid="143" rus="Голубянка филипьева" year="1934"/>
+				<species author="Leech" id="418" lat="Maslowskia oreas" printid="144" rus="Голубянка ореас" year="1893"/>
+				<species author="Elwes" id="419" lat="Glaucopsyche argali" printid="145" rus="Голубянка аргали" year="1899"/>
+				<species author="Linnaeus" id="420" lat="Hamearis lucina" printid="146" rus="Люцина" year="1758"/>
+				<species author="Leech" id="421" lat="Argynnis zenobia" printid="147" rus="Перламутровка зенобия" year="1890"/>
+				<species author="Moltrecht" id="422" lat="Seokia eximia" printid="148" rus="Исключительная секия" year="1909"/>
+				<species author="Staudinger" id="423" lat="Erebia kindermanni" printid="149" rus="Эребия Киндерманна" year="1881"/>
+				<species author="Staudinger" id="424" lat="Oeneis elwesi" printid="150" rus="Энеис Элуэса" year="1901"/>
+				<species author="Linnaeus" id="425" lat="Parnassius mnemosyne" printid="151" rus="Мнемозина" year="1758"/>
+				<species author="Bremer" id="426" lat="Parnassius felderi" printid="152" rus="Аполлон Фельдера" year="1861"/>
+				<species author="Linnaeus" id="427" lat="Parnassius apollo" printid="153" rus="Обыкновенный аполлон" year="1758"/>
+				<species author="Gray" id="428" lat="Sericinus montela" printid="154" rus="Серицин монтела" year="1853"/>
+				<species author="Klug" id="429" lat="Atrophaneura alcinous" printid="155" rus="Алкиной" year="1896"/>
 			</order>
 		</class>
 	</phylum>
 	<phylum id="430" lat="Mollusca" rus="Моллюски">
 		<class id="431" lat="Polyplacophora" rus="Панцирные">
 			<order id="432" lat="Chitoniformes" rus="Хитонообразные">
-				<species author="Jakovleva" id="433" lat="Lepidosona andrijaschevi" oldid="016" rus="Лепидозона Андрияшева" status="3" year="1952"/>
-				<species author="Schrenck" id="434" lat="Mopalia middendorffii" oldid="017" rus="Мопалия Миддендорфа" status="3" year="1861"/>
-				<species author="Jakovleva" id="435" lat="Amicula gurjanovae" oldid="018" rus="Амикула Гурьяновой" status="3" year="1952"/>
+				<species author="Jakovleva" id="433" lat="Lepidosona andrijaschevi" printid="016" rus="Лепидозона Андрияшева" year="1952"/>
+				<species author="Schrenck" id="434" lat="Mopalia middendorffii" printid="017" rus="Мопалия Миддендорфа" year="1861"/>
+				<species author="Jakovleva" id="435" lat="Amicula gurjanovae" printid="018" rus="Амикула Гурьяновой" year="1952"/>
 			</order>
 		</class>
 		<class id="436" lat="Gastropoda" rus="Брюхоногие">
 			<order id="437" lat="Fissurelloiformes" rus="Фиссуреллообразные">
-				<species author="Martens" id="438" lat="Tugali gigas" oldid="019" rus="Гигантская тугалия" status="3" year="1881"/>
+				<species author="Martens" id="438" lat="Tugali gigas" printid="019" rus="Гигантская тугалия" year="1881"/>
 			</order>
 			<order id="439" lat="Bucciniformes" rus="Трубачеобразные">
-				<species author="Reeve" id="440" lat="Pyrulofusus deformis" oldid="020" rus="Деформированный пирулофузус" status="3" year="1847"/>
-				<species author="Crosse" comment="дальневосточная популяция" id="441" lat="Rapana thomasiana" oldid="021" rus="Рапана Томаса" status="1" year="1861"/>
-				<species author="A. Adams et Reeve" id="442" lat="Ceratostoma burnetti" oldid="022" rus="Цератостома Барнетта" status="3" year="1848"/>
+				<species author="Reeve" id="440" lat="Pyrulofusus deformis" printid="020" rus="Деформированный пирулофузус" year="1847"/>
+				<species author="Crosse" comment="дальневосточная популяция" id="441" lat="Rapana thomasiana" printid="021" rus="Рапана Томаса" year="1861"/>
+				<species author="A. Adams et Reeve" id="442" lat="Ceratostoma burnetti" printid="022" rus="Цератостома Барнетта" year="1848"/>
 			</order>
 			<order id="443" lat="Epitoniformes" rus="Эпитониобразные">
-				<species author="Golikov" id="444" lat="Papiriscala tricincta" oldid="023" rus="Трехпоясная папирискала" status="4" year="1967"/>
+				<species author="Golikov" id="444" lat="Papiriscala tricincta" printid="023" rus="Трехпоясная папирискала" year="1967"/>
 			</order>
 		</class>
 		<class id="445" lat="Bivalvia" rus="Двустворчатые">
 			<order id="446" lat="Unioformes" rus="Беззубкообразные">
-				<species author="Linnaeus" id="447" lat="Margaritifera margaritifera" oldid="024" rus="Обыкновенная жемчужница" status="2" year="1758"/>
-				<species author="Middendorff" id="448" lat="Dahurinaia dahurica" oldid="025" rus="Даурская жемчужница" status="2" year="1850"/>
-				<species author="Bogatov et Zatrawkin" id="449" lat="Dahurinaia tiunovae" oldid="026" rus="Жемчужница Тиуновой" status="1" year="1988"/>
-				<species author="Rosen" id="450" lat="Dahurinaia middendorffi" oldid="027" rus="Жемчужница Миддендорфа" status="3" year="1926"/>
-				<species author="Moskvicheva" id="451" lat="Dahurinaia sujfunensis" oldid="028" rus="Приморская жемчужница" status="3" year="1973"/>
-				<species author="Haas" id="452" lat="Dahurinaia laevis" oldid="029" rus="Гладкая жемчужница" status="3" year="1910"/>
-				<species author="Zatrawkin et Starobogatov" id="453" lat="Dahurinaia kurilensis" oldid="030" rus="Курильская жемчужница" status="3" year="1984"/>
-				<species author="Zatrawkin et Bogatov" id="454" lat="Dahurinaia shigini" oldid="031" rus="Жемчужница Шигина" status="3" year="1987"/>
-				<species author="Middendorff" id="455" lat="Middendorffinaia mongolica" oldid="032" rus="Монгольская миддендорфиная" status="3" year="1851"/>
-				<species author="Moskvicheva et Starobogatov" id="456" lat="Middendorffinaia ussuriensis" oldid="033" rus="Уссурийская миддендорфиная" status="3" year="1973"/>
-				<species author="Moskvicheva et Starobogatov" id="457" lat="Middendorffinaia arsenievi" oldid="034" rus="Миддендорфиная Арсеньева" status="3" year="1973"/>
-				<species author="Moskvicheva et Starobogatov" id="458" lat="Middendorffinaia shadini" oldid="035" rus="Миддендорфиная Жадина" status="2" year="1973"/>
-				<species author="Moskvicheva et Starobogatov" id="459" lat="Middendorffinaia dulkeitiana" oldid="036" rus="Миддендорфиная Дулькейт" status="2" year="1973"/>
-				<species author="Moskvicheva et Starobogatov" id="460" lat="Middendorffinaia weliczkowskii" oldid="037" rus="Миддендорфиная Величковского" status="2" year="1973"/>
-				<species author="Moskvicheva et Starobogatov" id="461" lat="Middendorffinaia sujfunensis" oldid="038" rus="Раздольненская миддендорфиная" status="3" year="1973"/>
-				<species author="Zatrawkin et Starobogatov" id="462" lat="Nodularia lebedevi" oldid="039" rus="Нодулярия Лебедева" status="4" year="1984"/>
-				<species author="Moskvicheva" id="463" lat="Lanceolaria maacki" oldid="040" rus="Ланцеолярия Маака" status="1" year="1973"/>
-				<species author="Moskvicheva" id="464" lat="Lanceolaria chankensis" oldid="041" rus="Ханкайская ланцеолярия" status="1" year="1973"/>
-				<species author="Moskvicheva" id="465" lat="Lanceolaria ussuriensis" oldid="042" rus="Уссурийская ланцеолярия" status="2" year="1973"/>
-				<species author="Zatrawkin et Starobogatov" id="466" lat="Lanceolaria bogatovi" oldid="043" rus="Ланцеолярия Богатова" status="2" year="1984"/>
-				<species author="Schumacher" id="467" lat="Cristaria tuberculata" oldid="044" rus="Бугорчатая кристария" status="2" year="1817"/>
-				<species author="Moskvicheva" id="468" lat="Buldowskia cylindrica" oldid="045" rus="Цилиндрическая булдовския" status="1" year="1973"/>
-				<species author="Moskvicheva" id="469" lat="Amuranodonta kijaensis" oldid="046" rus="Кийская амуранодонта" status="2" year="1973"/>
-				<species author="Moskvicheva" id="470" lat="Anemina buldowskii" oldid="047" rus="Анемина Булдовского" status="2" year="1973"/>
-				<species author="Moskvicheva" id="471" lat="Sinanodonta srassitesta" oldid="048" rus="Массивная синанодонта" status="2" year="1973"/>
-				<species author="Bogatov et Zatrawkin" id="472" lat="Sinanodonta primorjensis" oldid="049" rus="Приморская синанодонта" status="2" year="1988"/>
-				<species author="Zatrawkin et Starobogatov" id="473" lat="Arsenievinaia sihotealinica" oldid="050" rus="Сихотэалиньская арсеньевиная" status="2" year="1984"/>
-				<species author="Zatrawkin et Bogatov" id="474" lat="Arsenievinaia zimini" oldid="051" rus="Арсеньевиная Зимина" status="1" year="1987"/>
-				<species author="Zatrawkin et Bogatov" id="475" lat="Arsenievinaia coptzevi" oldid="052" rus="Арсеньевиная Копцева" status="2" year="1987"/>
-				<species author="Bogatov et Zatrawkin" id="476" lat="Arsenievinaia zarjaensis" oldid="053" rus="Зарейская арсеньевиная" status="1" year="1988"/>
-				<species author="Bogatov et Zatrawkin" id="477" lat="Arsenievinaia alimovi" oldid="054" rus="Арсеньевиная Алимова" status="2" year="1988"/>
+				<species author="Linnaeus" id="447" lat="Margaritifera margaritifera" printid="024" rus="Обыкновенная жемчужница" year="1758"/>
+				<species author="Middendorff" id="448" lat="Dahurinaia dahurica" printid="025" rus="Даурская жемчужница" year="1850"/>
+				<species author="Bogatov et Zatrawkin" id="449" lat="Dahurinaia tiunovae" printid="026" rus="Жемчужница Тиуновой" year="1988"/>
+				<species author="Rosen" id="450" lat="Dahurinaia middendorffi" printid="027" rus="Жемчужница Миддендорфа" year="1926"/>
+				<species author="Moskvicheva" id="451" lat="Dahurinaia sujfunensis" printid="028" rus="Приморская жемчужница" year="1973"/>
+				<species author="Haas" id="452" lat="Dahurinaia laevis" printid="029" rus="Гладкая жемчужница" year="1910"/>
+				<species author="Zatrawkin et Starobogatov" id="453" lat="Dahurinaia kurilensis" printid="030" rus="Курильская жемчужница" year="1984"/>
+				<species author="Zatrawkin et Bogatov" id="454" lat="Dahurinaia shigini" printid="031" rus="Жемчужница Шигина" year="1987"/>
+				<species author="Middendorff" id="455" lat="Middendorffinaia mongolica" printid="032" rus="Монгольская миддендорфиная" year="1851"/>
+				<species author="Moskvicheva et Starobogatov" id="456" lat="Middendorffinaia ussuriensis" printid="033" rus="Уссурийская миддендорфиная" year="1973"/>
+				<species author="Moskvicheva et Starobogatov" id="457" lat="Middendorffinaia arsenievi" printid="034" rus="Миддендорфиная Арсеньева" year="1973"/>
+				<species author="Moskvicheva et Starobogatov" id="458" lat="Middendorffinaia shadini" printid="035" rus="Миддендорфиная Жадина" year="1973"/>
+				<species author="Moskvicheva et Starobogatov" id="459" lat="Middendorffinaia dulkeitiana" printid="036" rus="Миддендорфиная Дулькейт" year="1973"/>
+				<species author="Moskvicheva et Starobogatov" id="460" lat="Middendorffinaia weliczkowskii" printid="037" rus="Миддендорфиная Величковского" year="1973"/>
+				<species author="Moskvicheva et Starobogatov" id="461" lat="Middendorffinaia sujfunensis" printid="038" rus="Раздольненская миддендорфиная" year="1973"/>
+				<species author="Zatrawkin et Starobogatov" id="462" lat="Nodularia lebedevi" printid="039" rus="Нодулярия Лебедева" year="1984"/>
+				<species author="Moskvicheva" id="463" lat="Lanceolaria maacki" printid="040" rus="Ланцеолярия Маака" year="1973"/>
+				<species author="Moskvicheva" id="464" lat="Lanceolaria chankensis" printid="041" rus="Ханкайская ланцеолярия" year="1973"/>
+				<species author="Moskvicheva" id="465" lat="Lanceolaria ussuriensis" printid="042" rus="Уссурийская ланцеолярия" year="1973"/>
+				<species author="Zatrawkin et Starobogatov" id="466" lat="Lanceolaria bogatovi" printid="043" rus="Ланцеолярия Богатова" year="1984"/>
+				<species author="Schumacher" id="467" lat="Cristaria tuberculata" printid="044" rus="Бугорчатая кристария" year="1817"/>
+				<species author="Moskvicheva" id="468" lat="Buldowskia cylindrica" printid="045" rus="Цилиндрическая булдовския" year="1973"/>
+				<species author="Moskvicheva" id="469" lat="Amuranodonta kijaensis" printid="046" rus="Кийская амуранодонта" year="1973"/>
+				<species author="Moskvicheva" id="470" lat="Anemina buldowskii" printid="047" rus="Анемина Булдовского" year="1973"/>
+				<species author="Moskvicheva" id="471" lat="Sinanodonta srassitesta" printid="048" rus="Массивная синанодонта" year="1973"/>
+				<species author="Bogatov et Zatrawkin" id="472" lat="Sinanodonta primorjensis" printid="049" rus="Приморская синанодонта" year="1988"/>
+				<species author="Zatrawkin et Starobogatov" id="473" lat="Arsenievinaia sihotealinica" printid="050" rus="Сихотэалиньская арсеньевиная" year="1984"/>
+				<species author="Zatrawkin et Bogatov" id="474" lat="Arsenievinaia zimini" printid="051" rus="Арсеньевиная Зимина" year="1987"/>
+				<species author="Zatrawkin et Bogatov" id="475" lat="Arsenievinaia coptzevi" printid="052" rus="Арсеньевиная Копцева" year="1987"/>
+				<species author="Bogatov et Zatrawkin" id="476" lat="Arsenievinaia zarjaensis" printid="053" rus="Зарейская арсеньевиная" year="1988"/>
+				<species author="Bogatov et Zatrawkin" id="477" lat="Arsenievinaia alimovi" printid="054" rus="Арсеньевиная Алимова" year="1988"/>
 			</order>
 			<order id="478" lat="Pholadomyiformes" rus="Фоладиомиобразные">
-				<species author="Martens" id="479" lat="Corbicula producta" oldid="055" rus="Приморская корбикула" status="1" year="1905"/>
-				<species author="Lamarck" id="480" lat="Solen corneus" oldid="056" rus="Роговой черенок" status="4" year="1818"/>
-				<species author="Schrenck" id="481" lat="Solen krusensterni" oldid="057" rus="Черенок Крузенштерна" status="4" year="1867"/>
+				<species author="Martens" id="479" lat="Corbicula producta" printid="055" rus="Приморская корбикула" year="1905"/>
+				<species author="Lamarck" id="480" lat="Solen corneus" printid="056" rus="Роговой черенок" year="1818"/>
+				<species author="Schrenck" id="481" lat="Solen krusensterni" printid="057" rus="Черенок Крузенштерна" year="1867"/>
 			</order>
 		</class>
 	</phylum>
 	<phylum id="482" lat="Annelida" rus="Кольчатые черви">
 		<class id="483" lat="Polychaeta" rus="Многощетинковые">
 			<order id="484" lat="Phyllodociformes" rus="Филлодоксообразные">
-				<species author="Baird" id="485" lat="Aphrodita australis" oldid="001" rus="Пестрая афродита" status="3" year="1865"/>
+				<species author="Baird" id="485" lat="Aphrodita australis" printid="001" rus="Пестрая афродита" year="1865"/>
 			</order>
 			<order id="486" lat="Chaetopteriformes" rus="Хетоптерообразные">
-				<species author="Renier" id="487" lat="Chaetopterus variopedatus" oldid="002" rus="Разноногий хетоптерус" status="3" year="1948"/>
+				<species author="Renier" id="487" lat="Chaetopterus variopedatus" printid="002" rus="Разноногий хетоптерус" year="1948"/>
 			</order>
 		</class>
 		<class id="488" lat="Oligochaeta" rus="Малощетинковые">
 			<order id="489" lat="Moniligastridomorpha" rus="Монилигастридоморфы">
-				<species author="Gates" id="490" lat="Drawida ghilarovi" oldid="003" rus="Дравида Гилярова" status="2" year="1969"/>
+				<species author="Gates" id="490" lat="Drawida ghilarovi" printid="003" rus="Дравида Гилярова" year="1969"/>
 			</order>
 			<order id="491" lat="Haplitaxidomorpha" rus="Хаплитаксидоморфы">
-				<species author="Orley" id="492" lat="Aporrectodea dubiosa" oldid="004" rus="Железняк" status="2" year="1881"/>
-				<species author="Rosa" id="493" lat="Aporrectoda handlershi" oldid="005" rus="Апорректода Хандлерши" status="1" year="1897"/>
-				<species author="Michaelsen" id="494" lat="Eisenia japonica" oldid="006" rus="Японская эйзения" status="2" year="1891"/>
-				<species author="Michaelsen" id="495" lat="Eisenia gordejeffi" oldid="007" rus="Эйзения Гордеева" status="1" year="1899"/>
-				<species author="Michaelsen" id="496" lat="Eisenia intermedia" oldid="008" rus="Промежуточная эйзения" status="2" year="1901"/>
-				<species author="Perel" id="497" lat="Eisenia malevici" oldid="009" rus="Эйзения Малевича" status="1" year="1962"/>
-				<species author="Perel" id="498" lat="Eisenia transcaucasica" oldid="010" rus="Закавказская эйзения" status="1" year="1967"/>
-				<species author="Perel" id="499" lat="Eisenia salairica" oldid="011" rus="Салаирская эйзения" status="2" year="1968"/>
-				<species author="Perel" id="500" lat="Eisenia altaica" oldid="012" rus="Алтайская эйзения" status="1" year="1968"/>
-				<species author="Michaelsen" id="501" lat="Pheretima hilgendorfi" oldid="013" rus="Феретима Хильгендорфа" status="2" year="1892"/>
+				<species author="Orley" id="492" lat="Aporrectodea dubiosa" printid="004" rus="Железняк" year="1881"/>
+				<species author="Rosa" id="493" lat="Aporrectoda handlershi" printid="005" rus="Апорректода Хандлерши" year="1897"/>
+				<species author="Michaelsen" id="494" lat="Eisenia japonica" printid="006" rus="Японская эйзения" year="1891"/>
+				<species author="Michaelsen" id="495" lat="Eisenia gordejeffi" printid="007" rus="Эйзения Гордеева" year="1899"/>
+				<species author="Michaelsen" id="496" lat="Eisenia intermedia" printid="008" rus="Промежуточная эйзения" year="1901"/>
+				<species author="Perel" id="497" lat="Eisenia malevici" printid="009" rus="Эйзения Малевича" year="1962"/>
+				<species author="Perel" id="498" lat="Eisenia transcaucasica" printid="010" rus="Закавказская эйзения" year="1967"/>
+				<species author="Perel" id="499" lat="Eisenia salairica" printid="011" rus="Салаирская эйзения" year="1968"/>
+				<species author="Perel" id="500" lat="Eisenia altaica" printid="012" rus="Алтайская эйзения" year="1968"/>
+				<species author="Michaelsen" id="501" lat="Pheretima hilgendorfi" printid="013" rus="Феретима Хильгендорфа" year="1892"/>
 			</order>
 		</class>
 	</phylum>
 	<phylum id="502" lat="Bryozoa" rus="Мшанки">
 		<class id="503" lat="Cheilostomida" rus="Губотверстные">
 			<order id="504" lat="Alcyonidiformes" rus="Алкионидообразные">
-				<species author="Ortmann" id="505" lat="Shizoretepra imperati tumescens" oldid="014" rus="Вздутая главная шизоретепора" status="3" year="1890"/>
+				<species author="Ortmann" id="505" lat="Shizoretepra imperati tumescens" printid="014" rus="Вздутая главная шизоретепора" year="1890"/>
 			</order>
 		</class>
 	</phylum>
 	<phylum id="506" lat="Brachiopoda" rus="Плеченогие">
 		<class id="507" lat="Testicardines" rus="Замковые">
 			<order id="508" lat="Terebratuliformes" rus="Теребратулообразные">
-				<species author="Davidson" id="509" lat="Coptothyris adamsi" oldid="015" rus="Коптотирис Адамса" status="3" year="1871"/>
+				<species author="Davidson" id="509" lat="Coptothyris adamsi" printid="015" rus="Коптотирис Адамса" year="1871"/>
 			</order>
 		</class>
 	</phylum>

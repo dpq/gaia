@@ -9,8 +9,6 @@
 #ifndef CORE_H
 #define CORE_H
 
-#define OPERATOR
-
 #include <QtCore/QObject>
 #include <QtCore/QMap>
 #include <QtCore/QHash>
@@ -22,160 +20,47 @@ class QPixmap;
 class GaiaCore : public QObject {
 Q_OBJECT
 
-/* Zones */
 public:
-	void openZoneFile(const QString &path);
-#ifdef OPERATOR
-public slots:
-	void saveZoneFile(const QString &path);
-#endif
+    void readZoneFile(const QString &path);
+    void readTaxonomyFile(const QString &path);
 
-public:
-	QString zoneUrl() const;
-#ifdef OPERATOR
-public slots:
-	void setZoneUrl(const QString &url);
-#endif
+    QDomNodeList zoneElements(const QString &tagName, const QDomElement &parent = QDomElement());
+    QList<int> taxonomyElements(const QString &tagName, const QDomElement &parent = QDomElement());
+    QDomElement zoneEntry(int zoneId) const;
+    QDomElement taxonomyEntry(int entryId) const;
 
-public:
-	QDomElement zone(int zoneId) const;
-#ifdef OPERATOR
-public slots:
-	QDomElement createZone(const QString &name);
-	void mountZone(const QDomElement &zone, int parentId);
-	void deleteZone(int zoneId);
-#endif
-
-public:
-	QString zoneName(int zoneId) const;
-	QMap<QString, QString> chapterLayout(int zoneId, bool listedOnly = false) const;
-#ifdef OPERATOR
-public slots:
-	void setZoneName(int zoneId, const QString &name);
-	void setChapterLayout(int zoneId, const QMap<QString, QString> &layout);
-#endif
-
-/* Taxonomy */
-public:
 	enum Taxonomy { Species, Genus, Family, Order, Class, Phylum, Kingdom, Domain };
+    static const QString taxonomyLevels[];
 
-	void openTaxonomyFile(const QString &path);
-#ifdef OPERATOR
-public slots:
-	void saveTaxonomyFile(const QString &path);
-#endif
-
-/*HACK*/
-
-public:
-	QDomElement taxonomyDocumentElement();
-	QList<QDomElement> taxonomyElementsByTagName(const QString &tagName, const QDomElement &parent = QDomElement());
-//	QDomElement taxonomyElementById(const QString &id);
-
-	QDomElement zoneDocumentElement();
-	QList<QDomElement> zoneElementsByTagName(const QString &tagName, const QDomElement &parent = QDomElement());
-//	QDomElement zoneElementById(const QString &id);
-/*============*/
-
-public:
-	QString taxonomyUrl() const;
-#ifdef OPERATOR
-public slots:
-	void setTaxonomyUrl(const QString &url);
-#endif
-
-public:
-	QDomElement taxonomyEntry(int entryId) const;
-#ifdef OPERATOR
-public slots:
-	QDomElement createTaxonomyEntry(Taxonomy level, const QString &rus, const QString &lat, const QString &picturePath = "");
-	void mountTaxonomyEntry(const QDomElement &entry, int parentId);
-	void deleteTaxonomyEntry(int entryId);
-#endif
-
-public:
-	QString entryLatName(int entryId) const;
-	QString entryRusName(int entryId) const;
-	QPixmap entryPicture(int entryId) const;
-	QString entryAuthor(int entryId) const;
-	QString entryYear(int entryId) const;
-
-
-#ifdef OPERATOR
-public slots:
-	void setEntryLatName(int entryId, const QString &name);
-	void setEntryRusName(int entryId, const QString &name);
-	void setEntryPicture(int entryId, const QString &picturePath);
-#endif
-
-/* TODO Scientific and judicial papers
-public:
-	QString referenceAuthor(int referenceId);
-	int referenceYear(int referenceId);
-	QString referenceInfo(int referenceId);
-	int referenceSection(int referenceId);
-
-	QString lawTitle(int lawId);
-	QString lawBody(int lawId);
-
-#ifdef OPERATOR
-public slots:
-	int createReference(const QString &author, const QString &year, const QString &info);
-	void deleteReference(int referenceId);
-
-	int createLaw(const QString &title, const QString &body);
-	void deleteLaw(int lawId);
-
-	void setReferenceAuthor(int referenceId, const QString &author);
-	void setReferenceYear(int referenceId, int year);
-	void setReferenceInfo(int referenceId, const QString &info);
-	void setReferenceSection(int referenceId, int sectionId);
-
-	void setLawTitle(int lawId, const QString &title);
-	void setLawBody(int lawId, const QString &body);
-#endif
-*/
-
-/* Species */
-public:
-	//TODO QList<int> speciesReferences(int speciesId, int zoneId) const;
-	//TODO QList<int> speciesLaws(int speciesId, int zoneId) const;
-	bool speciesEnabled(int speciesId, int zoneId) const;
-	QPixmap speciesAreal(int speciesId, int zoneId) const;
-	QList<int> speciesStatus(int speciesId, int zoneId) const;
-	QString speciesChapter(int speciesId, int zoneId, const QString &chapterName) const;
-	// Return the list of zones where the species is met
-	QList<int> speciesZones(int speciesId);
-
-#ifdef OPERATOR
-public slots:
-	//TODO void setSpeciesReferences(int speciesId, int zoneId, const QList<int> &references);
-	//TODO void setSpeciesLaws(int speciesId, int zoneId, const QList<int> &laws);
-	void setSpeciesEnabled(int speciesId, int zoneId, bool isEnabled);
-	void setSpeciesAreal(int speciesId, int zoneId, const QString &path);
-	void setSpeciesStatus(int speciesId, int zoneId, const QList<int> &status);
-	void setSpeciesChapter(int speciesId, int zoneId, const QString &chapterName, const QString &chapterHtml);
-#endif
-
-public:
-	GaiaCore();
+    QString zoneName(int zoneId) const;
+    QString entryLatName(int entryId) const;
+    QString entryRusName(int entryId) const;
+    QString speciesAuthor(int entryId) const;
+    QString speciesYear(int entryId) const;
+    QString speciesComment(int entryId) const;
+    QPixmap speciesAreal(int entryId, int zoneId) const;
+    QPixmap speciesPicture(int entryId, int zoneId) const;
+    QList<int> speciesStatus(int entryId, int zoneId) const;
+    QList<int> speciesZones(int entryId);
+    QMap<QString, QString> chapterLayout(int zoneId, bool listedOnly = false) const;
+    QString speciesChapter(int entryId, int zoneId, const QString &chapterName) const;
 	~GaiaCore();
 
 private:
-	QDomDocument zoneDoc, taxonomyDoc;
-	int maxZoneId, maxTaxonomyId;
+    void readXML(const QString &path, const QString &rootName, const QString &tagName, QDomDocument **xmlDoc, QHash<int, QDomElement> **xmlHash);
+    QList<QDomElement> allDescendants(const QDomElement &element, const QString &tagName = "");
+    QString entryAttribute(int entryId, const QString &attribute) const;
+    QPixmap speciesPixmap(int entryId, int zoneId, const QString &filename) const;
+    QDomDocument *zoneDoc, *taxonomyDoc;
 	QHash<int, QDomElement> *zoneHash, *taxonomyHash;
-	QDomElement elementById(const QDomElement &element, const QString &id);
-	QList<QDomElement> allElements(const QDomElement &element, const QString &tagName = "");
-	void deleteDirectory(const QString &path);
-	static const QString taxonomyLevels[];
+    QHash<int, QHash<int, QString> *> *statusHash;
 };
 
 /**
 Zones
 
 <?xml version="1.0" encoding="utf8"?>
-<geo version="1.0" url="URL">
+<geo version="1.0" path="PATH">
 <zone id="1" name="Russian Federation">
 	<zone id="2" name="Kamchatkan region">
 		<chapter file="002.html" name="Overview" />
@@ -191,7 +76,7 @@ The root element GEO specifies the version of the file format and the path to th
 Taxonomy
 
 <?xml version="1.0" encoding="utf8"?>
-<bio version="1.0" url="URL">
+<bio version="1.0" path="PATH">
 <family id="5" rus="Semeystvo #6" lat="Family #6">
 	<genus id="4" rus="Rod #15" lat="Genus #15">
 		<species id="168" rus="Shmel #1" lat="Bombus paradoxus" />
@@ -213,26 +98,6 @@ Species
 Each zone has a number of species entries associated with it. Every species has a directory under this zone's directory, which contains its areal in this zone and  description chapters. A chapter file is essentially a html fragment. Since various zones can have various types of chapters and, which is more important, the data can be compiled independently.
 
 115/
-areal.png 001.html 002.html bomm.html lit.txt
-*/
-
-/**
-References
-
-In each species directory there can be a lit.txt file, which contains IDs of published works used, separated by commas. Full details on the works they reference are kept in the appropriate XML file.
-
-lit.txt
-1,4,87
-
-<?xml version="1.0" encoding="utf8"?>
-<lit version="1.0">
-<section bio="3">
-<reference id="1" author="Ivanov" year="1947" info="Moscow, FIZMATGIZ" />
-<reference id="4" author="Petruccio et al" year="1920" info="Astrobiology review,vol.23.issue 12, pg.117-125" />
-</section>
-<section bio="5,3">
-<reference id="87" author="Sidoradze, Kalaxadze" year="2002" info="Georgian biologist, 2002 Tbilisi" />
-</section>
-</lit>
+areal.png 001.txt 002.txt 003.txt
 */
 #endif

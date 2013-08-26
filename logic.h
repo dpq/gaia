@@ -38,56 +38,39 @@ public:
 
 public slots:
 	void indexMenuClicked();
-	void indexWidgetClicked(QListWidgetItem *item);
 
 	void viewMultiDocChapter(const QString &chapter);
+    void printDocument();
 
 	void largerFont();
 	void smallerFont();
 
 	void chapterSelected(bool isChecked);
 
-	void populateAlphaList();
+    void populateSystematics();
+    void populateAlphaList();
 	void latAlpha();
 	void rusAlpha();
-
-	void populateSystematics();
-
-	void treeItemSelected(QTreeWidgetItem *item);
-	void listItemSelected(QListWidgetItem *item);
+    void sysList();
 
 	void treeItemHighlighted(QTreeWidgetItem *item);
-	void listItemHighlighted(QListWidgetItem *item);
+    void listItemHighlighted(QListWidgetItem *item, QListWidgetItem *prevItem);
 
 	void setArticle(QListWidgetItem *item);
-
-	void nextSpecies();
-	void prevSpecies();
-
 	void printSpecies();
-	void printDocument();
 
 	void changeFocus(QWidget *old, QWidget *now);
-
-	void up();
-	void showHelp();
-	void showIndex();
-	void initChapterRoots();
-	
-	void setZone(QAction *action);
-
-	void edit();
-	void saveEdit();
-	void cancelEdit();
+    //void setZone(QAction *action);
 
 private:
-	void viewSingleDoc(const QString &docId, const QString &docName);
+    void initChapterRoots();
+    void viewSingleDoc(const QString &docId, const QString &docName);
 	void viewMultiDoc(const QString &id, const QString &item = "");
 	void viewSpeciesLists();
 	void viewSpeciesArticle();
-	void initIndex(const QString &section = "");
+    //void initIndex(const QString &section = "");
 	void populateSystematicsBranch(QTreeWidgetItem *parent, const QDomElement &root);
-	bool checkModification();
+    //bool checkModification();
 
 	int firstItemId, lastItemId;
 	QString currentDir, alphaMode, chapterId, articleId, indexMode;
@@ -95,7 +78,6 @@ private:
 	void printAux(QPainter &painter, QPrinter &printer);
 	int speciesId, zoneId;
 	QList<QTreeWidgetItem*> *taxoSpecies;
-	bool editMode;
 	GaiaCore *core;
 	QrbConfig *config;
 	QString currentCathegory;
@@ -107,13 +89,13 @@ private:
 
 	QWidget *parent, *colorPage;
 	QStackedWidget *stack;
-	QListWidget *alphaList, *sectionList, *indexList;
+    QListWidget *alphaList, *indexList;
 	QLabel *indexLabel, *docTitleLabel, *photoLabel, *arealLabel, *speciesLabel, *commentLabel, *logoLabel;
 	QTextBrowser *docViewer, *articleBrowser;
 	QComboBox *chapterCombo;
-	QAction *editAction, *saveAction, *cancelAction, *specMenu, *fontMenu;
+    QAction *zoneMenu, *fontMenu;
 	QTreeWidget *taxoTree;
-	QPushButton *printButton, *backButton;
+    QPushButton *articlePrintButton, *docPrintButton;
 	
 	QMap<QString, QString> indexSections, oppositeLang;
 	QString multiDocDir, lang;

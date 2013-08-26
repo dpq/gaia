@@ -3,7 +3,7 @@
 ######################################################################
 
 QT+=xml
-CONFIG+=uitools
+CONFIG+=uitools debug
 TEMPLATE = app
 TARGET = redbook
 DEPENDPATH += .
