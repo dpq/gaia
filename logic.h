@@ -56,7 +56,6 @@ public slots:
 	void treeItemHighlighted(QTreeWidgetItem *item);
     void listItemHighlighted(QListWidgetItem *item, QListWidgetItem *prevItem);
 
-	void setArticle(QListWidgetItem *item);
 	void printSpecies();
 
 	void changeFocus(QWidget *old, QWidget *now);
@@ -66,11 +65,9 @@ private:
     void initChapterRoots();
     void viewSingleDoc(const QString &docId, const QString &docName);
 	void viewMultiDoc(const QString &id, const QString &item = "");
-	void viewSpeciesLists();
-	void viewSpeciesArticle();
-    //void initIndex(const QString &section = "");
+    //void viewSpeciesLists();
+    void viewSpeciesArticle();
 	void populateSystematicsBranch(QTreeWidgetItem *parent, const QDomElement &root);
-    //bool checkModification();
 
 	int firstItemId, lastItemId;
 	QString currentDir, alphaMode, chapterId, articleId, indexMode;
@@ -80,10 +77,9 @@ private:
 	QList<QTreeWidgetItem*> *taxoSpecies;
 	GaiaCore *core;
 	QrbConfig *config;
-	QString currentCathegory;
+    QString currentCategory;
 	QMap<QAction*, int> *zoneMapping;
-	void refreshSectionList();
-	QListWidgetItem *overviewItem;
+    QListWidgetItem *overviewItem;
 	QString original;
 	int prevArtRow;
 

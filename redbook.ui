@@ -557,7 +557,7 @@ indicator {
            <item row="0" column="0">
             <layout class="QHBoxLayout" name="horizontalLayout_4">
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="logoLabel">
                <property name="text">
                 <string/>
                </property>
