@@ -309,6 +309,7 @@ void Logic::sysList() {
 }
 
 void Logic::treeItemHighlighted(QTreeWidgetItem *item) {
+    zoneId = 1;
     if (taxoSpecies->indexOf(item) == -1) {
         return;
     }
@@ -323,6 +324,7 @@ void Logic::treeItemHighlighted(QTreeWidgetItem *item) {
 }
 
 void Logic::listItemHighlighted(QListWidgetItem *item, QListWidgetItem *prevItem) {
+    zoneId = 1;
     if (item) {
         speciesId = item->data(Qt::UserRole).toInt();
         foreach(QTreeWidgetItem *treeItem, *taxoSpecies) {
@@ -415,20 +417,11 @@ void Logic::viewSpeciesArticle() {
 	}
 }
 
-/*void Logic::setZone(QAction *action) {
-	bool isHidden = overviewItem->isHidden();
-    checkModification();
-	zoneId = zoneMapping->value(action);
-	delete chapterArticles;
-	chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
-	overviewItem = sectionList->item(0);
-	if (isHidden) {
-		overviewItem->setHidden(true);
-		sectionList->setCurrentItem(sectionList->item(1));
-		this->setArticle(sectionList->currentItem());
-	}
+void Logic::setZone(QAction *action) {
+    zoneId = zoneMapping->value(action);
+    chapterArticles = new QMap<QString, QString>(core->chapterLayout(zoneId));
 	refreshArticle();
-}*/
+}
 
 void Logic::refreshArticle() {
 	QString all = "";

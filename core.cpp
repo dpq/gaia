@@ -39,7 +39,7 @@ QDomNodeList GaiaCore::zoneElements(const QString &tagName, const QDomElement &p
 }
 
 void GaiaCore::readZoneFile(const QString &path) {
-    readXML(path, "zoneDocument", "", &zoneDoc, &zoneHash);
+    readXML(path, "zoneDocument", "zone", &zoneDoc, &zoneHash);
     statusHash = new QHash<int, QHash<int, QString> *>();
     foreach (int zoneId, zoneHash->keys()) {
         QHash<int, QString> *h = new QHash<int, QString>();

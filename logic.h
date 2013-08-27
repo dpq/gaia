@@ -59,7 +59,7 @@ public slots:
 	void printSpecies();
 
 	void changeFocus(QWidget *old, QWidget *now);
-    //void setZone(QAction *action);
+    void setZone(QAction *action);
 
 private:
     void initChapterRoots();
