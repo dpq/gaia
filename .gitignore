@@ -1,0 +1,7 @@
+*.o
+Makefile
+moc_*
+qrc_*
+ui_*
+*.pro.user
+redbook
