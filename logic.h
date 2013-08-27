@@ -65,37 +65,31 @@ private:
     void initChapterRoots();
     void viewSingleDoc(const QString &docId, const QString &docName);
 	void viewMultiDoc(const QString &id, const QString &item = "");
-    //void viewSpeciesLists();
     void viewSpeciesArticle();
 	void populateSystematicsBranch(QTreeWidgetItem *parent, const QDomElement &root);
 
-	int firstItemId, lastItemId;
-	QString currentDir, alphaMode, chapterId, articleId, indexMode;
-	void refreshArticle();
+    QString chapterId;
+    int speciesId, zoneId;
+    QMap<QString, QString> indexSections, oppositeLang;
+    QString multiDocDir, lang;
+    void refreshArticle();
 	void printAux(QPainter &painter, QPrinter &printer);
-	int speciesId, zoneId;
-	QList<QTreeWidgetItem*> *taxoSpecies;
-	GaiaCore *core;
-	QrbConfig *config;
-    QString currentCategory;
-	QMap<QAction*, int> *zoneMapping;
-    QListWidgetItem *overviewItem;
-	QString original;
-	int prevArtRow;
 
-	QWidget *parent, *colorPage;
+    GaiaCore *core;
+	QrbConfig *config;
+
+    QWidget *colorPage;
 	QStackedWidget *stack;
     QListWidget *alphaList, *indexList;
-	QLabel *indexLabel, *docTitleLabel, *photoLabel, *arealLabel, *speciesLabel, *commentLabel, *logoLabel;
+    QLabel *docTitleLabel, *photoLabel, *arealLabel, *speciesLabel, *commentLabel, *logoLabel;
 	QTextBrowser *docViewer, *articleBrowser;
 	QComboBox *chapterCombo;
+    QMap<QAction*, int> *zoneMapping;
     QAction *zoneMenu, *fontMenu;
-	QTreeWidget *taxoTree;
+    QList<QTreeWidgetItem*> *taxoSpecies;
+    QTreeWidget *taxoTree;
     QPushButton *articlePrintButton, *docPrintButton;
 	
-	QMap<QString, QString> indexSections, oppositeLang;
-	QString multiDocDir, lang;
-
 	QMap<QString, QList<int> > *chapterRoots;
 	QMap<QString, QString> *chapterArticles;
 

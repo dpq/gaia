@@ -39,19 +39,58 @@
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_3">
            <item>
-            <widget class="QLabel" name="docTitleLabel">
-             <property name="styleSheet">
-              <string notr="true">font: 75 14pt &quot;Sans Serif&quot;;
-background-color: #0080c0;
-color: #000000</string>
-             </property>
-             <property name="text">
-              <string>TextLabel</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
+            <layout class="QHBoxLayout" name="horizontalLayout_7">
+             <item>
+              <widget class="QLabel" name="logoLabel_2">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="pixmap">
+                <pixmap resource="redbook.qrc">:/logo.png</pixmap>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_7">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QLabel" name="docTitleLabel">
+               <property name="styleSheet">
+                <string notr="true">font-family:&quot;Sans Serif&quot;; font-size:10pt; font-weight:400; font-style:normal;
+font-size:16pt; font-weight:600; font-style:italic; color:#ffffff;</string>
+               </property>
+               <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; font-style:italic;&quot;&gt;TextLabel&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+               </property>
+               <property name="alignment">
+                <set>Qt::AlignCenter</set>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <spacer name="horizontalSpacer_4">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+            </layout>
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
@@ -123,8 +162,8 @@ color: #000000;</string>
         <item>
          <widget class="QFrame" name="widget_3">
           <property name="styleSheet">
-           <string notr="true">#widget_3, #latButton, #rusButton, #sysButton { 
-	background-color: rgb(170, 0, 0);
+           <string notr="true">#widget_3 { 
+	background-color: #c04040;
 }</string>
           </property>
           <layout class="QGridLayout" name="gridLayout">
@@ -156,7 +195,7 @@ color: #000000;</string>
                      </sizepolicy>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 0);
+                     <string notr="true">color: white;
 indicator {
              width: 43px;
              height: 43px;
@@ -176,7 +215,11 @@ indicator {
                      </sizepolicy>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 0);</string>
+                     <string notr="true">color: white;
+indicator {
+             width: 43px;
+             height: 43px;
+         }</string>
                     </property>
                     <property name="text">
                      <string>Птицы</string>
@@ -192,7 +235,11 @@ indicator {
                      </sizepolicy>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 0);</string>
+                     <string notr="true">color: white;
+indicator {
+             width: 43px;
+             height: 43px;
+         }</string>
                     </property>
                     <property name="text">
                      <string>Земноводные и пресмыкающиеся</string>
@@ -208,7 +255,11 @@ indicator {
                      </sizepolicy>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 0);</string>
+                     <string notr="true">color: white;
+indicator {
+             width: 43px;
+             height: 43px;
+         }</string>
                     </property>
                     <property name="text">
                      <string>Круглоротые и рыбы</string>
@@ -224,7 +275,11 @@ indicator {
                      </sizepolicy>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 0);</string>
+                     <string notr="true">color: white;
+indicator {
+             width: 43px;
+             height: 43px;
+         }</string>
                     </property>
                     <property name="text">
                      <string>Членистоногие</string>
@@ -240,7 +295,11 @@ indicator {
                      </sizepolicy>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 0);</string>
+                     <string notr="true">color: white;
+indicator {
+             width: 43px;
+             height: 43px;
+         }</string>
                     </property>
                     <property name="text">
                      <string>Моллюски</string>
@@ -256,7 +315,11 @@ indicator {
                      </sizepolicy>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 0);</string>
+                     <string notr="true">color: white;
+indicator {
+             width: 43px;
+             height: 43px;
+         }</string>
                     </property>
                     <property name="text">
                      <string>Мшанки и плеченогие</string>
@@ -272,7 +335,11 @@ indicator {
                      </sizepolicy>
                     </property>
                     <property name="styleSheet">
-                     <string notr="true">color: rgb(255, 255, 0);</string>
+                     <string notr="true">color: white;
+indicator {
+             width: 43px;
+             height: 43px;
+         }</string>
                     </property>
                     <property name="text">
                      <string>Кольчатые черви</string>
@@ -287,7 +354,7 @@ indicator {
                  <item>
                   <widget class="QPushButton" name="sysButton">
                    <property name="styleSheet">
-                    <string notr="true">color: rgb(255, 255, 0);</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>Сист</string>
@@ -297,7 +364,7 @@ indicator {
                  <item>
                   <widget class="QPushButton" name="latButton">
                    <property name="styleSheet">
-                    <string notr="true">color: rgb(255, 255, 0);</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>Лат</string>
@@ -307,7 +374,7 @@ indicator {
                  <item>
                   <widget class="QPushButton" name="rusButton">
                    <property name="styleSheet">
-                    <string notr="true">color: rgb(255, 255, 0);</string>
+                    <string notr="true"/>
                    </property>
                    <property name="text">
                     <string>Рус</string>

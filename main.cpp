@@ -15,7 +15,6 @@
 #include <QtGui/QComboBox>
 #include <QtGui/QTreeWidget>
 #include <QtGui/QListWidget>
-
 #include <QtGui/QRadioButton>
 #include <QtGui/QPushButton>
 
@@ -98,6 +97,5 @@ int main(int argc, char **argv) {
     redBook->show();
     redBook->findChild<QRadioButton*>("radioc0")->toggle();
     logic->rusAlpha();
-    //redBook->findChild<QListWidget*>("alphaList")->setCurrentItem(redBook->findChild<QListWidget*>("alphaList")->itemAt(0, 0));
     return app.exec();
 }

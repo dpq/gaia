@@ -54,9 +54,7 @@ Logic::Logic(QrbConfig *config, QWidget *parent) : QObject(parent) {
     zoneId = 1;
     speciesId = -1;
     taxoSpecies = new QList<QTreeWidgetItem*>();
-    currentCategory =  "";
 
-    this->parent = parent;
     stack = parent->findChild<QStackedWidget*>("stackedWidget");
 
     zoneMenu = parent->findChild<QMenu*>("zoneMenu")->menuAction();
@@ -149,7 +147,7 @@ void Logic::viewSingleDoc(const QString &docId, const QString &docName) {
 	fontMenu->setVisible(true);
 	chapterCombo->clear();
 	chapterCombo->hide();
-	stack->setCurrentIndex(1);
+    stack->setCurrentIndex(0);
 }
 
 /* When invoked from the index widget, ID is of the paragraph to load. When invoked from the index menu, ID is of the general section */
@@ -171,7 +169,7 @@ void Logic::viewMultiDoc(const QString &id, const QString &item) {
 	}
     zoneMenu->setVisible(false);
 	fontMenu->setVisible(true);
-	stack->setCurrentIndex(1);
+    stack->setCurrentIndex(0);
 }
 
 void Logic::viewMultiDocChapter(const QString &chapter) {
@@ -186,29 +184,16 @@ void Logic::viewMultiDocChapter(const QString &chapter) {
 void Logic::indexMenuClicked() {
 	QString text = qobject_cast<QAction*>(sender())->text();
 	QString id = qobject_cast<QAction*>(sender())->data().toString();
-	if (id == "p6" || id == "p7") {
-        //initIndex(id);
-		viewMultiDoc(id);
+    if (id == "p7" || id == "p6") {
+        viewMultiDoc(id);
 	}
-    else if (id == "p5") {
-        //initIndex();
-        //viewSpeciesLists();
+    else if (id == "p0") {
+        stack->setCurrentIndex(1);
     }
     else {
-        //initIndex();
 		viewSingleDoc(id, text);
 	}
 }
-
-//void Logic::viewSpeciesLists() {
-//	parent->findChild<QRadioButton*>(chapterId)->setChecked(true);
-//	populateAlphaList();
-//    zoneMenu->setVisible(false);
-//	fontMenu->setVisible(false);
-//	taxoTree->clearSelection();
-//	alphaList->clearSelection();
-//	stack->setCurrentIndex(2);
-//}
 
 void Logic::populateSystematics() {
 	taxoTree->clear();
@@ -357,7 +342,7 @@ void Logic::viewSpeciesArticle() {
 	
     QList<int> cat = core->speciesStatus(speciesId, zoneId);
     QString category = "";
-	for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
+    for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
         category += QString::number(*i) + ", ";
 	}
     category = category.left(category.length() - 2);
@@ -372,33 +357,30 @@ void Logic::viewSpeciesArticle() {
     refreshArticle();
 
     /* Fill the background etc depending on the status of the species population(s) */
-    if (currentCategory != category) {
-		if (cat.size() > 1) {
-			QString stylesheet = "#colorPage { background: qconicalgradient(cx:0, cy:0,";
-			QString stops = "";
-			float x = 1.0;
-			for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
-				stops += " stop: " + QString::number(x, 'f', 3) + " " + pageColor->value(*i) + ",";
-				x -= (0.25/(cat.size()));
-				if (i + 1 != cat.end())
-                    stops += " stop: " + QString::number(x + 0.005, 'f', 3) + " " + pageColor->value(*i) + ",";
-			stops = stops.left(stops.length() - 1);
-			colorPage->setStyleSheet(stylesheet + stops + ") }");
-			}
-		}
-		else {
-			colorPage->setStyleSheet("#colorPage { background-color:" + pageColor->value(cat[0]) + "}");
-		}
-		QString specialBackground = "", lc = labelColor->value(cat[0]), cc = commentColor->value(cat[0]), bc = pageColor->value(cat[0]);
-		if (cat.size() > 1) {
-			specialBackground = "background-color: #ffffff; border: 1px solid black;";
-			cc = "#000000";
-			lc = "#000000";
-		}
-		speciesLabel->setStyleSheet("#speciesLabel {" + specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc + "}");
-		commentLabel->setStyleSheet("#commentLabel {" + specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc + "}");
-        currentCategory = category;
-	}
+    if (cat.size() > 1) {
+        QString stylesheet = "#colorPage { background: qconicalgradient(cx:0, cy:0,";
+        QString stops = "";
+        float x = 1.0;
+        for (QList<int>::const_iterator i = cat.begin(); i != cat.end(); i++) {
+            stops += " stop: " + QString::number(x, 'f', 3) + " " + pageColor->value(*i) + ",";
+            x -= (0.25/(cat.size()));
+            if (i + 1 != cat.end())
+                stops += " stop: " + QString::number(x + 0.005, 'f', 3) + " " + pageColor->value(*i) + ",";
+            stops = stops.left(stops.length() - 1);
+            colorPage->setStyleSheet(stylesheet + stops + ") }");
+        }
+    }
+    else {
+        colorPage->setStyleSheet("#colorPage { background-color:" + pageColor->value(cat[0]) + "}");
+    }
+    QString specialBackground = "", lc = labelColor->value(cat[0]), cc = commentColor->value(cat[0]), bc = pageColor->value(cat[0]);
+    if (cat.size() > 1) {
+        specialBackground = "background-color: #ffffff; border: 1px solid black;";
+        cc = "#000000";
+        lc = "#000000";
+    }
+    speciesLabel->setStyleSheet("#speciesLabel {" + specialBackground + "font: 75 16pt \"Sans Serif\"; color: " + lc + "}");
+    commentLabel->setStyleSheet("#commentLabel {" + specialBackground + "font: 10pt \"Sans Serif\"; color: " + cc + "}");
 	
 	/* Check the Core to see if this species exists in other zones as well */
 	QList<int> speciesZones = core->speciesZones(speciesId);
@@ -446,31 +428,6 @@ void Logic::changeFocus(QWidget *old, QWidget *now) {
 		alphaList->clearSelection();
 	}
 }
-/*
-
-void Logic::showHelp() {
-	QDialog *helpDialog = new QDialog(qApp->activeWindow());
-
-	QHBoxLayout *buttonLayout = new QHBoxLayout();
-	QPushButton *closeButton = new QPushButton(config->value("Labels", "close").toString());
-	buttonLayout->addStretch();
-	buttonLayout->addWidget(closeButton);
-
-	QVBoxLayout *helpLayout = new QVBoxLayout(helpDialog);
-	QTextBrowser *helpBrowser = new QTextBrowser();
-	helpLayout->addWidget(helpBrowser);
-	helpLayout->addLayout(buttonLayout);
-
-	QFile file(qApp->applicationDirPath() + "/doc/help/h" + QString::number(stack->currentIndex()) + ".html");
-	file.open(QIODevice::ReadOnly | QIODevice::Text);
-	helpBrowser->setHtml(QString::fromUtf8(file.readAll()));
-	file.close();
-	
-	helpDialog->resize(400, 300);
-	connect(closeButton, SIGNAL(clicked()), helpDialog, SLOT(accept()));
-	helpDialog->exec();
-	delete helpDialog;
-}*/
 
 void Logic::printDocument() {
 	QPrinter printer;
