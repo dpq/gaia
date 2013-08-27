@@ -12,3 +12,5 @@ disgusting to use or read.
 I now consider this project complete. Feel free to open issues on the rare chance that
 this stuff might be of actual use to someone or you have a habit of hunting bugs in
 obscure pieces of software.
+
+![Screenshot](https://raw.github.com/rumith/gaia/master/screenshot.png)
