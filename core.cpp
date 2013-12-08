@@ -14,7 +14,16 @@
 #include <QtCore/QString>
 #include <QtCore/QFile>
 #include <QtCore/QDir>
+#include <QtCore/QByteArray>
+#include <QtSql/QSqlQuery>
+#include <QtSql/QSqlError>
 #include <QtDebug>
+
+GaiaCore::GaiaCore() {
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(QString("%1/entries.sqlite").arg(qApp->applicationDirPath()));
+    db.open();
+}
 
 GaiaCore::~GaiaCore() {
 	delete zoneHash;
@@ -23,6 +32,7 @@ GaiaCore::~GaiaCore() {
     delete taxonomyDoc;
     qDeleteAll(statusHash->values());
     delete statusHash;
+    db.close();
 }
 
 QList<int> GaiaCore::taxonomyElements(const QString &tagName, const QDomElement &parent) {
@@ -132,17 +142,29 @@ QPixmap GaiaCore::speciesPixmap(int entryId, int zoneId, const QString &filename
     if (taxonomyEntry(entryId) == QDomElement()) {
         return QPixmap();
     }
-    return QPixmap(QString("%1/species/%2/%3/%4.png").arg(qApp->applicationDirPath()).arg(zoneId).arg(entryId).arg(filename));
+    QSqlQuery query;
+    QString media = QString(filename);
+    media.replace(".png","");
+    query.prepare("SELECT " + media +" FROM media WHERE zoneId=? and speciesId=?");
+    query.addBindValue(zoneId);
+    query.addBindValue(entryId);
+    query.exec();
+    query.next();
+    QByteArray ba = query.value(0).toByteArray();
+    QPixmap res = QPixmap();
+    res.loadFromData(ba);
+    return res;
 }
 
 QList<int> GaiaCore::speciesZones(int entryId) {
     QList<int> res;
     QDomNodeList zoneList = zoneElements("zone", QDomElement());
-    for (int i = 0; i < zoneList.size(); i++) {
-        QString zoneId = zoneList.at(i).toElement().attribute("id");
-        if (QFile::exists(QString("%1/species/%2/%3").arg(qApp->applicationDirPath()).arg(zoneId).arg(entryId))) {
-                    res.append(zoneId.toInt());
-                }
+    QSqlQuery query;
+    query.prepare("SELECT DISTINCT zoneId FROM chapter WHERE speciesId=?");
+    query.addBindValue(entryId);
+    query.exec();
+    while (query.next()) {
+        res.append(query.value(0).toInt());
     }
 	return res;
 }
@@ -164,14 +186,19 @@ QString GaiaCore::speciesChapter(int speciesId, int zoneId, const QString &chapt
     if (taxonomyEntry(speciesId) == QDomElement() || zoneEntry(zoneId) == QDomElement()) {
 		return QString();
     }
-    QFile file(QString("%1/species/%2/%3/%4").arg(qApp->applicationDirPath())\
-               .arg(zoneId).arg(speciesId).arg(chapterLayout(zoneId).value(chapterName)));
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        return QString();
+
+    QSqlQuery query;
+    query.prepare("SELECT chapterText FROM chapter WHERE zoneId=? AND speciesId=? AND chapterName=?");
+    query.addBindValue(zoneId);
+    query.addBindValue(speciesId);
+    query.addBindValue(chapterName);
+    query.exec();
+    if (query.next()) {
+        return query.value(0).toString();
     }
-	QString res = QString::fromUtf8(file.readAll());
-	file.close();
-	return res;
+    else {
+        return QString("");
+    }
 }
 
 QMap<QString, QString> GaiaCore::chapterLayout(int zoneId, bool listedOnly) const {

@@ -13,6 +13,7 @@
 #include <QtCore/QMap>
 #include <QtCore/QHash>
 #include <QtXml/QDomDocument>
+#include <QtSql/QSqlDatabase>
 class QDomElement;
 class QString;
 class QPixmap;
@@ -45,6 +46,7 @@ public:
     QMap<QString, QString> chapterLayout(int zoneId, bool listedOnly = false) const;
     QString speciesChapter(int entryId, int zoneId, const QString &chapterName) const;
 	~GaiaCore();
+    GaiaCore();
 
 private:
     void readXML(const QString &path, const QString &rootName, const QString &tagName, QDomDocument **xmlDoc, QHash<int, QDomElement> **xmlHash);
@@ -54,6 +56,7 @@ private:
     QDomDocument *zoneDoc, *taxonomyDoc;
 	QHash<int, QDomElement> *zoneHash, *taxonomyHash;
     QHash<int, QHash<int, QString> *> *statusHash;
+    QSqlDatabase db;
 };
 
 /**
