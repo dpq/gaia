@@ -26,6 +26,7 @@
 #include <QtGui/QMenu>
 #include <QtGui/QVBoxLayout>
 #include <QtGui/QHBoxLayout>
+#include <QtSql/QSqlQuery>
 
 #include <QtDebug>
 
@@ -103,6 +104,10 @@ Logic::Logic(QrbConfig *config, QWidget *parent) : QObject(parent) {
     pageColor->insert(3, "#ffffff");
     pageColor->insert(4, "#cccccc");
     pageColor->insert(5, "#008000");
+
+    db = QSqlDatabase::addDatabase("QSQLITE", "docConnection");
+    db.setDatabaseName(QString("%1/docs.sqlite").arg(qApp->applicationDirPath()));
+    db.open();
 }
 
 Logic::~Logic() {
@@ -138,11 +143,16 @@ void Logic::initChapterRoots() {
 }
 
 void Logic::viewSingleDoc(const QString &docId, const QString &docName) {
-	QFile file(qApp->applicationDirPath() + "/doc/" + docId + ".html");
-	file.open(QIODevice::ReadOnly | QIODevice::Text);
-	docViewer->setHtml(QString::fromUtf8(file.readAll()));
-	file.close();
-	docTitleLabel->setText(docName);
+    QSqlQuery query(db=db);
+    query.prepare("SELECT content FROM document WHERE path=?");
+    query.addBindValue(docId);
+    query.exec();
+    query.next();
+    QString html = query.value(0).toString();
+
+    docViewer->setHtml(html);
+
+    docTitleLabel->setText(docName);
     zoneMenu->setVisible(false);
 	fontMenu->setVisible(true);
 	chapterCombo->clear();
@@ -175,10 +185,15 @@ void Logic::viewMultiDoc(const QString &id, const QString &item) {
 void Logic::viewMultiDocChapter(const QString &chapter) {
 	if (chapter == "")
 		return;
-	QFile file(qApp->applicationDirPath() + "/doc/" + multiDocDir + "/" + chapterCombo->itemData(chapterCombo->currentIndex()).toString() + ".html");
-	file.open(QIODevice::ReadOnly | QIODevice::Text);
-	docViewer->setHtml(QString::fromUtf8(file.readAll()));
-	file.close();
+
+    QSqlQuery query(db=db);
+    query.prepare("SELECT content FROM document WHERE path=?");
+    query.addBindValue(multiDocDir + "/" + chapterCombo->itemData(chapterCombo->currentIndex()).toString());
+    query.exec();
+    query.next();
+    QString html = query.value(0).toString();
+
+    docViewer->setHtml(html);
 }
 
 void Logic::indexMenuClicked() {

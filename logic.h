@@ -11,6 +11,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QMap>
 #include <QtGui/QStackedWidget>
+#include <QtSql/QSqlDatabase>
 class QListWidget;
 class QListWidgetItem;
 class QTreeWidget;
@@ -94,6 +95,7 @@ private:
 	QMap<QString, QString> *chapterArticles;
 
 	QMap<int, QString> *pageColor, *labelColor, *commentColor;
+    QSqlDatabase db;
 
 };
 
